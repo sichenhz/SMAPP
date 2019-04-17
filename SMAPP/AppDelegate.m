@@ -2,13 +2,17 @@
 //  AppDelegate.m
 //  SMAPP
 //
-//  Created by Jason on 14/4/19.
+//  Created by Sichen on 14/4/19.
 //  Copyright © 2019 RXP. All rights reserved.
 //
 
 #import "AppDelegate.h"
+#import "SMHomeViewController.h"
+#import "SMRoomViewController.h"
 
 @interface AppDelegate ()
+
+@property (nonatomic, strong) HMHomeManager *homeManager;
 
 @end
 
@@ -17,6 +21,35 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window.backgroundColor = [UIColor whiteColor];
+    
+    HMHomeManager *homeManager = [[HMHomeManager alloc] init];
+    
+    SMHomeViewController *homeVC = [[SMHomeViewController alloc] initWithHomeManager:homeManager];
+    homeVC.tabBarItem.title = @"Home";
+    [homeVC.tabBarItem setTitleTextAttributes:@{NSFontAttributeName : FONT_BODY, NSForegroundColorAttributeName : HEXCOLOR(0xFFA500)} forState:UIControlStateSelected];
+    [homeVC.tabBarItem setTitleTextAttributes:@{NSFontAttributeName : FONT_BODY, NSForegroundColorAttributeName : [UIColor grayColor]} forState:UIControlStateNormal];
+    homeVC.tabBarItem.image = [UIImage imageNamed:@"tabbar_home"];
+    homeVC.tabBarItem.selectedImage = [UIImage imageNamed:@"tabbar_home_selected"];
+
+    SMRoomViewController *roomVC = [[SMRoomViewController alloc] initWithHomeManager:homeManager];
+    roomVC.tabBarItem.title = @"Room";
+    [roomVC.tabBarItem setTitleTextAttributes:@{NSFontAttributeName : FONT_BODY, NSForegroundColorAttributeName : HEXCOLOR(0xFFA500)} forState:UIControlStateSelected];
+    [roomVC.tabBarItem setTitleTextAttributes:@{NSFontAttributeName : FONT_BODY, NSForegroundColorAttributeName : [UIColor grayColor]} forState:UIControlStateNormal];
+    roomVC.tabBarItem.image = [UIImage imageNamed:@"tabbar_home"];
+    roomVC.tabBarItem.selectedImage = [UIImage imageNamed:@"tabbar_home_selected"];
+
+    homeVC.roomVC = roomVC;
+    
+    UITabBarController *tabBarC = [[UITabBarController alloc] init];
+    tabBarC.viewControllers = @[[[UINavigationController alloc] initWithRootViewController:homeVC], [[UINavigationController alloc] initWithRootViewController:roomVC]];
+        
+    self.window.rootViewController = tabBarC;
+
+    [self.window makeKeyAndVisible];
+
     return YES;
 }
 

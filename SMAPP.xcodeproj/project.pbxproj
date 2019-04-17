@@ -8,24 +8,62 @@
 
 /* Begin PBXBuildFile section */
 		96AD76AA22631659003A0D2A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 96AD76A922631659003A0D2A /* AppDelegate.m */; };
-		96AD76AD22631659003A0D2A /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96AD76AC22631659003A0D2A /* ViewController.m */; };
-		96AD76B022631659003A0D2A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 96AD76AE22631659003A0D2A /* Main.storyboard */; };
 		96AD76B22263165C003A0D2A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 96AD76B12263165C003A0D2A /* Assets.xcassets */; };
 		96AD76B52263165C003A0D2A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 96AD76B32263165C003A0D2A /* LaunchScreen.storyboard */; };
 		96AD76B82263165C003A0D2A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 96AD76B72263165C003A0D2A /* main.m */; };
+		96AD76C0226317D3003A0D2A /* HomeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96AD76BF226317D3003A0D2A /* HomeKit.framework */; };
+		96AD76C722631856003A0D2A /* SMHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96AD76C622631856003A0D2A /* SMHomeViewController.m */; };
+		96AD76CA22634DF7003A0D2A /* SMAddAccessoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96AD76C922634DF7003A0D2A /* SMAddAccessoryViewController.m */; };
+		96AD76CD22634EC5003A0D2A /* SMAccessoryDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96AD76CC22634EC5003A0D2A /* SMAccessoryDetailViewController.m */; };
+		96AD76D022634EFA003A0D2A /* SMServiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96AD76CF22634EFA003A0D2A /* SMServiceViewController.m */; };
+		96AD76D622634F91003A0D2A /* UIView+Extention.m in Sources */ = {isa = PBXBuildFile; fileRef = 96AD76D522634F91003A0D2A /* UIView+Extention.m */; };
+		96AD77152264ADED003A0D2A /* SMRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96AD77142264ADED003A0D2A /* SMRoomViewController.m */; };
+		96AD771922657879003A0D2A /* SMAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 96AD771822657879003A0D2A /* SMAlertView.m */; };
+		96AD773422671305003A0D2A /* GOTHICB.TTF in Resources */ = {isa = PBXBuildFile; fileRef = 96AD773022671304003A0D2A /* GOTHICB.TTF */; };
+		96AD773522671305003A0D2A /* GOTHIC.TTF in Resources */ = {isa = PBXBuildFile; fileRef = 96AD773122671304003A0D2A /* GOTHIC.TTF */; };
+		96AD773622671305003A0D2A /* GOTHICI.TTF in Resources */ = {isa = PBXBuildFile; fileRef = 96AD773222671304003A0D2A /* GOTHICI.TTF */; };
+		96AD773A22671BE0003A0D2A /* Nunito-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 96AD773722671BE0003A0D2A /* Nunito-Italic.ttf */; };
+		96AD773B22671BE0003A0D2A /* Nunito-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 96AD773822671BE0003A0D2A /* Nunito-Bold.ttf */; };
+		96AD773C22671BE0003A0D2A /* Nunito-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 96AD773922671BE0003A0D2A /* Nunito-Regular.ttf */; };
+		96AD773F226721AB003A0D2A /* SMBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96AD773E226721AB003A0D2A /* SMBaseViewController.m */; };
+		96AD7742226735CE003A0D2A /* SMButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 96AD7741226735CE003A0D2A /* SMButton.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		96AD76A522631659003A0D2A /* SMAPP.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SMAPP.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		96AD76A822631659003A0D2A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		96AD76A922631659003A0D2A /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		96AD76AB22631659003A0D2A /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		96AD76AC22631659003A0D2A /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		96AD76AF22631659003A0D2A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		96AD76B12263165C003A0D2A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		96AD76B42263165C003A0D2A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		96AD76B62263165C003A0D2A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		96AD76B72263165C003A0D2A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		96AD76BF226317D3003A0D2A /* HomeKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HomeKit.framework; path = System/Library/Frameworks/HomeKit.framework; sourceTree = SDKROOT; };
+		96AD76C1226317D3003A0D2A /* SMAPP.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SMAPP.entitlements; sourceTree = "<group>"; };
+		96AD76C522631856003A0D2A /* SMHomeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMHomeViewController.h; sourceTree = "<group>"; };
+		96AD76C622631856003A0D2A /* SMHomeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMHomeViewController.m; sourceTree = "<group>"; };
+		96AD76C822634DF7003A0D2A /* SMAddAccessoryViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMAddAccessoryViewController.h; sourceTree = "<group>"; };
+		96AD76C922634DF7003A0D2A /* SMAddAccessoryViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMAddAccessoryViewController.m; sourceTree = "<group>"; };
+		96AD76CB22634EC5003A0D2A /* SMAccessoryDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMAccessoryDetailViewController.h; sourceTree = "<group>"; };
+		96AD76CC22634EC5003A0D2A /* SMAccessoryDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMAccessoryDetailViewController.m; sourceTree = "<group>"; };
+		96AD76CE22634EFA003A0D2A /* SMServiceViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMServiceViewController.h; sourceTree = "<group>"; };
+		96AD76CF22634EFA003A0D2A /* SMServiceViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMServiceViewController.m; sourceTree = "<group>"; };
+		96AD76D422634F91003A0D2A /* UIView+Extention.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+Extention.h"; sourceTree = "<group>"; };
+		96AD76D522634F91003A0D2A /* UIView+Extention.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+Extention.m"; sourceTree = "<group>"; };
+		96AD77132264ADED003A0D2A /* SMRoomViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMRoomViewController.h; sourceTree = "<group>"; };
+		96AD77142264ADED003A0D2A /* SMRoomViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMRoomViewController.m; sourceTree = "<group>"; };
+		96AD771622657316003A0D2A /* Const.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Const.h; sourceTree = "<group>"; };
+		96AD771722657879003A0D2A /* SMAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMAlertView.h; sourceTree = "<group>"; };
+		96AD771822657879003A0D2A /* SMAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMAlertView.m; sourceTree = "<group>"; };
+		96AD773022671304003A0D2A /* GOTHICB.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = GOTHICB.TTF; sourceTree = "<group>"; };
+		96AD773122671304003A0D2A /* GOTHIC.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = GOTHIC.TTF; sourceTree = "<group>"; };
+		96AD773222671304003A0D2A /* GOTHICI.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = GOTHICI.TTF; sourceTree = "<group>"; };
+		96AD773722671BE0003A0D2A /* Nunito-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-Italic.ttf"; sourceTree = "<group>"; };
+		96AD773822671BE0003A0D2A /* Nunito-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-Bold.ttf"; sourceTree = "<group>"; };
+		96AD773922671BE0003A0D2A /* Nunito-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-Regular.ttf"; sourceTree = "<group>"; };
+		96AD773D226721AB003A0D2A /* SMBaseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMBaseViewController.h; sourceTree = "<group>"; };
+		96AD773E226721AB003A0D2A /* SMBaseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMBaseViewController.m; sourceTree = "<group>"; };
+		96AD7740226735CE003A0D2A /* SMButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMButton.h; sourceTree = "<group>"; };
+		96AD7741226735CE003A0D2A /* SMButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMButton.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,6 +71,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				96AD76C0226317D3003A0D2A /* HomeKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -44,6 +83,7 @@
 			children = (
 				96AD76A722631659003A0D2A /* SMAPP */,
 				96AD76A622631659003A0D2A /* Products */,
+				96AD76BE226317D3003A0D2A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -58,17 +98,56 @@
 		96AD76A722631659003A0D2A /* SMAPP */ = {
 			isa = PBXGroup;
 			children = (
+				96AD76C1226317D3003A0D2A /* SMAPP.entitlements */,
 				96AD76A822631659003A0D2A /* AppDelegate.h */,
 				96AD76A922631659003A0D2A /* AppDelegate.m */,
-				96AD76AB22631659003A0D2A /* ViewController.h */,
-				96AD76AC22631659003A0D2A /* ViewController.m */,
-				96AD76AE22631659003A0D2A /* Main.storyboard */,
+				96AD773D226721AB003A0D2A /* SMBaseViewController.h */,
+				96AD773E226721AB003A0D2A /* SMBaseViewController.m */,
+				96AD76C522631856003A0D2A /* SMHomeViewController.h */,
+				96AD76C622631856003A0D2A /* SMHomeViewController.m */,
+				96AD77132264ADED003A0D2A /* SMRoomViewController.h */,
+				96AD77142264ADED003A0D2A /* SMRoomViewController.m */,
+				96AD76C822634DF7003A0D2A /* SMAddAccessoryViewController.h */,
+				96AD76C922634DF7003A0D2A /* SMAddAccessoryViewController.m */,
+				96AD76CB22634EC5003A0D2A /* SMAccessoryDetailViewController.h */,
+				96AD76CC22634EC5003A0D2A /* SMAccessoryDetailViewController.m */,
+				96AD76CE22634EFA003A0D2A /* SMServiceViewController.h */,
+				96AD76CF22634EFA003A0D2A /* SMServiceViewController.m */,
+				96AD76D422634F91003A0D2A /* UIView+Extention.h */,
+				96AD76D522634F91003A0D2A /* UIView+Extention.m */,
+				96AD771722657879003A0D2A /* SMAlertView.h */,
+				96AD771822657879003A0D2A /* SMAlertView.m */,
+				96AD7740226735CE003A0D2A /* SMButton.h */,
+				96AD7741226735CE003A0D2A /* SMButton.m */,
+				96AD771622657316003A0D2A /* Const.h */,
 				96AD76B12263165C003A0D2A /* Assets.xcassets */,
+				96AD772E22671304003A0D2A /* Fonts */,
 				96AD76B32263165C003A0D2A /* LaunchScreen.storyboard */,
 				96AD76B62263165C003A0D2A /* Info.plist */,
 				96AD76B72263165C003A0D2A /* main.m */,
 			);
 			path = SMAPP;
+			sourceTree = "<group>";
+		};
+		96AD76BE226317D3003A0D2A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				96AD76BF226317D3003A0D2A /* HomeKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		96AD772E22671304003A0D2A /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				96AD773922671BE0003A0D2A /* Nunito-Regular.ttf */,
+				96AD773722671BE0003A0D2A /* Nunito-Italic.ttf */,
+				96AD773822671BE0003A0D2A /* Nunito-Bold.ttf */,
+				96AD773122671304003A0D2A /* GOTHIC.TTF */,
+				96AD773222671304003A0D2A /* GOTHICI.TTF */,
+				96AD773022671304003A0D2A /* GOTHICB.TTF */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -102,6 +181,11 @@
 				TargetAttributes = {
 					96AD76A422631659003A0D2A = {
 						CreatedOnToolsVersion = 10.2;
+						SystemCapabilities = {
+							com.apple.HomeKit = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -128,9 +212,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				96AD773B22671BE0003A0D2A /* Nunito-Bold.ttf in Resources */,
 				96AD76B52263165C003A0D2A /* LaunchScreen.storyboard in Resources */,
+				96AD773C22671BE0003A0D2A /* Nunito-Regular.ttf in Resources */,
+				96AD773A22671BE0003A0D2A /* Nunito-Italic.ttf in Resources */,
+				96AD773622671305003A0D2A /* GOTHICI.TTF in Resources */,
+				96AD773522671305003A0D2A /* GOTHIC.TTF in Resources */,
 				96AD76B22263165C003A0D2A /* Assets.xcassets in Resources */,
-				96AD76B022631659003A0D2A /* Main.storyboard in Resources */,
+				96AD773422671305003A0D2A /* GOTHICB.TTF in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -141,8 +230,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				96AD76AD22631659003A0D2A /* ViewController.m in Sources */,
+				96AD771922657879003A0D2A /* SMAlertView.m in Sources */,
+				96AD7742226735CE003A0D2A /* SMButton.m in Sources */,
+				96AD76CD22634EC5003A0D2A /* SMAccessoryDetailViewController.m in Sources */,
+				96AD76CA22634DF7003A0D2A /* SMAddAccessoryViewController.m in Sources */,
+				96AD773F226721AB003A0D2A /* SMBaseViewController.m in Sources */,
+				96AD76D622634F91003A0D2A /* UIView+Extention.m in Sources */,
+				96AD76C722631856003A0D2A /* SMHomeViewController.m in Sources */,
 				96AD76B82263165C003A0D2A /* main.m in Sources */,
+				96AD77152264ADED003A0D2A /* SMRoomViewController.m in Sources */,
+				96AD76D022634EFA003A0D2A /* SMServiceViewController.m in Sources */,
 				96AD76AA22631659003A0D2A /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -150,14 +247,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		96AD76AE22631659003A0D2A /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				96AD76AF22631659003A0D2A /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		96AD76B32263165C003A0D2A /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -285,6 +374,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = SMAPP/SMAPP.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 6MZW7C8429;
 				INFOPLIST_FILE = SMAPP/Info.plist;
@@ -302,6 +392,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = SMAPP/SMAPP.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 6MZW7C8429;
 				INFOPLIST_FILE = SMAPP/Info.plist;

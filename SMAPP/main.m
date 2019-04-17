@@ -2,7 +2,7 @@
 //  main.m
 //  SMAPP
 //
-//  Created by Jason on 14/4/19.
+//  Created by Sichen on 14/4/19.
 //  Copyright © 2019 RXP. All rights reserved.
 //
 
