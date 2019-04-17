@@ -14,7 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithHomeManager:(HMHomeManager *)homeManager;
 
-- (void)updatePrivaryHome;
+- (void)updatePrimaryHome;
+- (void)updateAccessory;
 
 @end
 

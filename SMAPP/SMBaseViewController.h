@@ -18,8 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface SMBaseViewController : UITableViewController
 
+@property (nonatomic, strong) NSArray *dataList;
 @property (nonatomic, weak) UILabel *textLabel;
-
 @property (nonatomic, copy) void(^didAddAccessory)(void);
 
 - (void)initNavigationItemWithLeftTitle:(NSString *)title;

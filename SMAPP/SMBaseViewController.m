@@ -69,4 +69,42 @@
 - (void)rightButtonItemPressed:(id)sender {
 }
 
+#pragma mark - UITableViewDataSource
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return self.dataList.count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"Cell"];
+        cell.detailTextLabel.font = FONT_BODY;
+        cell.textLabel.font = FONT_BODY;
+    }
+    HMAccessory *accessory = self.dataList[indexPath.row];
+    cell.textLabel.text = accessory.name;
+    if (accessory.reachable) {
+        cell.detailTextLabel.text = @"Available";
+        cell.detailTextLabel.textColor = HEXCOLOR(0x2E6C49);
+    } else {
+        cell.detailTextLabel.text = @"Not Available";
+        cell.detailTextLabel.textColor = HEXCOLOR(0xFF0000);
+    }
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    
+    return cell;
+}
+
+#pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    SMAccessoryDetailViewController *vc = [[SMAccessoryDetailViewController alloc] init];
+    vc.accessory = self.dataList[indexPath.row];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 @end

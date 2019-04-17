@@ -8,9 +8,8 @@
 
 #import "SMRoomViewController.h"
 
-@interface SMRoomViewController () <
-HMAccessoryDelegate
->
+@interface SMRoomViewController ()
+
 @property (nonatomic, strong) HMHomeManager *homeManager;
 @property (nonatomic, assign) HMRoom *currentRoom;
 @property (nonatomic, weak) UIButton *removeButton;
@@ -51,7 +50,7 @@ HMAccessoryDelegate
     };
 }
 
-- (void)updatePrivaryHome {
+- (void)updatePrimaryHome {
     if (self.homeManager.primaryHome) {
         self.currentRoom = self.homeManager.primaryHome.roomForEntireHome;
         NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
@@ -79,9 +78,14 @@ HMAccessoryDelegate
     }
 }
 
+- (void)updateAccessory {
+    [self updateCurrentAccessories];
+}
+
 - (void)updateCurrentRoomInfo {
     self.textLabel.text = [NSString stringWithFormat:@"current room：%@", self.currentRoom.name];
     
+    self.dataList = self.currentRoom.accessories;
     if ([self.currentRoom isEqual:self.homeManager.primaryHome.roomForEntireHome]) {
         self.removeButton.enabled = NO;
     } else {
@@ -92,11 +96,7 @@ HMAccessoryDelegate
     [userDefault setObject:self.currentRoom.name forKey:self.homeManager.primaryHome.name];
 }
 
-- (void)updateCurrentAccessories {
-    for (HMAccessory *accessory in self.currentRoom.accessories) {
-        accessory.delegate = self;
-    }
-    
+- (void)updateCurrentAccessories {    
     [self.tableView reloadData];
 }
 
@@ -192,44 +192,6 @@ HMAccessoryDelegate
                                                     handler:nil]];
         [alertView show];
     }
-}
-
-#pragma mark - UITableViewDataSource
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.currentRoom.accessories.count;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
-    if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"cell"];
-        cell.detailTextLabel.font = FONT_BODY;
-        cell.textLabel.font = FONT_BODY;
-    }
-    HMAccessory *accessory = self.currentRoom.accessories[indexPath.row];
-    cell.textLabel.text = accessory.name;
-    if (accessory.reachable) {
-        cell.detailTextLabel.text = @"Available";
-        cell.detailTextLabel.textColor = HEXCOLOR(0x2E6C49);
-    } else {
-        cell.detailTextLabel.text = @"Not Available";
-        cell.detailTextLabel.textColor = HEXCOLOR(0xFF0000);
-    }
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    
-    return cell;
-}
-
-#pragma mark - UITableViewDelegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-    SMAccessoryDetailViewController *vc = [[SMAccessoryDetailViewController alloc] init];
-    vc.accessory = self.currentRoom.accessories[indexPath.row];
-    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end

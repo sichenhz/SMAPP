@@ -51,12 +51,12 @@ HMAccessoryDelegate
 }
 
 - (void)updateCurrentHomeInfo {
-    
     self.textLabel.text = [NSString stringWithFormat:@"current home：%@", self.homeManager.primaryHome.name];
 
     self.homeManager.primaryHome.delegate = self;
+    self.dataList = self.homeManager.primaryHome.accessories;
     
-    [self.roomVC updatePrivaryHome];
+    [self.roomVC updatePrimaryHome];
 }
 
 - (void)updateCurrentAccessories {
@@ -206,49 +206,11 @@ HMAccessoryDelegate
     
 }
 
-#pragma mark - UITableViewDataSource
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.homeManager.primaryHome.accessories.count;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
-    if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"cell"];
-        cell.detailTextLabel.font = FONT_BODY;
-        cell.textLabel.font = FONT_BODY;
-    }
-    HMAccessory *accessory = self.homeManager.primaryHome.accessories[indexPath.row];
-    cell.textLabel.text = accessory.name;
-    if (accessory.reachable) {
-        cell.detailTextLabel.text = @"Available";
-        cell.detailTextLabel.textColor = HEXCOLOR(0x2E6C49);
-    } else {
-        cell.detailTextLabel.text = @"Not Available";
-        cell.detailTextLabel.textColor = HEXCOLOR(0xFF0000);
-    }
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    
-    return cell;
-}
-
-#pragma mark - UITableViewDelegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-    SMAccessoryDetailViewController *vc = [[SMAccessoryDetailViewController alloc] init];
-    vc.accessory = self.homeManager.primaryHome.accessories[indexPath.row];
-    [self.navigationController pushViewController:vc animated:YES];
-}
-
 #pragma mark - HMAccessoryDelegate
 
 - (void)accessoryDidUpdateReachability:(HMAccessory *)accessory {
-    if ([self.homeManager.primaryHome.accessories containsObject:accessory]) {
-        NSUInteger index = [self.homeManager.primaryHome.accessories indexOfObject:accessory];
+    if ([self.dataList containsObject:accessory]) {
+        NSUInteger index = [self.dataList indexOfObject:accessory];
         
         UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
         
@@ -259,6 +221,7 @@ HMAccessoryDelegate
             cell.detailTextLabel.text = @"Not Available";
             cell.detailTextLabel.textColor = HEXCOLOR(0xFF0000);
         }
+        [self.roomVC updateAccessory];
     }
 }
 
@@ -272,6 +235,4 @@ HMAccessoryDelegate
 
 - (void)accessoryDidUpdateServices:(HMAccessory *)accessory {
     
-}
-
-@end
+}@end
