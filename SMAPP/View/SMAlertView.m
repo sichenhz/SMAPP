@@ -2,7 +2,7 @@
 //  SMAlertView.m
 //  SMAPP
 //
-//  Created by Jason on 16/4/19.
+//  Created by Sichen on 16/4/19.
 //  Copyright © 2019 RXP. All rights reserved.
 //
 

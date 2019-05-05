@@ -7,12 +7,13 @@
 //
 
 #import "AppDelegate.h"
+#import "Const.h"
 #import "SMHomeViewController.h"
-#import "SMRoomViewController.h"
+#import "SMAddAccessoryViewController.h"
+#import "SMNotificationViewController.h"
+#import "SMSettingViewController.h"
 
 @interface AppDelegate ()
-
-@property (nonatomic, strong) HMHomeManager *homeManager;
 
 @end
 
@@ -25,26 +26,28 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
     
-    HMHomeManager *homeManager = [[HMHomeManager alloc] init];
+    UINavigationController *nav1 = [self setUpNavigationController:[[SMHomeViewController alloc] init]
+                                                             title:@"home"
+                                                         imageName:@"tabbar_home"
+                                                 selectedImageName:@"tabbar_home_selected"];
     
-    SMHomeViewController *homeVC = [[SMHomeViewController alloc] initWithHomeManager:homeManager];
-    homeVC.tabBarItem.title = @"Home";
-    [homeVC.tabBarItem setTitleTextAttributes:@{NSFontAttributeName : FONT_BODY, NSForegroundColorAttributeName : HEXCOLOR(0xFFA500)} forState:UIControlStateSelected];
-    [homeVC.tabBarItem setTitleTextAttributes:@{NSFontAttributeName : FONT_BODY, NSForegroundColorAttributeName : [UIColor grayColor]} forState:UIControlStateNormal];
-    homeVC.tabBarItem.image = [UIImage imageNamed:@"tabbar_home"];
-    homeVC.tabBarItem.selectedImage = [UIImage imageNamed:@"tabbar_home_selected"];
-
-    SMRoomViewController *roomVC = [[SMRoomViewController alloc] initWithHomeManager:homeManager];
-    roomVC.tabBarItem.title = @"Room";
-    [roomVC.tabBarItem setTitleTextAttributes:@{NSFontAttributeName : FONT_BODY, NSForegroundColorAttributeName : HEXCOLOR(0xFFA500)} forState:UIControlStateSelected];
-    [roomVC.tabBarItem setTitleTextAttributes:@{NSFontAttributeName : FONT_BODY, NSForegroundColorAttributeName : [UIColor grayColor]} forState:UIControlStateNormal];
-    roomVC.tabBarItem.image = [UIImage imageNamed:@"tabbar_home"];
-    roomVC.tabBarItem.selectedImage = [UIImage imageNamed:@"tabbar_home_selected"];
-
-    homeVC.roomVC = roomVC;
+    UINavigationController *nav2 = [self setUpNavigationController:[[SMAddAccessoryViewController alloc] init]
+                                                             title:@"Add"
+                                                         imageName:@"tabbar_discover"
+                                                 selectedImageName:@"tabbar_discover_selected"];
     
+    UINavigationController *nav3 = [self setUpNavigationController:[[SMNotificationViewController alloc] init]
+                                                             title:@"Notification"
+                                                         imageName:@"tabbar_message_center"
+                                                 selectedImageName:@"tabbar_message_center_selected"];
+    
+    UINavigationController *nav4 = [self setUpNavigationController:[[SMSettingViewController alloc] init]
+                                                             title:@"Setting"
+                                                         imageName:@"tabbar_profile"
+                                                 selectedImageName:@"tabbar_profile_selected"];
+
     UITabBarController *tabBarC = [[UITabBarController alloc] init];
-    tabBarC.viewControllers = @[[[UINavigationController alloc] initWithRootViewController:homeVC], [[UINavigationController alloc] initWithRootViewController:roomVC]];
+    tabBarC.viewControllers = @[nav1, nav2, nav3, nav4];
         
     self.window.rootViewController = tabBarC;
 
@@ -53,6 +56,19 @@
     return YES;
 }
 
+- (UINavigationController *)setUpNavigationController:(UIViewController *)controller
+                                                title:(NSString *)title
+                                            imageName:(NSString *)imageName
+                                    selectedImageName:(NSString *)selectedImageName {
+    
+    [controller.tabBarItem setTitleTextAttributes:@{NSFontAttributeName : FONT_BODY, NSForegroundColorAttributeName : HEXCOLOR(0xFFA500)} forState:UIControlStateSelected];
+    [controller.tabBarItem setTitleTextAttributes:@{NSFontAttributeName : FONT_BODY, NSForegroundColorAttributeName : [UIColor grayColor]} forState:UIControlStateNormal];
+    
+    controller.tabBarItem.title = title;
+    controller.tabBarItem.image = [UIImage imageNamed:imageName];
+    controller.tabBarItem.selectedImage = [UIImage imageNamed:selectedImageName];
+    return [[UINavigationController alloc] initWithRootViewController:controller];
+}
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

@@ -12,21 +12,34 @@
 		96AD76B52263165C003A0D2A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 96AD76B32263165C003A0D2A /* LaunchScreen.storyboard */; };
 		96AD76B82263165C003A0D2A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 96AD76B72263165C003A0D2A /* main.m */; };
 		96AD76C0226317D3003A0D2A /* HomeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96AD76BF226317D3003A0D2A /* HomeKit.framework */; };
-		96AD76C722631856003A0D2A /* SMHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96AD76C622631856003A0D2A /* SMHomeViewController.m */; };
-		96AD76CA22634DF7003A0D2A /* SMAddAccessoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96AD76C922634DF7003A0D2A /* SMAddAccessoryViewController.m */; };
-		96AD76CD22634EC5003A0D2A /* SMAccessoryDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96AD76CC22634EC5003A0D2A /* SMAccessoryDetailViewController.m */; };
-		96AD76D022634EFA003A0D2A /* SMServiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96AD76CF22634EFA003A0D2A /* SMServiceViewController.m */; };
-		96AD76D622634F91003A0D2A /* UIView+Extention.m in Sources */ = {isa = PBXBuildFile; fileRef = 96AD76D522634F91003A0D2A /* UIView+Extention.m */; };
-		96AD77152264ADED003A0D2A /* SMRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96AD77142264ADED003A0D2A /* SMRoomViewController.m */; };
-		96AD771922657879003A0D2A /* SMAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 96AD771822657879003A0D2A /* SMAlertView.m */; };
 		96AD773422671305003A0D2A /* GOTHICB.TTF in Resources */ = {isa = PBXBuildFile; fileRef = 96AD773022671304003A0D2A /* GOTHICB.TTF */; };
 		96AD773522671305003A0D2A /* GOTHIC.TTF in Resources */ = {isa = PBXBuildFile; fileRef = 96AD773122671304003A0D2A /* GOTHIC.TTF */; };
 		96AD773622671305003A0D2A /* GOTHICI.TTF in Resources */ = {isa = PBXBuildFile; fileRef = 96AD773222671304003A0D2A /* GOTHICI.TTF */; };
 		96AD773A22671BE0003A0D2A /* Nunito-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 96AD773722671BE0003A0D2A /* Nunito-Italic.ttf */; };
 		96AD773B22671BE0003A0D2A /* Nunito-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 96AD773822671BE0003A0D2A /* Nunito-Bold.ttf */; };
 		96AD773C22671BE0003A0D2A /* Nunito-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 96AD773922671BE0003A0D2A /* Nunito-Regular.ttf */; };
-		96AD773F226721AB003A0D2A /* SMBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96AD773E226721AB003A0D2A /* SMBaseViewController.m */; };
-		96AD7742226735CE003A0D2A /* SMButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 96AD7741226735CE003A0D2A /* SMButton.m */; };
+		96E04D0A227F0AC0002DE8F2 /* NSLayoutConstraint+MASDebugAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04CF2227F0AC0002DE8F2 /* NSLayoutConstraint+MASDebugAdditions.m */; };
+		96E04D0B227F0AC0002DE8F2 /* ViewController+MASAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04CFB227F0AC0002DE8F2 /* ViewController+MASAdditions.m */; };
+		96E04D0C227F0AC0002DE8F2 /* MASCompositeConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04CFF227F0AC0002DE8F2 /* MASCompositeConstraint.m */; };
+		96E04D0D227F0AC0002DE8F2 /* MASConstraintMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04D00227F0AC0002DE8F2 /* MASConstraintMaker.m */; };
+		96E04D0E227F0AC0002DE8F2 /* MASLayoutConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04D01227F0AC0002DE8F2 /* MASLayoutConstraint.m */; };
+		96E04D0F227F0AC0002DE8F2 /* NSArray+MASAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04D02227F0AC0002DE8F2 /* NSArray+MASAdditions.m */; };
+		96E04D10227F0AC0002DE8F2 /* View+MASAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04D03227F0AC0002DE8F2 /* View+MASAdditions.m */; };
+		96E04D11227F0AC0002DE8F2 /* MASConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04D06227F0AC0002DE8F2 /* MASConstraint.m */; };
+		96E04D12227F0AC0002DE8F2 /* MASViewConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04D08227F0AC0002DE8F2 /* MASViewConstraint.m */; };
+		96E04D13227F0AC0002DE8F2 /* MASViewAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04D09227F0AC0002DE8F2 /* MASViewAttribute.m */; };
+		96E04D1E227F0CF9002DE8F2 /* SMTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04D17227F0CF9002DE8F2 /* SMTableViewCell.m */; };
+		96E04D1F227F0CF9002DE8F2 /* SMTableViewHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04D19227F0CF9002DE8F2 /* SMTableViewHeaderView.m */; };
+		96E04D20227F0CF9002DE8F2 /* SMAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04D1A227F0CF9002DE8F2 /* SMAlertView.m */; };
+		96E04D21227F0CF9002DE8F2 /* SMButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04D1D227F0CF9002DE8F2 /* SMButton.m */; };
+		96E04D25227F1400002DE8F2 /* UIView+Extention.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04D23227F1400002DE8F2 /* UIView+Extention.m */; };
+		96E04D29227F1431002DE8F2 /* HMHomeManager+Share.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04D28227F1431002DE8F2 /* HMHomeManager+Share.m */; };
+		96E04D37227F1468002DE8F2 /* SMAddAccessoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04D2F227F1468002DE8F2 /* SMAddAccessoryViewController.m */; };
+		96E04D39227F1468002DE8F2 /* SMServiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04D31227F1468002DE8F2 /* SMServiceViewController.m */; };
+		96E04D3A227F1468002DE8F2 /* SMAccessoryDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04D32227F1468002DE8F2 /* SMAccessoryDetailViewController.m */; };
+		96E04D3B227F1468002DE8F2 /* SMHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04D35227F1468002DE8F2 /* SMHomeViewController.m */; };
+		96E04D3E227F28F3002DE8F2 /* SMNotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04D3D227F28F3002DE8F2 /* SMNotificationViewController.m */; };
+		96E04D41227F28FF002DE8F2 /* SMSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04D40227F28FF002DE8F2 /* SMSettingViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,31 +52,62 @@
 		96AD76B72263165C003A0D2A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		96AD76BF226317D3003A0D2A /* HomeKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HomeKit.framework; path = System/Library/Frameworks/HomeKit.framework; sourceTree = SDKROOT; };
 		96AD76C1226317D3003A0D2A /* SMAPP.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SMAPP.entitlements; sourceTree = "<group>"; };
-		96AD76C522631856003A0D2A /* SMHomeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMHomeViewController.h; sourceTree = "<group>"; };
-		96AD76C622631856003A0D2A /* SMHomeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMHomeViewController.m; sourceTree = "<group>"; };
-		96AD76C822634DF7003A0D2A /* SMAddAccessoryViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMAddAccessoryViewController.h; sourceTree = "<group>"; };
-		96AD76C922634DF7003A0D2A /* SMAddAccessoryViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMAddAccessoryViewController.m; sourceTree = "<group>"; };
-		96AD76CB22634EC5003A0D2A /* SMAccessoryDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMAccessoryDetailViewController.h; sourceTree = "<group>"; };
-		96AD76CC22634EC5003A0D2A /* SMAccessoryDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMAccessoryDetailViewController.m; sourceTree = "<group>"; };
-		96AD76CE22634EFA003A0D2A /* SMServiceViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMServiceViewController.h; sourceTree = "<group>"; };
-		96AD76CF22634EFA003A0D2A /* SMServiceViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMServiceViewController.m; sourceTree = "<group>"; };
-		96AD76D422634F91003A0D2A /* UIView+Extention.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+Extention.h"; sourceTree = "<group>"; };
-		96AD76D522634F91003A0D2A /* UIView+Extention.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+Extention.m"; sourceTree = "<group>"; };
-		96AD77132264ADED003A0D2A /* SMRoomViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMRoomViewController.h; sourceTree = "<group>"; };
-		96AD77142264ADED003A0D2A /* SMRoomViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMRoomViewController.m; sourceTree = "<group>"; };
 		96AD771622657316003A0D2A /* Const.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Const.h; sourceTree = "<group>"; };
-		96AD771722657879003A0D2A /* SMAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMAlertView.h; sourceTree = "<group>"; };
-		96AD771822657879003A0D2A /* SMAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMAlertView.m; sourceTree = "<group>"; };
 		96AD773022671304003A0D2A /* GOTHICB.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = GOTHICB.TTF; sourceTree = "<group>"; };
 		96AD773122671304003A0D2A /* GOTHIC.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = GOTHIC.TTF; sourceTree = "<group>"; };
 		96AD773222671304003A0D2A /* GOTHICI.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = GOTHICI.TTF; sourceTree = "<group>"; };
 		96AD773722671BE0003A0D2A /* Nunito-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-Italic.ttf"; sourceTree = "<group>"; };
 		96AD773822671BE0003A0D2A /* Nunito-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-Bold.ttf"; sourceTree = "<group>"; };
 		96AD773922671BE0003A0D2A /* Nunito-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-Regular.ttf"; sourceTree = "<group>"; };
-		96AD773D226721AB003A0D2A /* SMBaseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMBaseViewController.h; sourceTree = "<group>"; };
-		96AD773E226721AB003A0D2A /* SMBaseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMBaseViewController.m; sourceTree = "<group>"; };
-		96AD7740226735CE003A0D2A /* SMButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMButton.h; sourceTree = "<group>"; };
-		96AD7741226735CE003A0D2A /* SMButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMButton.m; sourceTree = "<group>"; };
+		96E04CF1227F0AC0002DE8F2 /* MASCompositeConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASCompositeConstraint.h; sourceTree = "<group>"; };
+		96E04CF2227F0AC0002DE8F2 /* NSLayoutConstraint+MASDebugAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSLayoutConstraint+MASDebugAdditions.m"; sourceTree = "<group>"; };
+		96E04CF3227F0AC0002DE8F2 /* MASConstraint+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MASConstraint+Private.h"; sourceTree = "<group>"; };
+		96E04CF4227F0AC0002DE8F2 /* MASLayoutConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASLayoutConstraint.h; sourceTree = "<group>"; };
+		96E04CF5227F0AC0002DE8F2 /* NSArray+MASShorthandAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+MASShorthandAdditions.h"; sourceTree = "<group>"; };
+		96E04CF6227F0AC0002DE8F2 /* MASConstraintMaker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASConstraintMaker.h; sourceTree = "<group>"; };
+		96E04CF7227F0AC0002DE8F2 /* View+MASAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "View+MASAdditions.h"; sourceTree = "<group>"; };
+		96E04CF8227F0AC0002DE8F2 /* NSArray+MASAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+MASAdditions.h"; sourceTree = "<group>"; };
+		96E04CF9227F0AC0002DE8F2 /* MASUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASUtilities.h; sourceTree = "<group>"; };
+		96E04CFA227F0AC0002DE8F2 /* MASViewAttribute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASViewAttribute.h; sourceTree = "<group>"; };
+		96E04CFB227F0AC0002DE8F2 /* ViewController+MASAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ViewController+MASAdditions.m"; sourceTree = "<group>"; };
+		96E04CFC227F0AC0002DE8F2 /* MASViewConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASViewConstraint.h; sourceTree = "<group>"; };
+		96E04CFD227F0AC0002DE8F2 /* MASConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASConstraint.h; sourceTree = "<group>"; };
+		96E04CFE227F0AC0002DE8F2 /* NSLayoutConstraint+MASDebugAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSLayoutConstraint+MASDebugAdditions.h"; sourceTree = "<group>"; };
+		96E04CFF227F0AC0002DE8F2 /* MASCompositeConstraint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MASCompositeConstraint.m; sourceTree = "<group>"; };
+		96E04D00227F0AC0002DE8F2 /* MASConstraintMaker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MASConstraintMaker.m; sourceTree = "<group>"; };
+		96E04D01227F0AC0002DE8F2 /* MASLayoutConstraint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MASLayoutConstraint.m; sourceTree = "<group>"; };
+		96E04D02227F0AC0002DE8F2 /* NSArray+MASAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+MASAdditions.m"; sourceTree = "<group>"; };
+		96E04D03227F0AC0002DE8F2 /* View+MASAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "View+MASAdditions.m"; sourceTree = "<group>"; };
+		96E04D04227F0AC0002DE8F2 /* View+MASShorthandAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "View+MASShorthandAdditions.h"; sourceTree = "<group>"; };
+		96E04D05227F0AC0002DE8F2 /* Masonry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Masonry.h; sourceTree = "<group>"; };
+		96E04D06227F0AC0002DE8F2 /* MASConstraint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MASConstraint.m; sourceTree = "<group>"; };
+		96E04D07227F0AC0002DE8F2 /* ViewController+MASAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ViewController+MASAdditions.h"; sourceTree = "<group>"; };
+		96E04D08227F0AC0002DE8F2 /* MASViewConstraint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MASViewConstraint.m; sourceTree = "<group>"; };
+		96E04D09227F0AC0002DE8F2 /* MASViewAttribute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MASViewAttribute.m; sourceTree = "<group>"; };
+		96E04D16227F0CF9002DE8F2 /* SMAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMAlertView.h; sourceTree = "<group>"; };
+		96E04D17227F0CF9002DE8F2 /* SMTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMTableViewCell.m; sourceTree = "<group>"; };
+		96E04D18227F0CF9002DE8F2 /* SMButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMButton.h; sourceTree = "<group>"; };
+		96E04D19227F0CF9002DE8F2 /* SMTableViewHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMTableViewHeaderView.m; sourceTree = "<group>"; };
+		96E04D1A227F0CF9002DE8F2 /* SMAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMAlertView.m; sourceTree = "<group>"; };
+		96E04D1B227F0CF9002DE8F2 /* SMTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMTableViewCell.h; sourceTree = "<group>"; };
+		96E04D1C227F0CF9002DE8F2 /* SMTableViewHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMTableViewHeaderView.h; sourceTree = "<group>"; };
+		96E04D1D227F0CF9002DE8F2 /* SMButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMButton.m; sourceTree = "<group>"; };
+		96E04D23227F1400002DE8F2 /* UIView+Extention.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Extention.m"; sourceTree = "<group>"; };
+		96E04D24227F1400002DE8F2 /* UIView+Extention.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Extention.h"; sourceTree = "<group>"; };
+		96E04D27227F1431002DE8F2 /* HMHomeManager+Share.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "HMHomeManager+Share.h"; path = "SMAPP/Category/HMHomeManager+Share.h"; sourceTree = SOURCE_ROOT; };
+		96E04D28227F1431002DE8F2 /* HMHomeManager+Share.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "HMHomeManager+Share.m"; path = "SMAPP/Category/HMHomeManager+Share.m"; sourceTree = SOURCE_ROOT; };
+		96E04D2A227F1468002DE8F2 /* SMAddAccessoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMAddAccessoryViewController.h; sourceTree = "<group>"; };
+		96E04D2B227F1468002DE8F2 /* SMServiceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMServiceViewController.h; sourceTree = "<group>"; };
+		96E04D2E227F1468002DE8F2 /* SMAccessoryDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMAccessoryDetailViewController.h; sourceTree = "<group>"; };
+		96E04D2F227F1468002DE8F2 /* SMAddAccessoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMAddAccessoryViewController.m; sourceTree = "<group>"; };
+		96E04D31227F1468002DE8F2 /* SMServiceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMServiceViewController.m; sourceTree = "<group>"; };
+		96E04D32227F1468002DE8F2 /* SMAccessoryDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMAccessoryDetailViewController.m; sourceTree = "<group>"; };
+		96E04D33227F1468002DE8F2 /* SMHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMHomeViewController.h; sourceTree = "<group>"; };
+		96E04D35227F1468002DE8F2 /* SMHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMHomeViewController.m; sourceTree = "<group>"; };
+		96E04D3C227F28F3002DE8F2 /* SMNotificationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMNotificationViewController.h; sourceTree = "<group>"; };
+		96E04D3D227F28F3002DE8F2 /* SMNotificationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMNotificationViewController.m; sourceTree = "<group>"; };
+		96E04D3F227F28FF002DE8F2 /* SMSettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMSettingViewController.h; sourceTree = "<group>"; };
+		96E04D40227F28FF002DE8F2 /* SMSettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMSettingViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,33 +142,19 @@
 		96AD76A722631659003A0D2A /* SMAPP */ = {
 			isa = PBXGroup;
 			children = (
-				96AD76C1226317D3003A0D2A /* SMAPP.entitlements */,
+				96E04D26227F1419002DE8F2 /* Controller */,
+				96E04D15227F0CF9002DE8F2 /* View */,
+				96E04D22227F13E6002DE8F2 /* Category */,
+				96E04CEF227F0A9C002DE8F2 /* Lib */,
+				96AD772E22671304003A0D2A /* Fonts */,
 				96AD76A822631659003A0D2A /* AppDelegate.h */,
 				96AD76A922631659003A0D2A /* AppDelegate.m */,
-				96AD773D226721AB003A0D2A /* SMBaseViewController.h */,
-				96AD773E226721AB003A0D2A /* SMBaseViewController.m */,
-				96AD76C522631856003A0D2A /* SMHomeViewController.h */,
-				96AD76C622631856003A0D2A /* SMHomeViewController.m */,
-				96AD77132264ADED003A0D2A /* SMRoomViewController.h */,
-				96AD77142264ADED003A0D2A /* SMRoomViewController.m */,
-				96AD76C822634DF7003A0D2A /* SMAddAccessoryViewController.h */,
-				96AD76C922634DF7003A0D2A /* SMAddAccessoryViewController.m */,
-				96AD76CB22634EC5003A0D2A /* SMAccessoryDetailViewController.h */,
-				96AD76CC22634EC5003A0D2A /* SMAccessoryDetailViewController.m */,
-				96AD76CE22634EFA003A0D2A /* SMServiceViewController.h */,
-				96AD76CF22634EFA003A0D2A /* SMServiceViewController.m */,
-				96AD76D422634F91003A0D2A /* UIView+Extention.h */,
-				96AD76D522634F91003A0D2A /* UIView+Extention.m */,
-				96AD771722657879003A0D2A /* SMAlertView.h */,
-				96AD771822657879003A0D2A /* SMAlertView.m */,
-				96AD7740226735CE003A0D2A /* SMButton.h */,
-				96AD7741226735CE003A0D2A /* SMButton.m */,
 				96AD771622657316003A0D2A /* Const.h */,
+				96AD76B72263165C003A0D2A /* main.m */,
 				96AD76B12263165C003A0D2A /* Assets.xcassets */,
-				96AD772E22671304003A0D2A /* Fonts */,
 				96AD76B32263165C003A0D2A /* LaunchScreen.storyboard */,
 				96AD76B62263165C003A0D2A /* Info.plist */,
-				96AD76B72263165C003A0D2A /* main.m */,
+				96AD76C1226317D3003A0D2A /* SMAPP.entitlements */,
 			);
 			path = SMAPP;
 			sourceTree = "<group>";
@@ -148,6 +178,91 @@
 				96AD773022671304003A0D2A /* GOTHICB.TTF */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		96E04CEF227F0A9C002DE8F2 /* Lib */ = {
+			isa = PBXGroup;
+			children = (
+				96E04CF0227F0AC0002DE8F2 /* Masonry */,
+			);
+			path = Lib;
+			sourceTree = "<group>";
+		};
+		96E04CF0227F0AC0002DE8F2 /* Masonry */ = {
+			isa = PBXGroup;
+			children = (
+				96E04CF1227F0AC0002DE8F2 /* MASCompositeConstraint.h */,
+				96E04CF2227F0AC0002DE8F2 /* NSLayoutConstraint+MASDebugAdditions.m */,
+				96E04CF3227F0AC0002DE8F2 /* MASConstraint+Private.h */,
+				96E04CF4227F0AC0002DE8F2 /* MASLayoutConstraint.h */,
+				96E04CF5227F0AC0002DE8F2 /* NSArray+MASShorthandAdditions.h */,
+				96E04CF6227F0AC0002DE8F2 /* MASConstraintMaker.h */,
+				96E04CF7227F0AC0002DE8F2 /* View+MASAdditions.h */,
+				96E04CF8227F0AC0002DE8F2 /* NSArray+MASAdditions.h */,
+				96E04CF9227F0AC0002DE8F2 /* MASUtilities.h */,
+				96E04CFA227F0AC0002DE8F2 /* MASViewAttribute.h */,
+				96E04CFB227F0AC0002DE8F2 /* ViewController+MASAdditions.m */,
+				96E04CFC227F0AC0002DE8F2 /* MASViewConstraint.h */,
+				96E04CFD227F0AC0002DE8F2 /* MASConstraint.h */,
+				96E04CFE227F0AC0002DE8F2 /* NSLayoutConstraint+MASDebugAdditions.h */,
+				96E04CFF227F0AC0002DE8F2 /* MASCompositeConstraint.m */,
+				96E04D00227F0AC0002DE8F2 /* MASConstraintMaker.m */,
+				96E04D01227F0AC0002DE8F2 /* MASLayoutConstraint.m */,
+				96E04D02227F0AC0002DE8F2 /* NSArray+MASAdditions.m */,
+				96E04D03227F0AC0002DE8F2 /* View+MASAdditions.m */,
+				96E04D04227F0AC0002DE8F2 /* View+MASShorthandAdditions.h */,
+				96E04D05227F0AC0002DE8F2 /* Masonry.h */,
+				96E04D06227F0AC0002DE8F2 /* MASConstraint.m */,
+				96E04D07227F0AC0002DE8F2 /* ViewController+MASAdditions.h */,
+				96E04D08227F0AC0002DE8F2 /* MASViewConstraint.m */,
+				96E04D09227F0AC0002DE8F2 /* MASViewAttribute.m */,
+			);
+			path = Masonry;
+			sourceTree = "<group>";
+		};
+		96E04D15227F0CF9002DE8F2 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				96E04D16227F0CF9002DE8F2 /* SMAlertView.h */,
+				96E04D1A227F0CF9002DE8F2 /* SMAlertView.m */,
+				96E04D1C227F0CF9002DE8F2 /* SMTableViewHeaderView.h */,
+				96E04D19227F0CF9002DE8F2 /* SMTableViewHeaderView.m */,
+				96E04D1B227F0CF9002DE8F2 /* SMTableViewCell.h */,
+				96E04D17227F0CF9002DE8F2 /* SMTableViewCell.m */,
+				96E04D18227F0CF9002DE8F2 /* SMButton.h */,
+				96E04D1D227F0CF9002DE8F2 /* SMButton.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		96E04D22227F13E6002DE8F2 /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				96E04D27227F1431002DE8F2 /* HMHomeManager+Share.h */,
+				96E04D28227F1431002DE8F2 /* HMHomeManager+Share.m */,
+				96E04D24227F1400002DE8F2 /* UIView+Extention.h */,
+				96E04D23227F1400002DE8F2 /* UIView+Extention.m */,
+			);
+			path = Category;
+			sourceTree = "<group>";
+		};
+		96E04D26227F1419002DE8F2 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				96E04D33227F1468002DE8F2 /* SMHomeViewController.h */,
+				96E04D35227F1468002DE8F2 /* SMHomeViewController.m */,
+				96E04D2A227F1468002DE8F2 /* SMAddAccessoryViewController.h */,
+				96E04D2F227F1468002DE8F2 /* SMAddAccessoryViewController.m */,
+				96E04D2E227F1468002DE8F2 /* SMAccessoryDetailViewController.h */,
+				96E04D32227F1468002DE8F2 /* SMAccessoryDetailViewController.m */,
+				96E04D2B227F1468002DE8F2 /* SMServiceViewController.h */,
+				96E04D31227F1468002DE8F2 /* SMServiceViewController.m */,
+				96E04D3C227F28F3002DE8F2 /* SMNotificationViewController.h */,
+				96E04D3D227F28F3002DE8F2 /* SMNotificationViewController.m */,
+				96E04D3F227F28FF002DE8F2 /* SMSettingViewController.h */,
+				96E04D40227F28FF002DE8F2 /* SMSettingViewController.m */,
+			);
+			path = Controller;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -230,17 +345,30 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				96AD771922657879003A0D2A /* SMAlertView.m in Sources */,
-				96AD7742226735CE003A0D2A /* SMButton.m in Sources */,
-				96AD76CD22634EC5003A0D2A /* SMAccessoryDetailViewController.m in Sources */,
-				96AD76CA22634DF7003A0D2A /* SMAddAccessoryViewController.m in Sources */,
-				96AD773F226721AB003A0D2A /* SMBaseViewController.m in Sources */,
-				96AD76D622634F91003A0D2A /* UIView+Extention.m in Sources */,
-				96AD76C722631856003A0D2A /* SMHomeViewController.m in Sources */,
+				96E04D0B227F0AC0002DE8F2 /* ViewController+MASAdditions.m in Sources */,
+				96E04D13227F0AC0002DE8F2 /* MASViewAttribute.m in Sources */,
+				96E04D3E227F28F3002DE8F2 /* SMNotificationViewController.m in Sources */,
+				96E04D0E227F0AC0002DE8F2 /* MASLayoutConstraint.m in Sources */,
+				96E04D1F227F0CF9002DE8F2 /* SMTableViewHeaderView.m in Sources */,
+				96E04D0D227F0AC0002DE8F2 /* MASConstraintMaker.m in Sources */,
+				96E04D29227F1431002DE8F2 /* HMHomeManager+Share.m in Sources */,
+				96E04D25227F1400002DE8F2 /* UIView+Extention.m in Sources */,
+				96E04D12227F0AC0002DE8F2 /* MASViewConstraint.m in Sources */,
+				96E04D0A227F0AC0002DE8F2 /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
+				96E04D3A227F1468002DE8F2 /* SMAccessoryDetailViewController.m in Sources */,
+				96E04D0F227F0AC0002DE8F2 /* NSArray+MASAdditions.m in Sources */,
+				96E04D0C227F0AC0002DE8F2 /* MASCompositeConstraint.m in Sources */,
+				96E04D1E227F0CF9002DE8F2 /* SMTableViewCell.m in Sources */,
+				96E04D37227F1468002DE8F2 /* SMAddAccessoryViewController.m in Sources */,
+				96E04D11227F0AC0002DE8F2 /* MASConstraint.m in Sources */,
+				96E04D21227F0CF9002DE8F2 /* SMButton.m in Sources */,
+				96E04D41227F28FF002DE8F2 /* SMSettingViewController.m in Sources */,
+				96E04D3B227F1468002DE8F2 /* SMHomeViewController.m in Sources */,
 				96AD76B82263165C003A0D2A /* main.m in Sources */,
-				96AD77152264ADED003A0D2A /* SMRoomViewController.m in Sources */,
-				96AD76D022634EFA003A0D2A /* SMServiceViewController.m in Sources */,
+				96E04D20227F0CF9002DE8F2 /* SMAlertView.m in Sources */,
 				96AD76AA22631659003A0D2A /* AppDelegate.m in Sources */,
+				96E04D39227F1468002DE8F2 /* SMServiceViewController.m in Sources */,
+				96E04D10227F0AC0002DE8F2 /* View+MASAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -378,6 +506,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 6MZW7C8429;
 				INFOPLIST_FILE = SMAPP/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -396,6 +525,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 6MZW7C8429;
 				INFOPLIST_FILE = SMAPP/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

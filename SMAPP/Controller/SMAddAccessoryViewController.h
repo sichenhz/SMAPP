@@ -1,8 +1,8 @@
 //
-//  SMTableViewHeaderView.h
+//  SMAddAccessoryViewController.h
 //  SMAPP
 //
-//  Created by Jason on 5/5/19.
+//  Created by Sichen on 14/4/19.
 //  Copyright © 2019 RXP. All rights reserved.
 //
 
@@ -10,7 +10,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface SMTableViewHeaderView : UITableViewHeaderFooterView
+@interface SMAddAccessoryViewController : UITableViewController
+
 
 @end
 

@@ -2,7 +2,7 @@
 //  HMHomeManager+Share.h
 //  SMAPP
 //
-//  Created by Jason on 5/5/19.
+//  Created by Sichen on 5/5/19.
 //  Copyright © 2019 RXP. All rights reserved.
 //
 
@@ -11,6 +11,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface HMHomeManager (Share)
+
++ (HMHomeManager *)sharedManager;
 
 @end
 

@@ -7,10 +7,10 @@
 //
 
 #import "SMAddAccessoryViewController.h"
+#import "HMHomeManager+Share.h"
+#import "Const.h"
 
 @interface SMAddAccessoryViewController () <HMAccessoryBrowserDelegate>
-
-@property (nonatomic, strong) HMHomeManager *homeManager;
 
 @property (nonatomic, strong) HMAccessoryBrowser *accessoryBrowser;
 @property (nonatomic, strong) NSMutableArray *accessoryArray;
@@ -19,21 +19,13 @@
 
 @implementation SMAddAccessoryViewController
 
-- (instancetype)initWithHomeManager:(HMHomeManager *)homeManager {
-    if (self = [super init]) {
-        _homeManager = homeManager;
-    }
-    return self;
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = @"Add Accessory";
+    self.title = @"Add";
     
-    UIBarButtonItem *doneItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(doneItemPressed:)];
-    self.navigationItem.rightBarButtonItem = doneItem;
-    self.view.backgroundColor = [UIColor whiteColor];
+//    UIBarButtonItem *doneItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(doneItemPressed:)];
+//    self.navigationItem.rightBarButtonItem = doneItem;
     
     self.accessoryBrowser = [[HMAccessoryBrowser alloc] init];
     self.accessoryBrowser.delegate = self;
@@ -41,10 +33,10 @@
     [self.accessoryBrowser startSearchingForNewAccessories];
 }
 
-- (void)doneItemPressed:(id)sender {
-    [self.accessoryBrowser stopSearchingForNewAccessories];
-    [self dismissViewControllerAnimated:YES completion:self.didAddAccessory];
-}
+//- (void)doneItemPressed:(id)sender {
+//    [self.accessoryBrowser stopSearchingForNewAccessories];
+//    [self dismissViewControllerAnimated:YES completion:self.didAddAccessory];
+//}
 
 - (NSMutableArray *)accessoryArray {
     if (_accessoryArray == nil) {
@@ -89,13 +81,15 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    [self.homeManager.primaryHome addAccessory:[self.accessoryArray objectAtIndex:indexPath.row] completionHandler:^(NSError *error) {
+    [[HMHomeManager sharedManager].primaryHome addAccessory:[self.accessoryArray objectAtIndex:indexPath.row] completionHandler:^(NSError *error) {
         
         if (error) {
             NSLog(@"error in adding accessory: %@", error);
         } else {
             NSLog(@"add accessory success");
             [tableView reloadData];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:kDidAddAccessory object:nil];
         }
     }];
 }

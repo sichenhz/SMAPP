@@ -2,7 +2,7 @@
 //  SMButton.m
 //  SMAPP
 //
-//  Created by Jason on 17/4/19.
+//  Created by Sichen on 17/4/19.
 //  Copyright © 2019 RXP. All rights reserved.
 //
 

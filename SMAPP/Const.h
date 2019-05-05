@@ -2,17 +2,19 @@
 //  Const.h
 //  SMAPP
 //
-//  Created by Jason on 16/4/19.
+//  Created by Sichen on 16/4/19.
 //  Copyright © 2019 RXP. All rights reserved.
 //
 
 #ifndef Const_h
 #define Const_h
 
+static NSString *const kDidAddAccessory = @"kDidAddAccessory";
 
 // Color
-#define HEXCOLOR(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
+#define RandomColor [UIColor colorWithRed:(arc4random_uniform(256)/255.0) green:(arc4random_uniform(256)/255.0) blue:(arc4random_uniform(256)/255.0) alpha:1]
 
+#define HEXCOLOR(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 
 // Font

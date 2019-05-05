@@ -1,5 +1,5 @@
 //
-//  AppDelegate.h
+//  SMHomeViewController.h
 //  SMAPP
 //
 //  Created by Sichen on 14/4/19.
@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+NS_ASSUME_NONNULL_BEGIN
 
-@property (strong, nonatomic) UIWindow *window;
+@interface SMHomeViewController : UITableViewController
+
 
 @end
 
+NS_ASSUME_NONNULL_END
