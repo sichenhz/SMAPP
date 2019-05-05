@@ -14,6 +14,7 @@
 #import "UIView+Extention.h"
 #import "SMAlertView.h"
 #import "SMAccessoryDetailViewController.h"
+#import "Masonry.h"
 
 @interface SMHomeViewController () <
 HMHomeManagerDelegate,
@@ -70,25 +71,42 @@ HMAccessoryDelegate
 }
 
 - (void)initHeaderViewWithCompletionHandler:(void (^)(UIButton *leftButton, UIButton *rightButton))completion {
-    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 80)];
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 80)];
     
-    UIButton *leftButton = [[UIButton alloc] initWithFrame:CGRectMake(15, 10, 120, 44)];
+    UIButton *leftButton = [[UIButton alloc] init];
+    [headerView addSubview:leftButton];
+    [leftButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(leftButton.superview).offset(15);
+        make.top.equalTo(leftButton.superview).offset(10);
+        make.width.equalTo(@120);
+        make.height.equalTo(@44);
+    }];
     leftButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [leftButton setTitleColor:HEXCOLOR(0xFFA500) forState:UIControlStateNormal];
     [leftButton setTitleColor:[UIColor grayColor] forState:UIControlStateDisabled];
     [leftButton.titleLabel setFont:FONT_H2_BOLD];
-    [headerView addSubview:leftButton];
     
-    UIButton *rightButton = [[UIButton alloc] initWithFrame:CGRectMake(headerView.width - 135, 10, 120, 44)];
+    UIButton *rightButton = [[UIButton alloc] init];
+    [headerView addSubview:rightButton];
+    [rightButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(leftButton.superview).offset(-15);
+        make.top.equalTo(leftButton.superview).offset(10);
+        make.width.equalTo(@120);
+        make.height.equalTo(@44);
+    }];
+
     rightButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
     [rightButton setTitleColor:HEXCOLOR(0xFFA500) forState:UIControlStateNormal];
     [rightButton.titleLabel setFont:FONT_H2_BOLD];
-    [headerView addSubview:rightButton];
     
-    UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 55, self.view.width - 30, 20)];
-    textLabel.textColor = [UIColor blackColor];
-    textLabel.font = FONT_BODY;
+    UILabel *textLabel = [[UILabel alloc] init];
     [headerView addSubview:textLabel];
+    [textLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(textLabel.superview).offset(15);
+        make.top.equalTo(leftButton.mas_bottom).offset(1);
+    }];
+
+    textLabel.font = FONT_BODY;
     self.textLabel = textLabel;
     
     self.tableView.tableHeaderView = headerView;

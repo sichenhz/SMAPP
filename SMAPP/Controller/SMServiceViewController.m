@@ -51,7 +51,7 @@
         
         BOOL lockState = [characteristic.value boolValue];
         
-        UISwitch *lockSwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
+        UISwitch *lockSwitch = [[UISwitch alloc] init];
         lockSwitch.on = lockState;
         [lockSwitch addTarget:self action:@selector(changeLockState:) forControlEvents:UIControlEventValueChanged];
         cell.accessoryView = lockSwitch;
