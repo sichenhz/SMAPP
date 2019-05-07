@@ -117,6 +117,8 @@ HMAccessoryDelegate
     [arrM addObject:manager.primaryHome.roomForEntireHome];
     [arrM addObjectsFromArray:manager.primaryHome.rooms];
     self.dataList = [NSArray arrayWithArray:arrM];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateCurrentHomeInfo object:nil];
 }
 
 - (void)updateCurrentAccessories {
@@ -290,7 +292,7 @@ HMAccessoryDelegate
 }
 
 - (void)accessory:(HMAccessory *)accessory service:(HMService *)service didUpdateValueForCharacteristic:(HMCharacteristic *)characteristic {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kCharacteristicValueChanged
+    [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateCharacteristicValue
                                                         object:nil
                                                       userInfo:@{@"accessory": accessory,
                                                                  @"service": service,

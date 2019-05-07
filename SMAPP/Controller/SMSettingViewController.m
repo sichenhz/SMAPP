@@ -14,6 +14,7 @@
 
 @interface SMSettingViewController () <UICollectionViewDelegate, UICollectionViewDataSource>
 
+@property (nonatomic, weak) UICollectionView *collectionView;
 
 @end
 
@@ -43,12 +44,14 @@
     collectionView.dataSource = self;
     collectionView.delegate = self;
     collectionView.alwaysBounceVertical = YES; // make collectionView bounce even datasource has only 1 item
+    _collectionView = collectionView;
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAddAccessory:) name:kDidAddAccessory object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadData:) name:kDidAddAccessory object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadData:) name:kDidUpdateCurrentHomeInfo object:nil];
 }
 
-- (void)didAddAccessory:(NSNotification *)notification {
-    // TODO
+- (void)reloadData:(NSNotification *)notification {
+    [self.collectionView reloadData];
 }
 
 #pragma mark - UICollectionViewDataSource

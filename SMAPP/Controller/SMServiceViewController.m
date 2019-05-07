@@ -22,7 +22,7 @@
     
     [self.tableView reloadData];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCharacteristicValue:) name:kCharacteristicValueChanged object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCharacteristicValue:) name:kDidUpdateCharacteristicValue object:nil];
 }
 
 #pragma mark - UITableViewDataSource

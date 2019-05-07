@@ -10,7 +10,9 @@
 #define Const_h
 
 static NSString *const kDidAddAccessory = @"kDidAddAccessory";
-static NSString *const kCharacteristicValueChanged = @"kCharacteristicValueChanged";
+static NSString *const kDidUpdateCurrentHomeInfo = @"kDidUpdateCurrentHomeInfo";
+static NSString *const kDidUpdateCharacteristicValue = @"kDidUpdateCharacteristicValue";
+
 static NSString *const kTableViewCell = @"kTableViewCell";
 static NSString *const kTableViewHeaderView = @"kTableViewHeaderView";
 static NSString *const kCollectionViewCell = @"kCollectionViewCell";
