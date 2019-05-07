@@ -46,7 +46,7 @@
     collectionView.alwaysBounceVertical = YES; // make collectionView bounce even datasource has only 1 item
     _collectionView = collectionView;
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadData:) name:kDidAddAccessory object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadData:) name:kDidUpdateAccessory object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadData:) name:kDidUpdateCurrentHomeInfo object:nil];
 }
 

@@ -48,13 +48,11 @@ HMAccessoryDelegate
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAddAccessory:) name:kDidAddAccessory object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateAccessory:) name:kDidUpdateAccessory object:nil];
 }
 
-- (void)didAddAccessory:(NSNotification *)notification {
-    HMAccessory *accessory = notification.object;
-    accessory.delegate = self;
-    [self.tableView reloadData];
+- (void)didUpdateAccessory:(NSNotification *)notification {
+    [self updateCurrentAccessories];
 }
 
 - (void)initNavigationItemWithLeftTitle:(NSString *)title {
@@ -248,7 +246,7 @@ HMAccessoryDelegate
 
 
 - (void)homeManager:(HMHomeManager *)manager didRemoveHome:(HMHome *)home {
-    if (manager.homes.count) {
+    if (manager.homes.count && [home isEqual:manager.primaryHome]) {
         __weak typeof(self)weakSelf = self;
         [manager updatePrimaryHome:manager.homes.firstObject completionHandler:^(NSError * _Nullable error) {
             [weakSelf updateCurrentHomeInfo];
@@ -265,12 +263,11 @@ HMAccessoryDelegate
 #pragma mark - HMHomeDelegate
 
 - (void)home:(HMHome *)home didAddAccessory:(HMAccessory *)accessory {
-    accessory.delegate = self;
-    [self.tableView reloadData];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:nil];
 }
 
 - (void)home:(HMHome *)home didRemoveAccessory:(HMAccessory *)accessory {
-    [self.tableView reloadData];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:nil];
 }
 
 - (void)home:(HMHome *)home didUpdateRoom:(HMRoom *)room forAccessory:(HMAccessory *)accessory {

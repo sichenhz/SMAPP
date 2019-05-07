@@ -91,7 +91,7 @@
             NSLog(@"add accessory success");
             [tableView reloadData];
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:kDidAddAccessory object:accessory];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:nil];
         }
     }];
 }

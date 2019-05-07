@@ -9,7 +9,7 @@
 #ifndef Const_h
 #define Const_h
 
-static NSString *const kDidAddAccessory = @"kDidAddAccessory";
+static NSString *const kDidUpdateAccessory = @"kDidUpdateAccessory";
 static NSString *const kDidUpdateCurrentHomeInfo = @"kDidUpdateCurrentHomeInfo";
 static NSString *const kDidUpdateCharacteristicValue = @"kDidUpdateCharacteristicValue";
 
