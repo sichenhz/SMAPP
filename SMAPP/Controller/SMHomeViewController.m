@@ -286,23 +286,19 @@ HMAccessoryDelegate
 #pragma mark - HMAccessoryDelegate
 
 - (void)accessoryDidUpdateReachability:(HMAccessory *)accessory {
-    if ([self.dataList containsObject:accessory]) {
-        NSUInteger index = [self.dataList indexOfObject:accessory];
-        
-        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
-        
-        if (accessory.reachable) {
-            cell.detailTextLabel.text = @"Available";
-            cell.detailTextLabel.textColor = HEXCOLOR(0x2E6C49);
-        } else {
-            cell.detailTextLabel.text = @"Not Available";
-            cell.detailTextLabel.textColor = HEXCOLOR(0xFF0000);
+    for (HMRoom *room in self.dataList) {
+        NSInteger section = [self.dataList indexOfObject:room];
+        if ([room.accessories containsObject:accessory]) {
+            NSUInteger row = [room.accessories indexOfObject:accessory];
+            
+            SMTableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:section]];
+            cell.available = accessory.reachable;
         }
     }
 }
 
 - (void)accessory:(HMAccessory *)accessory service:(HMService *)service didUpdateValueForCharacteristic:(HMCharacteristic *)characteristic {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"characteristicValueChanged"
+    [[NSNotificationCenter defaultCenter] postNotificationName:kCharacteristicValueChanged
                                                         object:nil
                                                       userInfo:@{@"accessory": accessory,
                                                                  @"service": service,
@@ -337,13 +333,7 @@ HMAccessoryDelegate
     HMAccessory *accessory = room.accessories[indexPath.row];
     
     cell.leftLabel.text = accessory.name;
-    if (accessory.reachable) {
-        cell.rightLabel.text = @"Available";
-        cell.rightLabel.textColor = HEXCOLOR(0x2E6C49);
-    } else {
-        cell.rightLabel.text = @"Not Available";
-        cell.rightLabel.textColor = HEXCOLOR(0xFF0000);
-    }
+    cell.available = accessory.reachable;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
     return cell;

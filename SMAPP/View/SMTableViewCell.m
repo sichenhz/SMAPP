@@ -40,4 +40,16 @@
 
 }
 
+- (void)setAvailable:(BOOL)available {
+    _available = available;
+    
+    if (available) {
+        self.rightLabel.text = @"Available";
+        self.rightLabel.textColor = HEXCOLOR(0x2E6C49);
+    } else {
+        self.rightLabel.text = @"Not Available";
+        self.rightLabel.textColor = HEXCOLOR(0xFF0000);
+    }
+}
+
 @end

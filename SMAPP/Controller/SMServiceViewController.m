@@ -7,6 +7,7 @@
 //
 
 #import "SMServiceViewController.h"
+#import "Const.h"
 
 @interface SMServiceViewController ()
 
@@ -21,7 +22,7 @@
     
     [self.tableView reloadData];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCharacteristicValue:) name:@"characteristicValueChanged" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCharacteristicValue:) name:kCharacteristicValueChanged object:nil];
 }
 
 #pragma mark - UITableViewDataSource

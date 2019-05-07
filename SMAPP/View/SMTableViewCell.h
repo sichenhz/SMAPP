@@ -16,6 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) UILabel *rightLabel;
 @property (nonatomic, strong) UIButton *button;
 
+@property (nonatomic, assign, getter=isAvailable) BOOL available;
+
 @end
 
 NS_ASSUME_NONNULL_END
