@@ -246,18 +246,18 @@ HMAccessoryDelegate
 
 
 - (void)homeManager:(HMHomeManager *)manager didRemoveHome:(HMHome *)home {
-    if (manager.homes.count && [home isEqual:manager.primaryHome]) {
-        __weak typeof(self)weakSelf = self;
-        [manager updatePrimaryHome:manager.homes.firstObject completionHandler:^(NSError * _Nullable error) {
-            [weakSelf updateCurrentHomeInfo];
-            [weakSelf updateCurrentAccessories];
-        }];
-    }
     NSLog(@"didRemoveHome");
 }
 
 - (void)homeManagerDidUpdatePrimaryHome:(HMHomeManager *)manager {
-    [self updateCurrentHomeInfo];
+    if (manager.primaryHome) {
+        [self updateCurrentHomeInfo];
+        [self updateCurrentAccessories];
+    } else {
+        SMAlertView *alertView = [SMAlertView alertViewWithTitle:@"No home" message:nil style:SMAlertViewStyleActionSheet];
+        [alertView addAction:[SMAlertAction actionWithTitle:@"OK" style:SMAlertActionStyleCancel handler:nil]];
+        [alertView show];
+    }
 }
 
 #pragma mark - HMHomeDelegate
