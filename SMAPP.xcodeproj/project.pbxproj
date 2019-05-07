@@ -18,6 +18,7 @@
 		96AD773A22671BE0003A0D2A /* Nunito-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 96AD773722671BE0003A0D2A /* Nunito-Italic.ttf */; };
 		96AD773B22671BE0003A0D2A /* Nunito-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 96AD773822671BE0003A0D2A /* Nunito-Bold.ttf */; };
 		96AD773C22671BE0003A0D2A /* Nunito-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 96AD773922671BE0003A0D2A /* Nunito-Regular.ttf */; };
+		96B47DF72281B9EC00AFAF32 /* SMCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 96B47DF62281B9EC00AFAF32 /* SMCollectionViewCell.m */; };
 		96E04D0A227F0AC0002DE8F2 /* NSLayoutConstraint+MASDebugAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04CF2227F0AC0002DE8F2 /* NSLayoutConstraint+MASDebugAdditions.m */; };
 		96E04D0B227F0AC0002DE8F2 /* ViewController+MASAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04CFB227F0AC0002DE8F2 /* ViewController+MASAdditions.m */; };
 		96E04D0C227F0AC0002DE8F2 /* MASCompositeConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04CFF227F0AC0002DE8F2 /* MASCompositeConstraint.m */; };
@@ -59,6 +60,8 @@
 		96AD773722671BE0003A0D2A /* Nunito-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-Italic.ttf"; sourceTree = "<group>"; };
 		96AD773822671BE0003A0D2A /* Nunito-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-Bold.ttf"; sourceTree = "<group>"; };
 		96AD773922671BE0003A0D2A /* Nunito-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-Regular.ttf"; sourceTree = "<group>"; };
+		96B47DF52281B9EC00AFAF32 /* SMCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMCollectionViewCell.h; sourceTree = "<group>"; };
+		96B47DF62281B9EC00AFAF32 /* SMCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMCollectionViewCell.m; sourceTree = "<group>"; };
 		96E04CF1227F0AC0002DE8F2 /* MASCompositeConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASCompositeConstraint.h; sourceTree = "<group>"; };
 		96E04CF2227F0AC0002DE8F2 /* NSLayoutConstraint+MASDebugAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSLayoutConstraint+MASDebugAdditions.m"; sourceTree = "<group>"; };
 		96E04CF3227F0AC0002DE8F2 /* MASConstraint+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MASConstraint+Private.h"; sourceTree = "<group>"; };
@@ -231,6 +234,8 @@
 				96E04D17227F0CF9002DE8F2 /* SMTableViewCell.m */,
 				96E04D18227F0CF9002DE8F2 /* SMButton.h */,
 				96E04D1D227F0CF9002DE8F2 /* SMButton.m */,
+				96B47DF52281B9EC00AFAF32 /* SMCollectionViewCell.h */,
+				96B47DF62281B9EC00AFAF32 /* SMCollectionViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -349,6 +354,7 @@
 				96E04D13227F0AC0002DE8F2 /* MASViewAttribute.m in Sources */,
 				96E04D3E227F28F3002DE8F2 /* SMNotificationViewController.m in Sources */,
 				96E04D0E227F0AC0002DE8F2 /* MASLayoutConstraint.m in Sources */,
+				96B47DF72281B9EC00AFAF32 /* SMCollectionViewCell.m in Sources */,
 				96E04D1F227F0CF9002DE8F2 /* SMTableViewHeaderView.m in Sources */,
 				96E04D0D227F0AC0002DE8F2 /* MASConstraintMaker.m in Sources */,
 				96E04D29227F1431002DE8F2 /* HMHomeManager+Share.m in Sources */,

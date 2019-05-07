@@ -12,8 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface SMTableViewHeaderView : UITableViewHeaderFooterView
 
-@property (nonatomic, strong) UILabel *titleLabel;
-@property (nonatomic, strong) UIButton *button;
+@property (nonatomic, weak) UILabel *titleLabel;
+@property (nonatomic, weak) UIButton *button;
 
 @end
 

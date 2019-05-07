@@ -22,7 +22,6 @@ HMHomeDelegate,
 HMAccessoryDelegate
 >
 
-@property (nonatomic, weak) UILabel *textLabel;
 @property (nonatomic, strong) NSArray *dataList;
 
 @end
@@ -32,9 +31,10 @@ HMAccessoryDelegate
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.title = @"Home";
-    
-    [HMHomeManager sharedManager].delegate = self;
+    HMHomeManager *namager = [HMHomeManager sharedManager];
+    self.title = namager.primaryHome.name;
+
+    namager.delegate = self;
 
     [self initNavigationItemWithLeftTitle:@"Homes"];
     
@@ -52,7 +52,9 @@ HMAccessoryDelegate
 }
 
 - (void)didAddAccessory:(NSNotification *)notification {
-    [self updateCurrentAccessories];
+    HMAccessory *accessory = notification.object;
+    accessory.delegate = self;
+    [self.tableView reloadData];
 }
 
 - (void)initNavigationItemWithLeftTitle:(NSString *)title {
@@ -71,13 +73,13 @@ HMAccessoryDelegate
 }
 
 - (void)initHeaderViewWithCompletionHandler:(void (^)(UIButton *leftButton, UIButton *rightButton))completion {
-    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 80)];
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 54)];
     
     UIButton *leftButton = [[UIButton alloc] init];
     [headerView addSubview:leftButton];
     [leftButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(leftButton.superview).offset(15);
-        make.top.equalTo(leftButton.superview).offset(10);
+        make.top.equalTo(leftButton.superview).offset(5);
         make.width.equalTo(@120);
         make.height.equalTo(@44);
     }];
@@ -90,7 +92,7 @@ HMAccessoryDelegate
     [headerView addSubview:rightButton];
     [rightButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(leftButton.superview).offset(-15);
-        make.top.equalTo(leftButton.superview).offset(10);
+        make.top.equalTo(leftButton.superview).offset(5);
         make.width.equalTo(@120);
         make.height.equalTo(@44);
     }];
@@ -98,16 +100,6 @@ HMAccessoryDelegate
     rightButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
     [rightButton setTitleColor:HEXCOLOR(0xFFA500) forState:UIControlStateNormal];
     [rightButton.titleLabel setFont:FONT_H2_BOLD];
-    
-    UILabel *textLabel = [[UILabel alloc] init];
-    [headerView addSubview:textLabel];
-    [textLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(textLabel.superview).offset(15);
-        make.top.equalTo(leftButton.mas_bottom).offset(1);
-    }];
-
-    textLabel.font = FONT_BODY;
-    self.textLabel = textLabel;
     
     self.tableView.tableHeaderView = headerView;
     
@@ -118,7 +110,7 @@ HMAccessoryDelegate
     
     HMHomeManager *manager = [HMHomeManager sharedManager];
 
-    self.textLabel.text = [NSString stringWithFormat:@"current home：%@", manager.primaryHome.name];
+    self.title = manager.primaryHome.name;
     manager.primaryHome.delegate = self;
     
     NSMutableArray *arrM = [NSMutableArray array];
@@ -321,12 +313,9 @@ HMAccessoryDelegate
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    static NSString *identifier = @"Cell";
-
-    SMTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    SMTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kTableViewCell];
     if (!cell) {
-        cell = [[SMTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
+        cell = [[SMTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kTableViewCell];
     }
     
     HMRoom *room = self.dataList[indexPath.section];
@@ -359,10 +348,9 @@ HMAccessoryDelegate
 }
 
 - (nullable UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    static NSString *identifier = @"HeaderView";
-    SMTableViewHeaderView *header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:identifier];
+    SMTableViewHeaderView *header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:kTableViewHeaderView];
     if (!header) {
-        header = [[SMTableViewHeaderView alloc] initWithReuseIdentifier:identifier];
+        header = [[SMTableViewHeaderView alloc] initWithReuseIdentifier:kTableViewHeaderView];
     }
     
     HMRoom *room = self.dataList[section];

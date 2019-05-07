@@ -11,6 +11,9 @@
 
 static NSString *const kDidAddAccessory = @"kDidAddAccessory";
 static NSString *const kCharacteristicValueChanged = @"kCharacteristicValueChanged";
+static NSString *const kTableViewCell = @"kTableViewCell";
+static NSString *const kTableViewHeaderView = @"kTableViewHeaderView";
+static NSString *const kCollectionViewCell = @"kCollectionViewCell";
 
 // Color
 #define RandomColor [UIColor colorWithRed:(arc4random_uniform(256)/255.0) green:(arc4random_uniform(256)/255.0) blue:(arc4random_uniform(256)/255.0) alpha:1]

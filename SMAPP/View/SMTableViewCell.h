@@ -12,9 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface SMTableViewCell : UITableViewCell
 
-@property (nonatomic, strong) UILabel *leftLabel;
-@property (nonatomic, strong) UILabel *rightLabel;
-@property (nonatomic, strong) UIButton *button;
+@property (nonatomic, weak) UILabel *leftLabel;
+@property (nonatomic, weak) UILabel *rightLabel;
+@property (nonatomic, weak) UIButton *button;
 
 @property (nonatomic, assign, getter=isAvailable) BOOL available;
 

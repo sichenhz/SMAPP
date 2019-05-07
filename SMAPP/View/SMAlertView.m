@@ -136,7 +136,7 @@
             [textField becomeFirstResponder];
             
             [UIView animateWithDuration:0.2 animations:^{
-                self.transform = CGAffineTransformMakeTranslation(0, -335/2);
+                self.transform = CGAffineTransformMakeTranslation(0, -260/2);
             }];
             
         }

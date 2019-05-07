@@ -81,7 +81,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    [[HMHomeManager sharedManager].primaryHome addAccessory:[self.accessoryArray objectAtIndex:indexPath.row] completionHandler:^(NSError *error) {
+    HMAccessory *accessory = [self.accessoryArray objectAtIndex:indexPath.row];
+    
+    [[HMHomeManager sharedManager].primaryHome addAccessory:accessory completionHandler:^(NSError *error) {
         
         if (error) {
             NSLog(@"error in adding accessory: %@", error);
@@ -89,7 +91,7 @@
             NSLog(@"add accessory success");
             [tableView reloadData];
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:kDidAddAccessory object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kDidAddAccessory object:accessory];
         }
     }];
 }
