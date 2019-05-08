@@ -23,22 +23,12 @@
     [super viewDidLoad];
     
     self.title = @"Add";
+    self.dataList = [NSMutableArray array];
     
     self.accessoryBrowser = [[HMAccessoryBrowser alloc] init];
     self.accessoryBrowser.delegate = self;
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
     
-    self.dataList = [NSMutableArray array];
     [self.accessoryBrowser startSearchingForNewAccessories];
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-    
-    [self.accessoryBrowser stopSearchingForNewAccessories];
 }
 
 #pragma mark - HMAccessoryBrowserDelegate
