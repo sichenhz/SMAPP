@@ -7,6 +7,7 @@
 //
 
 #import "SMHomeViewController.h"
+#import "SMServiceViewController.h"
 #import "SMTableViewCell.h"
 #import "SMTableViewHeaderView.h"
 #import "HMHomeManager+Share.h"
@@ -339,17 +340,21 @@ HMAccessoryDelegate
     cell.leftLabel.text = service.name;
     cell.available = service.accessory.reachable;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    
+    cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+
     for (HMCharacteristic *characteristic in service.characteristics) {
         if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState] ||
             [characteristic.characteristicType isEqualToString:HMCharacteristicTypeObstructionDetected] ||
             [characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetLockMechanismState]) {
 
-            BOOL lockState = [characteristic.value boolValue];
             UISwitch *lockSwitch = [[UISwitch alloc] init];
-            lockSwitch.on = lockState;
+            lockSwitch.on = [characteristic.value boolValue];
+            lockSwitch.enabled = service.accessory.isReachable;
             [lockSwitch addTarget:self action:@selector(changeLockState:) forControlEvents:UIControlEventValueChanged];
+            
             cell.accessoryView = lockSwitch;
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            
             break;
         }
     }    
@@ -387,8 +392,15 @@ HMAccessoryDelegate
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    // TODO
+    SMTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    
+    if (cell.selectionStyle == UITableViewCellSelectionStyleDefault) {
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        
+        SMServiceViewController *viewController = [[SMServiceViewController alloc] init];
+        viewController.service = self.dataList[indexPath.section][indexPath.row];
+        [self.navigationController pushViewController:viewController animated:YES];
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
