@@ -8,6 +8,7 @@
 
 #import "SMAccessoryDetailViewController.h"
 #import "SMServiceViewController.h"
+#import "Const.h"
 
 @interface SMAccessoryDetailViewController ()
 
@@ -31,9 +32,9 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kUITableViewCell];
     if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"cell"];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kUITableViewCell];
     }
     HMService *service = self.accessory.services[indexPath.row];
     cell.textLabel.text = service.name;

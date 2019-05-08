@@ -13,9 +13,10 @@ static NSString *const kDidUpdateAccessory = @"kDidUpdateAccessory";
 static NSString *const kDidUpdateCurrentHomeInfo = @"kDidUpdateCurrentHomeInfo";
 static NSString *const kDidUpdateCharacteristicValue = @"kDidUpdateCharacteristicValue";
 
-static NSString *const kTableViewCell = @"kTableViewCell";
-static NSString *const kTableViewHeaderView = @"kTableViewHeaderView";
-static NSString *const kCollectionViewCell = @"kCollectionViewCell";
+static NSString *const kUITableViewCell = @"kUITableViewCell";
+static NSString *const kSMTableViewCell = @"kSMTableViewCell";
+static NSString *const kSMTableViewHeaderView = @"kSMTableViewHeaderView";
+static NSString *const kSMCollectionViewCell = @"kSMCollectionViewCell";
 
 // Color
 #define RandomColor [UIColor colorWithRed:(arc4random_uniform(256)/255.0) green:(arc4random_uniform(256)/255.0) blue:(arc4random_uniform(256)/255.0) alpha:1]

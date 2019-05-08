@@ -13,7 +13,7 @@
 @interface SMAddAccessoryViewController () <HMAccessoryBrowserDelegate>
 
 @property (nonatomic, strong) HMAccessoryBrowser *accessoryBrowser;
-@property (nonatomic, strong) NSMutableArray *accessoryArray;
+@property (nonatomic, strong) NSMutableArray *dataList;
 
 @end
 
@@ -24,55 +24,52 @@
     
     self.title = @"Add";
     
-//    UIBarButtonItem *doneItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(doneItemPressed:)];
-//    self.navigationItem.rightBarButtonItem = doneItem;
-    
     self.accessoryBrowser = [[HMAccessoryBrowser alloc] init];
     self.accessoryBrowser.delegate = self;
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     
+    self.dataList = [NSMutableArray array];
     [self.accessoryBrowser startSearchingForNewAccessories];
 }
 
-//- (void)doneItemPressed:(id)sender {
-//    [self.accessoryBrowser stopSearchingForNewAccessories];
-//    [self dismissViewControllerAnimated:YES completion:self.didAddAccessory];
-//}
-
-- (NSMutableArray *)accessoryArray {
-    if (_accessoryArray == nil) {
-        _accessoryArray = [NSMutableArray array];
-    }
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
     
-    return _accessoryArray;
+    [self.accessoryBrowser stopSearchingForNewAccessories];
 }
 
 #pragma mark - HMAccessoryBrowserDelegate
 
 - (void)accessoryBrowser:(HMAccessoryBrowser *)browser didFindNewAccessory:(HMAccessory *)accessory {
-    [self.accessoryArray addObject:accessory];
+    [self.dataList addObject:accessory];
     [self.tableView reloadData];
 }
 
 - (void)accessoryBrowser:(HMAccessoryBrowser *)browser didRemoveNewAccessory:(HMAccessory *)accessory {
-    [self.accessoryArray removeObject:accessory];
+    [self.dataList removeObject:accessory];
     [self.tableView reloadData];
 }
 
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.accessoryArray.count;
+    return self.dataList.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kUITableViewCell];
     if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"cell"];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kUITableViewCell];
     }
-    HMAccessory *accessory = self.accessoryArray[indexPath.row];
+    HMAccessory *accessory = self.dataList[indexPath.row];
     cell.textLabel.text = accessory.name;
-    
+    cell.detailTextLabel.text = @"";
+    cell.accessoryType = UITableViewCellAccessoryNone;
+
     return cell;
 }
 
@@ -81,7 +78,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    HMAccessory *accessory = [self.accessoryArray objectAtIndex:indexPath.row];
+    HMAccessory *accessory = [self.dataList objectAtIndex:indexPath.row];
     
     [[HMHomeManager sharedManager].primaryHome addAccessory:accessory completionHandler:^(NSError *error) {
         
@@ -91,7 +88,7 @@
             NSLog(@"add accessory success");
             [tableView reloadData];
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:self];
         }
     }];
 }

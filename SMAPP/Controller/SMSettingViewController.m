@@ -11,6 +11,8 @@
 #import "SMCollectionViewCell.h"
 #import "Const.h"
 #import "HMHomeManager+Share.h"
+#import "SMAccessoryDetailViewController.h"
+#import "SMAlertView.h"
 
 @interface SMSettingViewController () <UICollectionViewDelegate, UICollectionViewDataSource>
 
@@ -39,19 +41,20 @@
         make.edges.equalTo(collectionView.superview);
     }];
 
-    [collectionView registerClass:[SMCollectionViewCell class] forCellWithReuseIdentifier:kCollectionViewCell];
+    [collectionView registerClass:[SMCollectionViewCell class] forCellWithReuseIdentifier:kSMCollectionViewCell];
     collectionView.backgroundColor = [UIColor whiteColor];
     collectionView.dataSource = self;
     collectionView.delegate = self;
     collectionView.alwaysBounceVertical = YES; // make collectionView bounce even datasource has only 1 item
     _collectionView = collectionView;
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadData:) name:kDidUpdateAccessory object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadData:) name:kDidUpdateCurrentHomeInfo object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadAccessories:) name:kDidUpdateAccessory object:nil];
 }
 
-- (void)reloadData:(NSNotification *)notification {
-    [self.collectionView reloadData];
+- (void)reloadAccessories:(NSNotification *)notification {
+    if (![self isEqual:notification.object]) {
+        [self.collectionView reloadData];
+    }
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -62,11 +65,40 @@
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    SMCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kCollectionViewCell forIndexPath:indexPath];
+    SMCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kSMCollectionViewCell forIndexPath:indexPath];
     
     HMHomeManager *manager = [HMHomeManager sharedManager];
     HMAccessory *accessory = manager.primaryHome.accessories[indexPath.row];
     cell.topLabel.text = [NSString stringWithFormat:@"%@ > %@", accessory.room.name, accessory.name];
+
+    __weak typeof(self) weakSelf = self;
+    cell.editButtonPressed = ^{
+        SMAccessoryDetailViewController *vc = [[SMAccessoryDetailViewController alloc] init];
+        vc.accessory = accessory;
+        [weakSelf.navigationController pushViewController:vc animated:YES];
+    };
+
+    cell.removeButtonPressed = ^{
+        NSString *message = [NSString stringWithFormat:@"Are you sure you want to remove %@ from your home?", accessory.name];
+        SMAlertView *alertView = [SMAlertView alertViewWithTitle:nil message:message style:SMAlertViewStyleActionSheet];
+
+        [alertView addAction:[SMAlertAction actionWithTitle:@"Remove" style:SMAlertActionStyleConfirm
+                                                    handler:^(SMAlertAction * _Nonnull action) {
+                                                        [manager.primaryHome removeAccessory:accessory completionHandler:^(NSError * _Nullable error) {
+                                                            if (error) {
+                                                                NSLog(@"%@", error);
+                                                            } else {
+                                                                [collectionView deleteItemsAtIndexPaths:@[indexPath]];
+                                                                [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:self];
+                                                            }
+                                                        }];
+                                                    }]];
+        [alertView addAction:[SMAlertAction actionWithTitle:@"Cancel" style:SMAlertActionStyleCancel
+                                                    handler:nil]];
+        [alertView show];
+
+    };
+    
     
     return cell;
 }

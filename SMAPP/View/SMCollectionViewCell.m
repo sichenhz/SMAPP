@@ -32,23 +32,25 @@
     topLabel.numberOfLines = 0;
     _topLabel = topLabel;
     
-    UIButton *leftButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.contentView addSubview:leftButton];
-    [leftButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(leftButton.superview).offset(5);
-        make.bottom.equalTo(leftButton.superview).offset(-5);
+    UIButton *editButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.contentView addSubview:editButton];
+    [editButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(editButton.superview).offset(5);
+        make.bottom.equalTo(editButton.superview).offset(-5);
         make.width.height.equalTo(@25);
     }];
-    [leftButton setImage:[UIImage imageNamed:@"edit"] forState:UIControlStateNormal];
+    [editButton setImage:[UIImage imageNamed:@"edit"] forState:UIControlStateNormal];
+    [editButton addTarget:self action:@selector(editButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     
-    UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.contentView addSubview:rightButton];
-    [rightButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.bottom.equalTo(rightButton.superview).offset(-5);
+    UIButton *removeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.contentView addSubview:removeButton];
+    [removeButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.bottom.equalTo(removeButton.superview).offset(-5);
         make.width.height.equalTo(@25);
     }];
-    [rightButton setImage:[UIImage imageNamed:@"Goods-details_delete"] forState:UIControlStateNormal];
-    
+    [removeButton setImage:[UIImage imageNamed:@"Goods-details_delete"] forState:UIControlStateNormal];
+    [removeButton addTarget:self action:@selector(removeButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+
     UIImageView *imageView = [[UIImageView alloc] init];
     [self.contentView addSubview:imageView];
     [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -59,4 +61,20 @@
     _imageView = imageView;
 }
 
+#pragma mark - Action
+
+- (void)editButtonPressed:(id)sender {
+    if (self.editButtonPressed) {
+        self.editButtonPressed();
+    }
+}
+
+- (void)removeButtonPressed:(id)sender {
+    if (self.removeButtonPressed) {
+        self.removeButtonPressed();
+    }
+}
+
+
 @end
+

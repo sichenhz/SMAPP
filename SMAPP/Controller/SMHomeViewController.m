@@ -13,7 +13,6 @@
 #import "Const.h"
 #import "UIView+Extention.h"
 #import "SMAlertView.h"
-#import "SMAccessoryDetailViewController.h"
 #import "Masonry.h"
 
 @interface SMHomeViewController () <
@@ -48,11 +47,7 @@ HMAccessoryDelegate
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateAccessory:) name:kDidUpdateAccessory object:nil];
-}
-
-- (void)didUpdateAccessory:(NSNotification *)notification {
-    [self updateCurrentAccessories];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCurrentAccessories) name:kDidUpdateAccessory object:nil];
 }
 
 - (void)initNavigationItemWithLeftTitle:(NSString *)title {
@@ -108,22 +103,26 @@ HMAccessoryDelegate
     
     HMHomeManager *manager = [HMHomeManager sharedManager];
 
-    self.title = manager.primaryHome.name;
+    self.navigationItem.title = manager.primaryHome.name;
     manager.primaryHome.delegate = self;
     
+    [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateCurrentHomeInfo object:self];
+}
+
+- (void)updateCurrentAccessories {
+    
+    HMHomeManager *manager = [HMHomeManager sharedManager];
+
     NSMutableArray *arrM = [NSMutableArray array];
     [arrM addObject:manager.primaryHome.roomForEntireHome];
     [arrM addObjectsFromArray:manager.primaryHome.rooms];
     self.dataList = [NSArray arrayWithArray:arrM];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateCurrentHomeInfo object:nil];
-}
 
-- (void)updateCurrentAccessories {
-    for (HMAccessory *accessory in [HMHomeManager sharedManager].primaryHome.accessories) {
-        accessory.delegate = self;
+    for (HMRoom *room in self.dataList) {
+        for (HMAccessory *accessory in room.accessories) {
+            accessory.delegate = self;
+        }
     }
-    
     [self.tableView reloadData];
 }
 
@@ -169,10 +168,11 @@ HMAccessoryDelegate
     HMHomeManager *manager = [HMHomeManager sharedManager];
 
     if (manager.primaryHome) {
-        SMAlertView *alertView = [SMAlertView alertViewWithTitle:nil message:@"Are you sure you want to delete this Home?" style:SMAlertViewStyleActionSheet];
+        NSString *message = [NSString stringWithFormat:@"Are you sure you want to remove %@?", manager.primaryHome.name];
+        SMAlertView *alertView = [SMAlertView alertViewWithTitle:nil message:message style:SMAlertViewStyleActionSheet];
         
         __weak typeof(self) weakSelf = self;
-        [alertView addAction:[SMAlertAction actionWithTitle:@"Confirm" style:SMAlertActionStyleConfirm
+        [alertView addAction:[SMAlertAction actionWithTitle:@"Remove" style:SMAlertActionStyleConfirm
                                                     handler:^(SMAlertAction * _Nonnull action) {
                                                         [manager removeHome:manager.primaryHome completionHandler:^(NSError * _Nullable error) {
                                                             if (error) {
@@ -263,15 +263,15 @@ HMAccessoryDelegate
 #pragma mark - HMHomeDelegate
 
 - (void)home:(HMHome *)home didAddAccessory:(HMAccessory *)accessory {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:self];
 }
 
 - (void)home:(HMHome *)home didRemoveAccessory:(HMAccessory *)accessory {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:self];
 }
 
 - (void)home:(HMHome *)home didUpdateRoom:(HMRoom *)room forAccessory:(HMAccessory *)accessory {
-    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:self];
 }
 
 #pragma mark - HMAccessoryDelegate
@@ -290,7 +290,7 @@ HMAccessoryDelegate
 
 - (void)accessory:(HMAccessory *)accessory service:(HMService *)service didUpdateValueForCharacteristic:(HMCharacteristic *)characteristic {
     [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateCharacteristicValue
-                                                        object:nil
+                                                        object:self
                                                       userInfo:@{@"accessory": accessory,
                                                                  @"service": service,
                                                                  @"characteristic": characteristic}];
@@ -312,9 +312,9 @@ HMAccessoryDelegate
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    SMTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kTableViewCell];
+    SMTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kSMTableViewCell];
     if (!cell) {
-        cell = [[SMTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kTableViewCell];
+        cell = [[SMTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kSMTableViewCell];
     }
     
     HMRoom *room = self.dataList[indexPath.section];
@@ -331,11 +331,7 @@ HMAccessoryDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-    SMAccessoryDetailViewController *vc = [[SMAccessoryDetailViewController alloc] init];
-    HMRoom *room = self.dataList[indexPath.section];
-    vc.accessory = room.accessories[indexPath.row];
-    [self.navigationController pushViewController:vc animated:YES];
+    // TODO
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -347,9 +343,9 @@ HMAccessoryDelegate
 }
 
 - (nullable UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    SMTableViewHeaderView *header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:kTableViewHeaderView];
+    SMTableViewHeaderView *header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:kSMTableViewHeaderView];
     if (!header) {
-        header = [[SMTableViewHeaderView alloc] initWithReuseIdentifier:kTableViewHeaderView];
+        header = [[SMTableViewHeaderView alloc] initWithReuseIdentifier:kSMTableViewHeaderView];
     }
     
     HMRoom *room = self.dataList[section];

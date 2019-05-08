@@ -15,6 +15,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak) UILabel *topLabel;
 @property (nonatomic, weak) UIImageView *imageView;
 
+@property (nonatomic, copy) void(^editButtonPressed)(void);
+@property (nonatomic, copy) void(^removeButtonPressed)(void);
+
 @end
 
 NS_ASSUME_NONNULL_END
