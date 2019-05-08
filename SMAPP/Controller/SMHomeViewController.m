@@ -22,7 +22,7 @@ HMHomeDelegate,
 HMAccessoryDelegate
 >
 
-@property (nonatomic, strong) NSArray *dataList;
+@property (nonatomic, strong) NSMutableArray *dataList;
 
 @end
 
@@ -48,6 +48,7 @@ HMAccessoryDelegate
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeAccessories:) name:kDidRemoveAccessory object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCurrentAccessories) name:kDidUpdateAccessory object:nil];
 }
 
@@ -101,7 +102,6 @@ HMAccessoryDelegate
 }
 
 - (void)updateCurrentHomeInfo {
-    
     HMHomeManager *manager = [HMHomeManager sharedManager];
 
     self.navigationItem.title = manager.primaryHome.name;
@@ -113,7 +113,7 @@ HMAccessoryDelegate
 - (void)updateCurrentAccessories {
     
     HMHomeManager *manager = [HMHomeManager sharedManager];
-    NSMutableArray *arrM = [NSMutableArray array];
+    self.dataList = [NSMutableArray array];
     NSMutableArray *services = [NSMutableArray array];
 
     for (HMAccessory *accessory in manager.primaryHome.roomForEntireHome.accessories) {
@@ -124,7 +124,7 @@ HMAccessoryDelegate
         }
         accessory.delegate = self;
     }
-    if (services.count) [arrM addObject:services];
+    if (services.count) [self.dataList addObject:services];
     
     for (HMRoom *room in manager.primaryHome.rooms) {
         services = [NSMutableArray array];
@@ -136,11 +136,30 @@ HMAccessoryDelegate
             }
             accessory.delegate = self;
         }
-        if (services.count) [arrM addObject:services];
+        if (services.count) [self.dataList addObject:services];
     }
     
-    self.dataList = [NSArray arrayWithArray:arrM];
     [self.tableView reloadData];
+}
+
+
+- (void)removeAccessories:(NSNotification *)notification {
+    HMAccessory *accessory = notification.object;
+    NSMutableArray *indexPaths = [NSMutableArray array];
+    for (NSArray *services in self.dataList) {
+        NSInteger section = [self.dataList indexOfObject:services];
+        for (HMService *service in services) {
+            if ([service.accessory isEqual:accessory]) {
+                NSInteger row = [services indexOfObject:service];
+                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:section];
+                [indexPaths insertObject:indexPath atIndex:0];
+            }
+        }
+    }
+    for (NSIndexPath *indexPath in indexPaths) {
+        [self.dataList[indexPath.section] removeObjectAtIndex:indexPath.row];
+    }
+    [self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationLeft];
 }
 
 #pragma mark - Actions
@@ -159,7 +178,7 @@ HMAccessoryDelegate
             [alertView addAction:[SMAlertAction actionWithTitle:homeName style:SMAlertActionStyleDefault selected:home.isPrimary handler:^(SMAlertAction * _Nonnull action) {
                 [manager updatePrimaryHome:home completionHandler:^(NSError * _Nullable error) {
                     if (error) {
-                        NSLog(@"Error updating primary home: %@", error);
+                        NSLog(@"%@", error);
                     } else {
                         NSLog(@"Primary home updated.");
                         [weakSelf updateCurrentHomeInfo];
@@ -284,7 +303,7 @@ HMAccessoryDelegate
 }
 
 - (void)home:(HMHome *)home didRemoveAccessory:(HMAccessory *)accessory {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kDidRemoveAccessory object:accessory];
 }
 
 - (void)home:(HMHome *)home didUpdateRoom:(HMRoom *)room forAccessory:(HMAccessory *)accessory {
@@ -313,8 +332,16 @@ HMAccessoryDelegate
                                                                  @"characteristic": characteristic}];
 }
 
+- (void)accessoryDidUpdateName:(HMAccessory *)accessory {
+    [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:self];
+}
+
+- (void)accessory:(HMAccessory *)accessory didUpdateNameForService:(HMService *)service {
+    [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:self];
+}
+
 - (void)accessoryDidUpdateServices:(HMAccessory *)accessory {
-    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:self];
 }
 
 #pragma mark - UITableViewDataSource
@@ -381,7 +408,7 @@ HMAccessoryDelegate
                         NSLog(@"Changed Lock State: %@", characteristic.value);
                     });
                 } else {
-                    NSLog(@"error in writing characterstic: %@", error);
+                    NSLog(@"%@", error);
                 }
             }];
             break;

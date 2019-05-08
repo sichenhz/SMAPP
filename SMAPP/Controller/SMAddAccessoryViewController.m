@@ -73,7 +73,7 @@
     [[HMHomeManager sharedManager].primaryHome addAccessory:accessory completionHandler:^(NSError *error) {
         
         if (error) {
-            NSLog(@"error in adding accessory: %@", error);
+            NSLog(@"%@", error);
         } else {
             NSLog(@"add accessory success");
             [tableView reloadData];

@@ -17,6 +17,7 @@
 @interface SMSettingViewController () <UICollectionViewDelegate, UICollectionViewDataSource>
 
 @property (nonatomic, weak) UICollectionView *collectionView;
+@property (nonatomic, strong) NSMutableArray *dataList;
 
 @end
 
@@ -49,47 +50,77 @@
     _collectionView = collectionView;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadAccessories:) name:kDidUpdateAccessory object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeAccessories:) name:kDidRemoveAccessory object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadAccessories:) name:kDidUpdateCurrentHomeInfo object:nil];
+    
+    [self updateCurrentAccessories];
+}
+
+- (void)removeAccessories:(NSNotification *)notification {
+    HMAccessory *accessory = notification.object;
+    NSMutableArray *indexPaths = [NSMutableArray array];
+    NSMutableArray *toRemove = [NSMutableArray array];
+    for (HMService *service in self.dataList) {
+        if ([service.accessory isEqual:accessory]) {
+            NSIndexPath *indexPath = [NSIndexPath indexPathForItem:[self.dataList indexOfObject:service] inSection:0];
+            [indexPaths addObject:indexPath];
+            [toRemove addObject:service];
+        }
+    }
+    [self.dataList removeObjectsInArray:toRemove];
+    [self.collectionView deleteItemsAtIndexPaths:indexPaths];
 }
 
 - (void)reloadAccessories:(NSNotification *)notification {
-    if (![self isEqual:notification.object]) {
-        [self.collectionView reloadData];
+    [self updateCurrentAccessories];
+    [self.collectionView reloadData];
+}
+
+- (void)updateCurrentAccessories {
+    HMHomeManager *manager = [HMHomeManager sharedManager];
+    self.dataList = [NSMutableArray array];
+    
+    for (HMAccessory *accessory in manager.primaryHome.accessories) {
+        for (HMService *service in accessory.services) {
+            if (service.isUserInteractive) {
+                [self.dataList addObject:service];
+            }
+        }
     }
 }
 
 #pragma mark - UICollectionViewDataSource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    HMHomeManager *manager = [HMHomeManager sharedManager];
-    return manager.primaryHome.accessories.count;
+    return self.dataList.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     SMCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kSMCollectionViewCell forIndexPath:indexPath];
     
-    HMHomeManager *manager = [HMHomeManager sharedManager];
-    HMAccessory *accessory = manager.primaryHome.accessories[indexPath.row];
-    cell.topLabel.text = [NSString stringWithFormat:@"%@ > %@", accessory.room.name, accessory.name];
+    HMService *service = self.dataList[indexPath.row];
+    cell.topLabel.text = [NSString stringWithFormat:@"%@ > %@", service.accessory.room.name, service.name];
 
     __weak typeof(self) weakSelf = self;
     cell.editButtonPressed = ^{
         SMAccessoryDetailViewController *vc = [[SMAccessoryDetailViewController alloc] init];
-        vc.accessory = accessory;
+        vc.accessory = service.accessory;
         [weakSelf.navigationController pushViewController:vc animated:YES];
     };
 
     cell.removeButtonPressed = ^{
-        NSString *message = [NSString stringWithFormat:@"Are you sure you want to remove %@ from your home?", accessory.name];
+        NSString *message = [NSString stringWithFormat:@"Are you sure you want to remove %@ from your home?", service.accessory.name];
         SMAlertView *alertView = [SMAlertView alertViewWithTitle:nil message:message style:SMAlertViewStyleActionSheet];
 
         [alertView addAction:[SMAlertAction actionWithTitle:@"Remove" style:SMAlertActionStyleConfirm
                                                     handler:^(SMAlertAction * _Nonnull action) {
-                                                        [manager.primaryHome removeAccessory:accessory completionHandler:^(NSError * _Nullable error) {
+                                                        HMHomeManager *namager = [HMHomeManager sharedManager];
+                                                        [namager.primaryHome removeAccessory:service.accessory completionHandler:^(NSError * _Nullable error) {
                                                             if (error) {
                                                                 NSLog(@"%@", error);
                                                             } else {
-                                                                [collectionView deleteItemsAtIndexPaths:@[indexPath]];
-                                                                [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:self];
+                                                                [[NSNotificationCenter defaultCenter] postNotificationName:kDidRemoveAccessory object:service.accessory];
                                                             }
                                                         }];
                                                     }]];

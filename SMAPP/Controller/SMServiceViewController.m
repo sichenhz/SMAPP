@@ -98,7 +98,7 @@
                     [self.tableView cellForRowAtIndexPath:indexPath].textLabel.text = [NSString stringWithFormat:@"%@", characteristic.value];
                 });
             } else {
-                NSLog(@"error in writing characterstic: %@", error);
+                NSLog(@"%@", error);
             }
         }];
     }
@@ -122,7 +122,7 @@
                 [self.tableView cellForRowAtIndexPath:indexPath].textLabel.text = [NSString stringWithFormat:@"%.0f", slider.value] ;
             });
         } else {
-            NSLog(@"error in writing characterstic: %@", error);
+            NSLog(@"%@", error);
         }
     }];
 }

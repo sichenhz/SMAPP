@@ -29,7 +29,7 @@
         make.right.equalTo(topLabel.superview).offset(-10);
     }];
     topLabel.font = FONT_BODY;
-    topLabel.numberOfLines = 0;
+    topLabel.numberOfLines = 2;
     _topLabel = topLabel;
     
     UIButton *editButton = [UIButton buttonWithType:UIButtonTypeCustom];
