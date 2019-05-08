@@ -23,7 +23,7 @@ static NSString *const kSMCollectionViewCell = @"kSMCollectionViewCell";
 #define RandomColor [UIColor colorWithRed:(arc4random_uniform(256)/255.0) green:(arc4random_uniform(256)/255.0) blue:(arc4random_uniform(256)/255.0) alpha:1]
 
 #define HEXCOLOR(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
-
+#define COLOR_ORANGE HEXCOLOR(0xFFA500)
 
 // Font
 #define FONT_H1               [UIFont fontWithName:@"CenturyGothic" size:20]

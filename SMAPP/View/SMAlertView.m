@@ -182,7 +182,7 @@
 
 + (instancetype)alertViewWithStyle:(SMAlertViewStyle)style {
     SMAlertView *alertView = [[SMAlertView alloc] init];
-    alertView.backgroundColor = [UIColor colorWithRed:241/255.0 green:241/255.0 blue:237/255.0 alpha:1];
+    alertView.backgroundColor = HEXCOLOR(0xF1F1ED);
     alertView.style = style;
     if (style == SMAlertViewStyleAlert) {
         alertView.buttonHeight = 44;
@@ -367,7 +367,7 @@
 - (UIImage *)cornerRadiusBackgroundImage {
     UIGraphicsBeginImageContext(CGSizeMake(1, 1));
     CGContextRef ctx = UIGraphicsGetCurrentContext();
-    CGContextSetFillColorWithColor(ctx, [UIColor colorWithRed:224/255.0 green:224/255.0 blue:224/255.0 alpha:1].CGColor);
+    CGContextSetFillColorWithColor(ctx, HEXCOLOR(0xE0E0E0).CGColor);
     CGContextFillRect(ctx, CGRectMake(0, 0, 1, 1));
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
@@ -391,13 +391,13 @@
         [self.buttons addObject:button];
     }
     if (action.style == SMAlertActionStyleConfirm) {
-        [button setTitleColor:[UIColor colorWithRed:255/255.0 green:102/255.0 blue:102/255.0 alpha:1] forState:UIControlStateNormal];
+        [button setTitleColor:COLOR_ORANGE forState:UIControlStateNormal];
         button.titleLabel.font = FONT_H2_BOLD;
     } else if (action.style == SMAlertActionStyleCancel) {
-        [button setTitleColor:[UIColor colorWithRed:102/255.0 green:102/255.0 blue:102/255.0 alpha:1] forState:UIControlStateNormal];
+        [button setTitleColor:HEXCOLOR(0x666666) forState:UIControlStateNormal];
         button.titleLabel.font = FONT_H2_BOLD;
     } else {
-        [button setTitleColor:[UIColor colorWithRed:102/255.0 green:102/255.0 blue:102/255.0 alpha:1] forState:UIControlStateNormal];
+        [button setTitleColor:HEXCOLOR(0x666666) forState:UIControlStateNormal];
         button.titleLabel.font = FONT_H2;
     }
     [button setTitle:action.title forState:UIControlStateNormal];
@@ -415,10 +415,10 @@
     }
     if (self.style == SMAlertViewStyleActionSheet && action.style == SMAlertActionStyleCancel) {
         line.frame = CGRectMake(0, 0, self.frame.size.width, 5);
-        line.backgroundColor = [UIColor colorWithRed:130/255.0 green:130/255.0 blue:130/255.0 alpha:1];
+        line.backgroundColor = HEXCOLOR(0x828282);
     } else {
         line.frame = CGRectMake(0, 0, self.frame.size.width, 0.5);
-        line.backgroundColor = [UIColor colorWithRed:221/255.0 green:221/255.0 blue:221/255.0 alpha:1];
+        line.backgroundColor = HEXCOLOR(0xDDDDDD);
     }
     return line;
 }
@@ -472,7 +472,7 @@
         label.font = FONT_H2_BOLD;
         label.textAlignment = NSTextAlignmentCenter;
         label.numberOfLines = 0;
-        label.textColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1];
+        label.textColor = HEXCOLOR(0x333333);
         [self addSubview:label];
         _titleLabel = label;
     }
@@ -488,7 +488,7 @@
         label.font = FONT_BODY;
         label.textAlignment = NSTextAlignmentCenter;
         label.numberOfLines = 0;
-        label.textColor = [UIColor colorWithRed:102/255.0 green:102/255.0 blue:102/255.0 alpha:1];
+        label.textColor = HEXCOLOR(0x666666);
         [self addSubview:label];
         _messageLabel = label;
     }

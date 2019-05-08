@@ -60,7 +60,7 @@
                                             imageName:(NSString *)imageName
                                     selectedImageName:(NSString *)selectedImageName {
     
-    [controller.tabBarItem setTitleTextAttributes:@{NSFontAttributeName : FONT_BODY, NSForegroundColorAttributeName : HEXCOLOR(0xFFA500)} forState:UIControlStateSelected];
+    [controller.tabBarItem setTitleTextAttributes:@{NSFontAttributeName : FONT_BODY, NSForegroundColorAttributeName : COLOR_ORANGE} forState:UIControlStateSelected];
     [controller.tabBarItem setTitleTextAttributes:@{NSFontAttributeName : FONT_BODY, NSForegroundColorAttributeName : [UIColor grayColor]} forState:UIControlStateNormal];
     
     controller.tabBarItem.title = title;

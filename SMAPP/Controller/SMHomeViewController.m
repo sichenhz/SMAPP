@@ -61,13 +61,13 @@ HMAccessoryDelegate
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD}];
     
     UIBarButtonItem *leftButtonItem = [[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStylePlain target:self action:@selector(leftButtonItemPressed:)];
-    [leftButtonItem setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD, NSForegroundColorAttributeName : HEXCOLOR(0xFFA500)} forState:(UIControlStateNormal)];
-    [leftButtonItem setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD, NSForegroundColorAttributeName : HEXCOLOR(0xFFA500)} forState:(UIControlStateHighlighted)];
+    [leftButtonItem setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD, NSForegroundColorAttributeName : COLOR_ORANGE} forState:(UIControlStateNormal)];
+    [leftButtonItem setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD, NSForegroundColorAttributeName : COLOR_ORANGE} forState:(UIControlStateHighlighted)];
     self.navigationItem.leftBarButtonItem = leftButtonItem;
     
 //    UIBarButtonItem *rightbuttonItem = [[UIBarButtonItem alloc] initWithTitle:@"Add Accessory" style:UIBarButtonItemStylePlain target:self action:@selector(rightButtonItemPressed:)];
-//    [rightbuttonItem setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD, NSForegroundColorAttributeName : HEXCOLOR(0xFFA500)} forState:(UIControlStateNormal)];
-//    [rightbuttonItem setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD, NSForegroundColorAttributeName : HEXCOLOR(0xFFA500)} forState:(UIControlStateHighlighted)];
+//    [rightbuttonItem setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD, NSForegroundColorAttributeName : COLOR_ORANGE} forState:(UIControlStateNormal)];
+//    [rightbuttonItem setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD, NSForegroundColorAttributeName : COLOR_ORANGE} forState:(UIControlStateHighlighted)];
 //    self.navigationItem.rightBarButtonItem = rightbuttonItem;
 }
 
@@ -83,7 +83,7 @@ HMAccessoryDelegate
         make.height.equalTo(@44);
     }];
     leftButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    [leftButton setTitleColor:HEXCOLOR(0xFFA500) forState:UIControlStateNormal];
+    [leftButton setTitleColor:COLOR_ORANGE forState:UIControlStateNormal];
     [leftButton setTitleColor:[UIColor grayColor] forState:UIControlStateDisabled];
     [leftButton.titleLabel setFont:FONT_H2_BOLD];
     
@@ -97,17 +97,9 @@ HMAccessoryDelegate
     }];
 
     rightButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-    [rightButton setTitleColor:HEXCOLOR(0xFFA500) forState:UIControlStateNormal];
+    [rightButton setTitleColor:COLOR_ORANGE forState:UIControlStateNormal];
     [rightButton.titleLabel setFont:FONT_H2_BOLD];
-    
-    UIView *line = [[UIView alloc] init];
-    [headerView addSubview:line];
-    [line mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.centerY.right.equalTo(line.superview);
-        make.height.equalTo(@0.5);
-    }];
-    line.backgroundColor = [UIColor lightGrayColor];
-    
+        
     UIButton *leftButton2 = [[UIButton alloc] init];
     [headerView addSubview:leftButton2];
     [leftButton2 mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -117,7 +109,7 @@ HMAccessoryDelegate
         make.height.equalTo(@44);
     }];
     leftButton2.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    [leftButton2 setTitleColor:HEXCOLOR(0xFFA500) forState:UIControlStateNormal];
+    [leftButton2 setTitleColor:COLOR_ORANGE forState:UIControlStateNormal];
     [leftButton2 setTitleColor:[UIColor grayColor] forState:UIControlStateDisabled];
     [leftButton2.titleLabel setFont:FONT_H2_BOLD];
     
@@ -131,7 +123,7 @@ HMAccessoryDelegate
     }];
     
     rightButton2.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-    [rightButton2 setTitleColor:HEXCOLOR(0xFFA500) forState:UIControlStateNormal];
+    [rightButton2 setTitleColor:COLOR_ORANGE forState:UIControlStateNormal];
     [rightButton2.titleLabel setFont:FONT_H2_BOLD];
     
     self.tableView.tableHeaderView = headerView;
