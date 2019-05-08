@@ -54,6 +54,7 @@ HMAccessoryDelegate
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeAccessories:) name:kDidRemoveAccessory object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCurrentAccessories) name:kDidUpdateAccessory object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCharacteristicValue:) name:kDidUpdateCharacteristicValue object:nil];
 }
 
 - (void)initNavigationItemWithLeftTitle:(NSString *)title {
@@ -172,6 +173,28 @@ HMAccessoryDelegate
     [self.tableView reloadData];
 }
 
+- (void)updateCharacteristicValue:(NSNotification *)notification {
+    
+    HMService *service = [[notification userInfo] objectForKey:@"service"];
+    HMCharacteristic *characteristic = [[notification userInfo] objectForKey:@"characteristic"];
+
+    for (NSArray *services in self.dataList) {
+        NSInteger section = [self.dataList indexOfObject:services];
+        for (HMService *item in services) {
+            if ([item isEqual:service]) {
+                NSInteger row = [services indexOfObject:item];
+                UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:section]];
+                
+                dispatch_async(dispatch_get_main_queue(), ^(void){
+                    UISwitch *lockSwitch = (UISwitch *)cell.accessoryView;
+                    lockSwitch.on = [characteristic.value boolValue];
+                });
+                
+                break;
+            }
+        }
+    }
+}
 
 - (void)removeAccessories:(NSNotification *)notification {
     HMAccessory *accessory = notification.object;
@@ -339,7 +362,6 @@ HMAccessoryDelegate
     
     [alertView addAction:[SMAlertAction actionWithTitle:@"Cancel" style:SMAlertActionStyleCancel handler:nil]];
     
-    __weak typeof(self) weakSelf = self;
     [alertView addAction:[SMAlertAction actionWithTitle:@"Confirm" style:SMAlertActionStyleConfirm handler:^(SMAlertAction * _Nonnull action) {
         NSString *newName = alertView.textFields.firstObject.text;
         [manager.primaryHome addRoomWithName:newName completionHandler:^(HMRoom * _Nullable room, NSError * _Nullable error) {
@@ -408,18 +430,36 @@ HMAccessoryDelegate
 #pragma mark - HMAccessoryDelegate
 
 - (void)accessoryDidUpdateReachability:(HMAccessory *)accessory {
-    for (HMRoom *room in self.dataList) {
-        NSInteger section = [self.dataList indexOfObject:room];
-        if ([room.accessories containsObject:accessory]) {
-            NSUInteger row = [room.accessories indexOfObject:accessory];
-            
-            SMTableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:section]];
-            cell.available = accessory.reachable;
+    NSLog(@"监听到设备的断开或连接");
+    for (NSArray *services in self.dataList) {
+        NSInteger section = [self.dataList indexOfObject:services];
+        
+        for (HMService *service in services) {
+            if ([service.accessory isEqual:accessory]) {
+                NSInteger row = [services indexOfObject:service];
+                SMTableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:section]];
+                cell.available = accessory.reachable;
+                if ([cell.accessoryView isKindOfClass:[UISwitch class]]) {
+                    
+                    UISwitch *lockSwitch = ((UISwitch *)cell.accessoryView);
+                    lockSwitch.enabled = cell.isAvailable;
+                    
+                    for (HMCharacteristic *characteristic in service.characteristics) {
+                        if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState] ||
+                            [characteristic.characteristicType isEqualToString:HMCharacteristicTypeObstructionDetected] ||
+                            [characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetLockMechanismState]) {
+                            lockSwitch.on = [characteristic.value boolValue];
+                        }
+                        break;
+                    }
+                }
+            }
         }
     }
 }
 
 - (void)accessory:(HMAccessory *)accessory service:(HMService *)service didUpdateValueForCharacteristic:(HMCharacteristic *)characteristic {
+    NSLog(@"监听到设备被操作");
     [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateCharacteristicValue
                                                         object:self
                                                       userInfo:@{@"accessory": accessory,
@@ -471,8 +511,8 @@ HMAccessoryDelegate
             [characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetLockMechanismState]) {
 
             UISwitch *lockSwitch = [[UISwitch alloc] init];
-            lockSwitch.on = [characteristic.value boolValue];
             lockSwitch.enabled = service.accessory.isReachable;
+            lockSwitch.on = [characteristic.value boolValue];
             [lockSwitch addTarget:self action:@selector(changeLockState:) forControlEvents:UIControlEventValueChanged];
             
             cell.accessoryType = UITableViewCellAccessoryNone;

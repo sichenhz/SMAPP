@@ -13,10 +13,12 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SMCollectionViewCell : UICollectionViewCell
 
 @property (nonatomic, weak) UILabel *topLabel;
-@property (nonatomic, weak) UIImageView *imageView;
 
 @property (nonatomic, copy) void(^editButtonPressed)(void);
 @property (nonatomic, copy) void(^removeButtonPressed)(void);
+
+@property (nonatomic, assign, getter=isOn) BOOL on;
+@property (nonatomic, copy) NSString *serviceType;
 
 @end
 

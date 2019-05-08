@@ -9,6 +9,13 @@
 #import "SMCollectionViewCell.h"
 #import "Const.h"
 #import "Masonry.h"
+#import <HomeKit/HomeKit.h>
+
+@interface SMCollectionViewCell ()
+
+@property (nonatomic, weak) UIImageView *imageView;
+
+@end
 
 @implementation SMCollectionViewCell
 
@@ -57,8 +64,104 @@
         make.left.right.centerY.equalTo(imageView.superview);
         make.height.equalTo(imageView.superview).dividedBy(3);
     }];
-    imageView.backgroundColor = RandomColor;
+    imageView.contentMode = UIViewContentModeScaleAspectFit;
     _imageView = imageView;
+}
+
+- (void)setServiceType:(NSString *)serviceType {
+    _serviceType = serviceType;
+    
+    if ([serviceType isEqualToString:HMServiceTypeLightbulb]) {
+        if (self.isOn) {
+            [self.imageView setImage:[UIImage imageNamed:@"bulb_on"]];
+        } else {
+            [self.imageView setImage:[UIImage imageNamed:@"bulb_off"]];
+        }
+    } else if ([serviceType isEqualToString:HMServiceTypeSwitch]) {
+        
+    } else if ([serviceType isEqualToString:HMServiceTypeThermostat]) {
+        
+    } else if ([serviceType isEqualToString:HMServiceTypeGarageDoorOpener]) {
+        
+    } else if ([serviceType isEqualToString:HMServiceTypeAccessoryInformation]) {
+        
+    } else if ([serviceType isEqualToString:HMServiceTypeFan]) {
+        
+    } else if ([serviceType isEqualToString:HMServiceTypeOutlet]) {
+        
+    } else if ([serviceType isEqualToString:HMServiceTypeLockMechanism]) {
+        
+    } else if ([serviceType isEqualToString:HMServiceTypeLockManagement]) {
+        
+    } else if ([serviceType isEqualToString:HMServiceTypeAirQualitySensor]) {
+        
+    } else if ([serviceType isEqualToString:HMServiceTypeBattery]) {
+        
+    } else if ([serviceType isEqualToString:HMServiceTypeCarbonDioxideSensor]) {
+        
+    } else if ([serviceType isEqualToString:HMServiceTypeCarbonMonoxideSensor]) {
+        
+    } else if ([serviceType isEqualToString:HMServiceTypeContactSensor]) {
+        
+    } else if ([serviceType isEqualToString:HMServiceTypeDoor]) {
+        
+    } else if ([serviceType isEqualToString:HMServiceTypeDoorbell]) {
+        
+    } else if ([serviceType isEqualToString:HMServiceTypeHumiditySensor]) {
+        
+    } else if ([serviceType isEqualToString:HMServiceTypeLeakSensor]) {
+        
+    } else if ([serviceType isEqualToString:HMServiceTypeLightSensor]) {
+        
+    } else if ([serviceType isEqualToString:HMServiceTypeMotionSensor]) {
+        
+    } else if ([serviceType isEqualToString:HMServiceTypeOccupancySensor]) {
+        
+    } else if ([serviceType isEqualToString:HMServiceTypeSecuritySystem]) {
+        
+    } else if ([serviceType isEqualToString:HMServiceTypeStatefulProgrammableSwitch]) {
+        
+    } else if ([serviceType isEqualToString:HMServiceTypeStatelessProgrammableSwitch]) {
+        
+    } else if ([serviceType isEqualToString:HMServiceTypeSmokeSensor]) {
+        
+    } else if ([serviceType isEqualToString:HMServiceTypeTemperatureSensor]) {
+        
+    } else if ([serviceType isEqualToString:HMServiceTypeWindow]) {
+        
+    } else if ([serviceType isEqualToString:HMServiceTypeWindowCovering]) {
+        
+    } else if ([serviceType isEqualToString:HMServiceTypeCameraRTPStreamManagement]) {
+        
+    } else if ([serviceType isEqualToString:HMServiceTypeCameraControl]) {
+        
+    } else if ([serviceType isEqualToString:HMServiceTypeMicrophone]) {
+        
+    } else if ([serviceType isEqualToString:HMServiceTypeSpeaker]) {
+        
+    } else if ([serviceType isEqualToString:HMServiceTypeAirPurifier]) {
+        
+    } else if ([serviceType isEqualToString:HMServiceTypeVentilationFan]) {
+        
+    } else if ([serviceType isEqualToString:HMServiceTypeFilterMaintenance]) {
+        
+    } else if ([serviceType isEqualToString:HMServiceTypeHeaterCooler]) {
+        
+    } else if ([serviceType isEqualToString:HMServiceTypeHumidifierDehumidifier]) {
+        
+    } else if ([serviceType isEqualToString:HMServiceTypeSlats]) {
+        
+    } else if ([serviceType isEqualToString:HMServiceTypeLabel]) {
+        
+    } else if ([serviceType isEqualToString:HMServiceTypeIrrigationSystem]) {
+        
+    } else if ([serviceType isEqualToString:HMServiceTypeValve]) {
+        
+    } else if ([serviceType isEqualToString:HMServiceTypeFaucet]) {
+        
+    } else {
+        
+    }
 }
 
 #pragma mark - Action

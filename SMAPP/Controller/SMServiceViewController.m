@@ -36,6 +36,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kUITableViewCell];
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:kUITableViewCell];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     HMCharacteristic *characteristic = self.service.characteristics[indexPath.row];
     if (characteristic.value != nil) {
@@ -97,6 +98,13 @@
                 dispatch_async(dispatch_get_main_queue(), ^(void) {
                     [self.tableView cellForRowAtIndexPath:indexPath].textLabel.text = [NSString stringWithFormat:@"%@", characteristic.value];
                 });
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateCharacteristicValue
+                                                                    object:self
+                                                                  userInfo:@{@"accessory": self.service.accessory,
+                                                                             @"service": self.service,
+                                                                             @"characteristic": characteristic}];
+
             } else {
                 NSLog(@"%@", error);
             }
@@ -129,6 +137,10 @@
 
 - (void)updateCharacteristicValue:(NSNotification *)notification {
     
+    if ([notification.object isEqual:self]) {
+        return;
+    }
+    
     HMCharacteristic *characteristic = [[notification userInfo] objectForKey:@"characteristic"];
     
     if ([self.service.characteristics containsObject:characteristic]) {
@@ -138,6 +150,13 @@
         
         dispatch_async(dispatch_get_main_queue(), ^(void){
             cell.textLabel.text = [NSString stringWithFormat:@"%@", characteristic.value];
+            if ([cell.accessoryView isKindOfClass:[UISwitch class]]) {
+                UISwitch *lockSwitch = (UISwitch *)cell.accessoryView;
+                lockSwitch.on = [characteristic.value boolValue];
+            } else if ([cell.accessoryView isKindOfClass:[UISlider class]]) {
+                UISlider *slider = (UISlider *)cell.accessoryView;
+                slider.value = [characteristic.value floatValue];
+            }
         });
     }
 }

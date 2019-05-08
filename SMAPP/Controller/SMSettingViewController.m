@@ -51,9 +51,9 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadAccessories:) name:kDidUpdateAccessory object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeAccessories:) name:kDidRemoveAccessory object:nil];
-
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadAccessories:) name:kDidUpdateCurrentHomeInfo object:nil];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadAccessories:) name:kDidUpdateCharacteristicValue object:nil];
+
     [self updateCurrentAccessories];
 }
 
@@ -100,8 +100,19 @@
     SMCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kSMCollectionViewCell forIndexPath:indexPath];
     
     HMService *service = self.dataList[indexPath.row];
-    cell.topLabel.text = [NSString stringWithFormat:@"%@ > %@", service.accessory.room.name, service.name];
+    
+    for (HMCharacteristic *characteristic in service.characteristics) {
+        if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState] ||
+            [characteristic.characteristicType isEqualToString:HMCharacteristicTypeObstructionDetected] ||
+            [characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetLockMechanismState]) {
+            cell.on = [characteristic.value boolValue];
+            break;
+        }
+    }
 
+    cell.topLabel.text = [NSString stringWithFormat:@"%@ > %@", service.accessory.room.name, service.name];
+    cell.serviceType = service.serviceType;
+    
     __weak typeof(self) weakSelf = self;
     cell.editButtonPressed = ^{
         SMAccessoryDetailViewController *vc = [[SMAccessoryDetailViewController alloc] init];
