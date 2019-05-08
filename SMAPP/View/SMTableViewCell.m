@@ -34,7 +34,7 @@
     rightLabel.font = FONT_BODY;
     [self.contentView addSubview:rightLabel];
     [rightLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.right.bottom.equalTo(rightLabel.superview);
+        make.right.top.bottom.equalTo(rightLabel.superview);
     }];
     _rightLabel = rightLabel;
 
@@ -50,6 +50,18 @@
         self.rightLabel.text = @"Not Available";
         self.rightLabel.textColor = HEXCOLOR(0xFF0000);
     }
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    
+    [self.rightLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+        if (self.accessoryView) {
+            make.right.equalTo(self.rightLabel.superview).offset(-10);
+        } else {
+            make.right.equalTo(self.rightLabel.superview);
+        }
+    }];
 }
 
 @end

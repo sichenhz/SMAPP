@@ -39,16 +39,16 @@
     }
     HMCharacteristic *characteristic = self.service.characteristics[indexPath.row];
     if (characteristic.value != nil) {
-        cell.textLabel.text = characteristic.value;;
+        cell.textLabel.text = [NSString stringWithFormat:@"%@", characteristic.value];
     } else {
         cell.textLabel.text = @"";
     }
     
     cell.detailTextLabel.text = characteristic.localizedDescription;
     
-    if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetLockMechanismState] ||
-        [characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState] ||
-        [characteristic.characteristicType isEqualToString:HMCharacteristicTypeObstructionDetected]) {
+    if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState] ||
+        [characteristic.characteristicType isEqualToString:HMCharacteristicTypeObstructionDetected] ||
+        [characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetLockMechanismState]) {
         
         BOOL lockState = [characteristic.value boolValue];
         
@@ -63,8 +63,7 @@
                [characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetRelativeHumidity] ||
                [characteristic.characteristicType isEqualToString:HMCharacteristicTypeCoolingThreshold] ||
                [characteristic.characteristicType isEqualToString:HMCharacteristicTypeHeatingThreshold] ||
-               [characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetPosition])
-    {
+               [characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetPosition]) {
         UISlider *slider = [[UISlider alloc] init];
         slider.bounds = CGRectMake(0, 0, 125, slider.bounds.size.height);
         slider.maximumValue = [characteristic.metadata.maximumValue floatValue];
@@ -74,13 +73,12 @@
         [slider addTarget:self action:@selector(changeSliderValue:) forControlEvents:UIControlEventValueChanged];
         
         cell.accessoryView = slider;
-        
     }
     
     return cell;
 }
 
-- (void)changeLockState:(id)sender{
+- (void)changeLockState:(id)sender {
     
     CGPoint switchOriginInTableView = [sender convertPoint:CGPointZero toView:self.tableView];
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:switchOriginInTableView];
@@ -97,7 +95,7 @@
             
             if (error == nil) {
                 dispatch_async(dispatch_get_main_queue(), ^(void) {
-                    [self.tableView cellForRowAtIndexPath:indexPath].textLabel.text = characteristic.value;
+                    [self.tableView cellForRowAtIndexPath:indexPath].textLabel.text = [NSString stringWithFormat:@"%@", characteristic.value];
                 });
             } else {
                 NSLog(@"error in writing characterstic: %@", error);
@@ -117,9 +115,9 @@
     
     HMCharacteristic *characteristic = [self.service.characteristics objectAtIndex:indexPath.row];
     
-    [characteristic writeValue:[NSNumber numberWithFloat:slider.value] completionHandler:^(NSError *error){
+    [characteristic writeValue:[NSNumber numberWithFloat:slider.value] completionHandler:^(NSError *error) {
         
-        if(error == nil) {
+        if (error == nil) {
             dispatch_async(dispatch_get_main_queue(), ^(void) {
                 [self.tableView cellForRowAtIndexPath:indexPath].textLabel.text = [NSString stringWithFormat:@"%.0f", slider.value] ;
             });
@@ -139,7 +137,7 @@
         UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
         
         dispatch_async(dispatch_get_main_queue(), ^(void){
-            cell.textLabel.text = characteristic.value;
+            cell.textLabel.text = [NSString stringWithFormat:@"%@", characteristic.value];
         });
     }
 }

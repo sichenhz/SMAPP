@@ -340,7 +340,48 @@ HMAccessoryDelegate
     cell.available = service.accessory.reachable;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
+    for (HMCharacteristic *characteristic in service.characteristics) {
+        if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState] ||
+            [characteristic.characteristicType isEqualToString:HMCharacteristicTypeObstructionDetected] ||
+            [characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetLockMechanismState]) {
+
+            BOOL lockState = [characteristic.value boolValue];
+            UISwitch *lockSwitch = [[UISwitch alloc] init];
+            lockSwitch.on = lockState;
+            [lockSwitch addTarget:self action:@selector(changeLockState:) forControlEvents:UIControlEventValueChanged];
+            cell.accessoryView = lockSwitch;
+            break;
+        }
+    }    
     return cell;
+}
+
+- (void)changeLockState:(id)sender {
+    CGPoint switchOriginInTableView = [sender convertPoint:CGPointZero toView:self.tableView];
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:switchOriginInTableView];
+
+    NSArray *services = self.dataList[indexPath.section];
+    HMService *service = services[indexPath.row];
+
+    for (HMCharacteristic *characteristic in service.characteristics) {
+        if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetLockMechanismState]  ||
+            [characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState] ||
+            [characteristic.characteristicType isEqualToString:HMCharacteristicTypeObstructionDetected]) {
+            
+            BOOL changedLockState = ![characteristic.value boolValue];
+            
+            [characteristic writeValue:[NSNumber numberWithBool:changedLockState] completionHandler:^(NSError *error) {
+                if (error == nil) {
+                    dispatch_async(dispatch_get_main_queue(), ^(void) {
+                        NSLog(@"Changed Lock State: %@", characteristic.value);
+                    });
+                } else {
+                    NSLog(@"error in writing characterstic: %@", error);
+                }
+            }];
+            break;
+        }
+    }
 }
 
 #pragma mark - UITableViewDelegate
