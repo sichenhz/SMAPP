@@ -112,17 +112,33 @@ HMAccessoryDelegate
 - (void)updateCurrentAccessories {
     
     HMHomeManager *manager = [HMHomeManager sharedManager];
-
     NSMutableArray *arrM = [NSMutableArray array];
-    [arrM addObject:manager.primaryHome.roomForEntireHome];
-    [arrM addObjectsFromArray:manager.primaryHome.rooms];
-    self.dataList = [NSArray arrayWithArray:arrM];
+    NSMutableArray *services = [NSMutableArray array];
 
-    for (HMRoom *room in self.dataList) {
+    for (HMAccessory *accessory in manager.primaryHome.roomForEntireHome.accessories) {
+        for (HMService *service in accessory.services) {
+            if (service.isUserInteractive) {
+                [services addObject:service];
+            }
+        }
+        accessory.delegate = self;
+    }
+    if (services.count) [arrM addObject:services];
+    
+    for (HMRoom *room in manager.primaryHome.rooms) {
+        services = [NSMutableArray array];
         for (HMAccessory *accessory in room.accessories) {
+            for (HMService *service in accessory.services) {
+                if (service.isUserInteractive) {
+                    [services addObject:service];
+                }
+            }
             accessory.delegate = self;
         }
+        if (services.count) [arrM addObject:services];
     }
+    
+    self.dataList = [NSArray arrayWithArray:arrM];
     [self.tableView reloadData];
 }
 
@@ -307,8 +323,8 @@ HMAccessoryDelegate
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    HMRoom *room = self.dataList[section];
-    return room.accessories.count;
+    NSArray *services = self.dataList[section];
+    return services.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -317,11 +333,11 @@ HMAccessoryDelegate
         cell = [[SMTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kSMTableViewCell];
     }
     
-    HMRoom *room = self.dataList[indexPath.section];
-    HMAccessory *accessory = room.accessories[indexPath.row];
+    NSArray *services = self.dataList[indexPath.section];
+    HMService *service = services[indexPath.row];
     
-    cell.leftLabel.text = accessory.name;
-    cell.available = accessory.reachable;
+    cell.leftLabel.text = service.name;
+    cell.available = service.accessory.reachable;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
     return cell;
@@ -348,8 +364,8 @@ HMAccessoryDelegate
         header = [[SMTableViewHeaderView alloc] initWithReuseIdentifier:kSMTableViewHeaderView];
     }
     
-    HMRoom *room = self.dataList[section];
-    header.titleLabel.text = room.name;
+    NSArray *services = self.dataList[section];
+    header.titleLabel.text = ((HMService *)services.firstObject).accessory.room.name;
     return header;
 }
 

@@ -39,7 +39,7 @@
     }
     HMCharacteristic *characteristic = self.service.characteristics[indexPath.row];
     if (characteristic.value != nil) {
-        cell.textLabel.text = [NSString stringWithFormat:@"%@", characteristic.value];;
+        cell.textLabel.text = characteristic.value;;
     } else {
         cell.textLabel.text = @"";
     }
@@ -93,11 +93,11 @@
         
         BOOL changedLockState = ![characteristic.value boolValue];
         
-        [characteristic writeValue:[NSNumber numberWithBool:changedLockState] completionHandler:^(NSError *error){
+        [characteristic writeValue:[NSNumber numberWithBool:changedLockState] completionHandler:^(NSError *error) {
             
-            if(error == nil) {
-                dispatch_async(dispatch_get_main_queue(), ^(void){
-                    [self.tableView cellForRowAtIndexPath:indexPath].textLabel.text = [NSString stringWithFormat:@"%@", characteristic.value] ;
+            if (error == nil) {
+                dispatch_async(dispatch_get_main_queue(), ^(void) {
+                    [self.tableView cellForRowAtIndexPath:indexPath].textLabel.text = characteristic.value;
                 });
             } else {
                 NSLog(@"error in writing characterstic: %@", error);
@@ -139,7 +139,7 @@
         UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
         
         dispatch_async(dispatch_get_main_queue(), ^(void){
-            cell.textLabel.text = [NSString stringWithFormat:@"%@", characteristic.value];
+            cell.textLabel.text = characteristic.value;
         });
     }
 }
