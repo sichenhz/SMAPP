@@ -38,12 +38,16 @@ HMAccessoryDelegate
 
     [self initNavigationItemWithLeftTitle:@"Homes"];
     
-    [self initHeaderViewWithCompletionHandler:^(UIButton * _Nonnull leftButton, UIButton * _Nonnull rightButton) {
+    [self initHeaderViewWithCompletionHandler:^(UIButton * _Nonnull leftButton, UIButton * _Nonnull rightButton, UIButton * _Nonnull leftButton2, UIButton * _Nonnull rightButton2) {
         [leftButton setTitle:@"Remove Home" forState:UIControlStateNormal];
         [rightButton setTitle:@"Add Home" forState:UIControlStateNormal];
-        
+        [leftButton2 setTitle:@"Remove Room" forState:UIControlStateNormal];
+        [rightButton2 setTitle:@"Add Room" forState:UIControlStateNormal];
+
         [leftButton addTarget:self action:@selector(removeHome:) forControlEvents:UIControlEventTouchUpInside];
         [rightButton addTarget:self action:@selector(addHome:) forControlEvents:UIControlEventTouchUpInside];
+        [leftButton2 addTarget:self action:@selector(removeRoom:) forControlEvents:UIControlEventTouchUpInside];
+        [rightButton2 addTarget:self action:@selector(addRoom:) forControlEvents:UIControlEventTouchUpInside];
     }];
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -67,8 +71,8 @@ HMAccessoryDelegate
 //    self.navigationItem.rightBarButtonItem = rightbuttonItem;
 }
 
-- (void)initHeaderViewWithCompletionHandler:(void (^)(UIButton *leftButton, UIButton *rightButton))completion {
-    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 54)];
+- (void)initHeaderViewWithCompletionHandler:(void (^)(UIButton *leftButton, UIButton *rightButton, UIButton *leftButton2, UIButton *rightButton2))completion {
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 98)];
     
     UIButton *leftButton = [[UIButton alloc] init];
     [headerView addSubview:leftButton];
@@ -96,9 +100,43 @@ HMAccessoryDelegate
     [rightButton setTitleColor:HEXCOLOR(0xFFA500) forState:UIControlStateNormal];
     [rightButton.titleLabel setFont:FONT_H2_BOLD];
     
+    UIView *line = [[UIView alloc] init];
+    [headerView addSubview:line];
+    [line mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.centerY.right.equalTo(line.superview);
+        make.height.equalTo(@0.5);
+    }];
+    line.backgroundColor = [UIColor lightGrayColor];
+    
+    UIButton *leftButton2 = [[UIButton alloc] init];
+    [headerView addSubview:leftButton2];
+    [leftButton2 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(leftButton2.superview).offset(15);
+        make.top.equalTo(leftButton.mas_bottom);
+        make.width.equalTo(@120);
+        make.height.equalTo(@44);
+    }];
+    leftButton2.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    [leftButton2 setTitleColor:HEXCOLOR(0xFFA500) forState:UIControlStateNormal];
+    [leftButton2 setTitleColor:[UIColor grayColor] forState:UIControlStateDisabled];
+    [leftButton2.titleLabel setFont:FONT_H2_BOLD];
+    
+    UIButton *rightButton2 = [[UIButton alloc] init];
+    [headerView addSubview:rightButton2];
+    [rightButton2 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(leftButton2.superview).offset(-15);
+        make.top.equalTo(leftButton.mas_bottom);
+        make.width.equalTo(@120);
+        make.height.equalTo(@44);
+    }];
+    
+    rightButton2.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+    [rightButton2 setTitleColor:HEXCOLOR(0xFFA500) forState:UIControlStateNormal];
+    [rightButton2.titleLabel setFont:FONT_H2_BOLD];
+    
     self.tableView.tableHeaderView = headerView;
     
-    completion(leftButton, rightButton);
+    completion(leftButton, rightButton, leftButton2, rightButton2);
 }
 
 - (void)updateCurrentHomeInfo {
@@ -258,6 +296,71 @@ HMAccessoryDelegate
     [alertView show];
 }
 
+- (void)removeRoom:(id)sender {
+    
+    HMHomeManager *manager = [HMHomeManager sharedManager];
+    
+    SMAlertView *alertView = [SMAlertView alertViewWithTitle:nil message:nil style:SMAlertViewStyleActionSheet];
+
+    for (HMRoom *room in manager.primaryHome.rooms) {
+        
+        NSString *roomName = room.name;
+        __weak typeof(self) weakSelf = self;
+        [alertView addAction:[SMAlertAction actionWithTitle:roomName style:SMAlertActionStyleDefault handler:^(SMAlertAction * _Nonnull action) {
+            NSString *message = [NSString stringWithFormat:@"Are you sure you want to remove %@?", roomName];
+            SMAlertView *alertView = [SMAlertView alertViewWithTitle:nil message:message style:SMAlertViewStyleActionSheet];
+            
+            [alertView addAction:[SMAlertAction actionWithTitle:@"Remove" style:SMAlertActionStyleConfirm
+                                                        handler:^(SMAlertAction * _Nonnull action) {
+                                                            
+                                                            [manager.primaryHome removeRoom:room completionHandler:^(NSError * _Nullable error) {
+                                                                if (error) {
+                                                                    NSLog(@"%@", error);
+                                                                } else {
+                                                                    if (manager.homes.count) {
+                                                                        [manager updatePrimaryHome:manager.homes.firstObject completionHandler:^(NSError * _Nullable error) {
+                                                                            [weakSelf updateCurrentHomeInfo];
+                                                                            [weakSelf updateCurrentAccessories];
+                                                                        }];
+                                                                    }
+                                                                }
+                                                            }];
+                                                        }]];
+            [alertView addAction:[SMAlertAction actionWithTitle:@"Cancel" style:SMAlertActionStyleCancel
+                                                        handler:nil]];
+            [alertView show];
+        }]];
+    }
+    [alertView addAction:[SMAlertAction actionWithTitle:@"Cancel" style:SMAlertActionStyleCancel handler:nil]];
+    [alertView show];
+}
+
+- (void)addRoom:(id)sender {
+    
+    __weak HMHomeManager *manager = [HMHomeManager sharedManager];
+    
+    SMAlertView *alertView = [SMAlertView alertViewWithTitle:@"Add Room..." message:@"Please make sure the name is unique." style:SMAlertViewStyleAlert];
+    
+    [alertView addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+        textField.placeholder = @"Ex. Kitchen, Living Room";
+    }];
+    
+    [alertView addAction:[SMAlertAction actionWithTitle:@"Cancel" style:SMAlertActionStyleCancel handler:nil]];
+    
+    __weak typeof(self) weakSelf = self;
+    [alertView addAction:[SMAlertAction actionWithTitle:@"Confirm" style:SMAlertActionStyleConfirm handler:^(SMAlertAction * _Nonnull action) {
+        NSString *newName = alertView.textFields.firstObject.text;
+        [manager.primaryHome addRoomWithName:newName completionHandler:^(HMRoom * _Nullable room, NSError * _Nullable error) {
+            if (error) {
+                NSLog(@"%@", error);
+            } else {
+                // TODO
+            }
+        }];
+    }]];
+    [alertView show];
+}
+
 #pragma mark - HMHomeManagerDelegate
 
 - (void)homeManagerDidUpdateHomes:(HMHomeManager *)manager {
@@ -367,8 +470,9 @@ HMAccessoryDelegate
     cell.leftLabel.text = service.name;
     cell.available = service.accessory.reachable;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    cell.accessoryView = nil;
     cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-
+    
     for (HMCharacteristic *characteristic in service.characteristics) {
         if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState] ||
             [characteristic.characteristicType isEqualToString:HMCharacteristicTypeObstructionDetected] ||
@@ -379,6 +483,7 @@ HMAccessoryDelegate
             lockSwitch.enabled = service.accessory.isReachable;
             [lockSwitch addTarget:self action:@selector(changeLockState:) forControlEvents:UIControlEventValueChanged];
             
+            cell.accessoryType = UITableViewCellAccessoryNone;
             cell.accessoryView = lockSwitch;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             
