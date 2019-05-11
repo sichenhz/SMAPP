@@ -36,12 +36,12 @@
                                                  selectedImageName:@"tabbar_discover_selected"];
     
     UINavigationController *nav3 = [self setUpNavigationController:[[SMNotificationViewController alloc] init]
-                                                             title:@"Notification"
+                                                             title:@"Notifications"
                                                          imageName:@"tabbar_message_center"
                                                  selectedImageName:@"tabbar_message_center_selected"];
     
     UINavigationController *nav4 = [self setUpNavigationController:[[SMSettingViewController alloc] init]
-                                                             title:@"Setting"
+                                                             title:@"Settings"
                                                          imageName:@"tabbar_profile"
                                                  selectedImageName:@"tabbar_profile_selected"];
 

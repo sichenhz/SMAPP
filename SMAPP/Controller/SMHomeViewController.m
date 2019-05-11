@@ -544,6 +544,12 @@ HMAccessoryDelegate
                     dispatch_async(dispatch_get_main_queue(), ^(void) {
                         NSLog(@"Changed Lock State: %@", characteristic.value);
                     });
+                    
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateCharacteristicValue
+                                                                        object:self
+                                                                      userInfo:@{@"accessory": service.accessory,
+                                                                                 @"service": service,
+                                                                                 @"characteristic": characteristic}];
                 } else {
                     NSLog(@"%@", error);
                 }

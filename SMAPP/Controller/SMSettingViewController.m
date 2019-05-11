@@ -26,7 +26,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.title = @"My Devices";
+    self.navigationItem.title = @"My Devices";
     
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
     CGFloat itemWidth = ([UIScreen mainScreen].bounds.size.width - 40) / 3;

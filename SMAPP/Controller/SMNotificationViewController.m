@@ -17,7 +17,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = @"Notification";
+    self.title = @"Notifications";
 }
 
 @end
