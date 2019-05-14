@@ -13,6 +13,7 @@
 #import "HMHomeManager+Share.h"
 #import "SMAccessoryDetailViewController.h"
 #import "SMAlertView.h"
+#import "UIViewController+Show.h"
 
 @interface SMAccessoryListViewController () <UICollectionViewDelegate, UICollectionViewDataSource>
 
@@ -130,7 +131,7 @@
                                                         HMHomeManager *namager = [HMHomeManager sharedManager];
                                                         [namager.primaryHome removeAccessory:service.accessory completionHandler:^(NSError * _Nullable error) {
                                                             if (error) {
-                                                                NSLog(@"%@", error);
+                                                                [self showError:error];
                                                             } else {
                                                                 [[NSNotificationCenter defaultCenter] postNotificationName:kDidRemoveAccessory object:self userInfo:@{@"accessory" : service.accessory}];
                                                             }

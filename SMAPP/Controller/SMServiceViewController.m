@@ -8,6 +8,7 @@
 
 #import "SMServiceViewController.h"
 #import "Const.h"
+#import "UIViewController+Show.h"
 
 @interface SMServiceViewController ()
 
@@ -95,8 +96,9 @@
         BOOL changedLockState = ![characteristic.value boolValue];
         
         [characteristic writeValue:[NSNumber numberWithBool:changedLockState] completionHandler:^(NSError *error) {
-            
-            if (error == nil) {
+            if (error) {
+                [self showError:error];
+            } else {
                 dispatch_async(dispatch_get_main_queue(), ^(void) {
                     [self.tableView cellForRowAtIndexPath:indexPath].textLabel.text = [NSString stringWithFormat:@"%@", characteristic.value];
                 });
@@ -106,9 +108,7 @@
                                                                   userInfo:@{@"accessory": self.service.accessory,
                                                                              @"service": self.service,
                                                                              @"characteristic": characteristic}];
-
-            } else {
-                NSLog(@"%@", error);
+                
             }
         }];
     }
@@ -126,8 +126,9 @@
     HMCharacteristic *characteristic = self.service.characteristics[indexPath.row];
     
     [characteristic writeValue:[NSNumber numberWithFloat:slider.value] completionHandler:^(NSError *error) {
-        
-        if (error == nil) {
+        if (error) {
+            [self showError:error];
+        } else {
             dispatch_async(dispatch_get_main_queue(), ^(void) {
                 [self.tableView cellForRowAtIndexPath:indexPath].textLabel.text = [NSString stringWithFormat:@"%.0f", slider.value] ;
             });
@@ -137,8 +138,6 @@
                                                               userInfo:@{@"accessory": self.service.accessory,
                                                                          @"service": self.service,
                                                                          @"characteristic": characteristic}];
-        } else {
-            NSLog(@"%@", error);
         }
     }];
 }

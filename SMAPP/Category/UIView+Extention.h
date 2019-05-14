@@ -23,6 +23,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) CGFloat width;
 @property (nonatomic) CGFloat height;
 
+@property (nonatomic) CGSize size;
+
 @end
 
 NS_ASSUME_NONNULL_END

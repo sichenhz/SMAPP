@@ -9,6 +9,7 @@
 #import "SMAddAccessoryViewController.h"
 #import "HMHomeManager+Share.h"
 #import "Const.h"
+#import "UIViewController+Show.h"
 
 @interface SMAddAccessoryViewController () <HMAccessoryBrowserDelegate, UINavigationControllerDelegate>
 
@@ -85,11 +86,9 @@
     HMAccessory *accessory = [self.dataList objectAtIndex:indexPath.row];
     
     [[HMHomeManager sharedManager].primaryHome addAccessory:accessory completionHandler:^(NSError *error) {
-        
         if (error) {
-            NSLog(@"%@", error);
+            [self showError:error];
         } else {
-            NSLog(@"add accessory success");
             [tableView reloadData];
             
             [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:self];

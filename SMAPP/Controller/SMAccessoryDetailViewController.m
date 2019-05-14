@@ -11,6 +11,7 @@
 #import "Const.h"
 #import "SMAlertView.h"
 #import "HMHomeManager+Share.h"
+#import "UIViewController+Show.h"
 
 @interface SMAccessoryDetailViewController ()
 
@@ -112,7 +113,7 @@
                     NSString *newName = alertView.textFields.firstObject.text;
                     [manager.primaryHome addRoomWithName:newName completionHandler:^(HMRoom * _Nullable room, NSError * _Nullable error) {
                         if (error) {
-                            NSLog(@"%@", error);
+                            [self showError:error];
                         } else {
                             [self assignAccessory:self.accessory toRoom:room];
                         }
@@ -139,9 +140,8 @@
     
     [[HMHomeManager sharedManager].primaryHome assignAccessory:accessory toRoom:room completionHandler:^(NSError * _Nullable error) {
         if (error) {
-            NSLog(@"%@", error);
+            [self showError:error];
         } else {
-            NSLog(@"%@ room updated.", room.name);
             [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:self];
             [self.navigationController popViewControllerAnimated:YES];
         }

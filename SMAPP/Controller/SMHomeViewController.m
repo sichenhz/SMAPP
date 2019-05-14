@@ -18,6 +18,7 @@
 #import "SMAddAccessoryViewController.h"
 #import "SMRoomViewController.h"
 #import "SMHomeListViewController.h"
+#import "UIViewController+Show.h"
 
 @interface SMHomeViewSectionItem : NSObject
 
@@ -275,7 +276,7 @@ HMAccessoryDelegate
             [alertView addAction:[SMAlertAction actionWithTitle:homeName style:SMAlertActionStyleDefault selected:home.isPrimary handler:^(SMAlertAction * _Nonnull action) {
                 [manager updatePrimaryHome:home completionHandler:^(NSError * _Nullable error) {
                     if (error) {
-                        NSLog(@"%@", error);
+                        [self showError:error];
                     } else {
                         NSLog(@"Primary home updated.");
                         [weakSelf updateCurrentHomeInfo];
@@ -334,12 +335,16 @@ HMAccessoryDelegate
                                                             
                                                             [manager.primaryHome removeRoom:room completionHandler:^(NSError * _Nullable error) {
                                                                 if (error) {
-                                                                    NSLog(@"%@", error);
+                                                                    [weakSelf showError:error];
                                                                 } else {
                                                                     if (manager.homes.count) {
                                                                         [manager updatePrimaryHome:manager.homes.firstObject completionHandler:^(NSError * _Nullable error) {
-                                                                            [weakSelf updateCurrentHomeInfo];
-                                                                            [weakSelf updateCurrentAccessories];
+                                                                            if (error) {
+                                                                                [weakSelf showError:error];
+                                                                            } else {
+                                                                                [weakSelf updateCurrentHomeInfo];
+                                                                                [weakSelf updateCurrentAccessories];
+                                                                            }
                                                                         }];
                                                                     }
                                                                 }
@@ -371,11 +376,15 @@ HMAccessoryDelegate
         NSString *newName = alertView.textFields.firstObject.text;
         [manager addHomeWithName:newName completionHandler:^(HMHome * _Nullable home, NSError * _Nullable error) {
             if (error) {
-                NSLog(@"%@", error);
+                [weakSelf showError:error];
             } else {
                 [manager updatePrimaryHome:home completionHandler:^(NSError * _Nullable error) {
-                    [weakSelf updateCurrentHomeInfo];
-                    [weakSelf updateCurrentAccessories];
+                    if (error) {
+                        [weakSelf showError:error];
+                    } else {
+                        [weakSelf updateCurrentHomeInfo];
+                        [weakSelf updateCurrentAccessories];
+                    }
                 }];
             }
         }];
@@ -399,7 +408,7 @@ HMAccessoryDelegate
         NSString *newName = alertView.textFields.firstObject.text;
         [manager.primaryHome addRoomWithName:newName completionHandler:^(HMRoom * _Nullable room, NSError * _Nullable error) {
             if (error) {
-                NSLog(@"%@", error);
+                [self showError:error];
             } else {
                 // TODO
             }
@@ -435,8 +444,12 @@ HMAccessoryDelegate
 - (void)homeManager:(HMHomeManager *)manager didAddHome:(HMHome *)home {
     typeof(self)weakSelf = self;
     [[HMHomeManager sharedManager] updatePrimaryHome:home completionHandler:^(NSError * _Nullable error) {
-        [weakSelf updateCurrentHomeInfo];
-        [weakSelf updateCurrentAccessories];
+        if (error) {
+            [self showError:error];
+        } else {
+            [weakSelf updateCurrentHomeInfo];
+            [weakSelf updateCurrentAccessories];
+        }
     }];
 }
 
@@ -451,8 +464,12 @@ HMAccessoryDelegate
     if (manager.primaryHome) {
         // When a primaryHome is deleted, the manager.primaryHome.isPrimary will still be NO, so update here
         [manager updatePrimaryHome:manager.primaryHome completionHandler:^(NSError * _Nullable error) {
-            [self updateCurrentHomeInfo];
-            [self updateCurrentAccessories];
+            if (error) {
+                [self showError:error];
+            } else {
+                [self updateCurrentHomeInfo];
+                [self updateCurrentAccessories];
+            }
         }];
     } else {
         [self showNoHomes];
@@ -593,7 +610,9 @@ HMAccessoryDelegate
             BOOL changedLockState = ![characteristic.value boolValue];
             
             [characteristic writeValue:[NSNumber numberWithBool:changedLockState] completionHandler:^(NSError *error) {
-                if (error == nil) {
+                if (error) {
+                    [self showError:error];
+                } else {
                     dispatch_async(dispatch_get_main_queue(), ^(void) {
                         NSLog(@"Changed Lock State: %@", characteristic.value);
                     });
@@ -603,8 +622,6 @@ HMAccessoryDelegate
                                                                       userInfo:@{@"accessory": service.accessory,
                                                                                  @"service": service,
                                                                                  @"characteristic": characteristic}];
-                } else {
-                    NSLog(@"%@", error);
                 }
             }];
             break;

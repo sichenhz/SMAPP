@@ -13,6 +13,7 @@
 #import "SMHomeListTableViewCell.h"
 #import "Masonry.h"
 #import "SMHomeSettingViewController.h"
+#import "UIViewController+Show.h"
 
 @implementation SMHomeListViewController
 
@@ -70,7 +71,7 @@
         NSString *newName = alertView.textFields.firstObject.text;
         [manager addHomeWithName:newName completionHandler:^(HMHome * _Nullable home, NSError * _Nullable error) {
             if (error) {
-                NSLog(@"%@", error);
+                [self showError:error];
             } else {
                 [self.tableView reloadData];
             }

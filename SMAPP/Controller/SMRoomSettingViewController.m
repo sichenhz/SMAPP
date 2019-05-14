@@ -11,6 +11,7 @@
 #import "SMTextFieldTableViewCell.h"
 #import "SMButtonTableViewCell.h"
 #import "SMAlertView.h"
+#import "UIViewController+Show.h"
 
 @interface SMRoomSettingViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
 
@@ -48,7 +49,7 @@
     SMTextFieldTableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
     [self.room updateName:cell.textField.text completionHandler:^(NSError * _Nullable error) {
         if (error) {
-            NSLog(@"%@", error);
+            [self showError:error];
         } else {
             [self.navigationController popViewControllerAnimated:YES];
             [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateRoomName object:self userInfo:@{@"room" : self.room}];
@@ -64,7 +65,7 @@
                                                 handler:^(SMAlertAction * _Nonnull action) {
                                                     [[HMHomeManager sharedManager].primaryHome removeRoom:self.room completionHandler:^(NSError * _Nullable error) {
                                                         if (error) {
-                                                            NSLog(@"%@", error);
+                                                            [self showError:error];
                                                         } else {
                                                             [self.navigationController popViewControllerAnimated:YES];
                                                             [[NSNotificationCenter defaultCenter] postNotificationName:kDidRemoveRoom object:self userInfo:@{@"room" : self.room}];
@@ -79,7 +80,11 @@
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 3;
+    if ([self.room isEqual:[HMHomeManager sharedManager].primaryHome.roomForEntireHome]) {
+        return 2;
+    } else {
+        return 3;
+    }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {

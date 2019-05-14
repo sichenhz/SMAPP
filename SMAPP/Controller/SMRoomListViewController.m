@@ -12,9 +12,11 @@
 #import "SMHomeListTableViewCell.h"
 #import "Masonry.h"
 #import "SMRoomSettingViewController.h"
+#import "UIViewController+Show.h"
 
 @interface SMRoomListViewController ()
 
+@property (nonatomic, strong) NSMutableArray *dataList;
 @property (nonatomic, strong) HMHome *home;
 
 @end
@@ -24,6 +26,9 @@
 - (instancetype)initWithHome:(HMHome *)home {
     if (self = [super init]) {
         _home = home;
+        _dataList = [NSMutableArray array];
+        [_dataList addObject:home.roomForEntireHome];
+        [_dataList addObjectsFromArray:home.rooms];
     }
     return self;
 }
@@ -81,7 +86,7 @@
         __weak typeof(self) weakSelf = self;
         [self.home addRoomWithName:newName completionHandler:^(HMRoom * _Nullable room, NSError * _Nullable error) {
             if (error) {
-                NSLog(@"%@", error);
+                [weakSelf showError:error];
             } else {
                 [weakSelf.tableView reloadData];
             }
@@ -93,7 +98,7 @@
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.home.rooms.count;
+    return self.dataList.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -102,7 +107,7 @@
         cell = [[SMHomeListTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kUITableViewCell];
     }
     
-    HMRoom *room = self.home.rooms[indexPath.row];
+    HMRoom *room = self.dataList[indexPath.row];
     cell.leftLabel.text = room.name;
     cell.selectedImageView.hidden = YES;
     
@@ -137,7 +142,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    HMRoom *room = self.home.rooms[indexPath.item];
+    HMRoom *room = self.dataList[indexPath.item];
     SMRoomSettingViewController *settingVC = [[SMRoomSettingViewController alloc] initWithRoom:room];
     [self.navigationController pushViewController:settingVC animated:YES];
 }

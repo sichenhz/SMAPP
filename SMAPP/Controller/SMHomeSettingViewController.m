@@ -13,6 +13,7 @@
 #import "SMButtonTableViewCell.h"
 #import "UITextView+Placeholder.h"
 #import "SMAlertView.h"
+#import "UIViewController+Show.h"
 
 @interface SMHomeSettingViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
 
@@ -50,7 +51,7 @@
     SMTextFieldTableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
     [self.home updateName:cell.textField.text completionHandler:^(NSError * _Nullable error) {
         if (error) {
-            NSLog(@"%@", error);
+            [self showError:error];
         } else {
             [self.navigationController popViewControllerAnimated:YES];
             [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateHomeName object:self userInfo:@{@"home" : self.home}];
@@ -69,7 +70,7 @@
                                                     handler:^(SMAlertAction * _Nonnull action) {
                                                         [manager removeHome:self.home completionHandler:^(NSError * _Nullable error) {
                                                             if (error) {
-                                                                NSLog(@"%@", error);
+                                                                [self showError:error];
                                                             } else {
                                                                 [self.navigationController popViewControllerAnimated:YES];
                                                                 [[NSNotificationCenter defaultCenter] postNotificationName:kDidRemoveHome object:self userInfo:@{@"home" : self.home}];

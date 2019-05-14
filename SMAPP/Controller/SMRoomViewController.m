@@ -12,6 +12,7 @@
 #import "SMTableViewHeaderView.h"
 #import "SMAlertView.h"
 #import "SMRoomListViewController.h"
+#import "UIViewController+Show.h"
 
 @interface SMRoomViewSectionItem : NSObject
 
@@ -157,6 +158,16 @@
         
         SMAlertView *alertView = [SMAlertView alertViewWithTitle:nil message:nil style:SMAlertViewStyleActionSheet];
         
+        HMRoom *roomForEntireHome = manager.primaryHome.roomForEntireHome;
+        NSString *roomName = roomForEntireHome.name;
+        __weak typeof(self) weakSelf = self;
+        BOOL isSelected = [roomName isEqualToString:self.navigationItem.title];
+        [alertView addAction:[SMAlertAction actionWithTitle:roomName style:SMAlertActionStyleDefault selected:isSelected handler:^(SMAlertAction * _Nonnull action) {
+            weakSelf.room = roomForEntireHome;
+            weakSelf.navigationItem.title = roomForEntireHome.name;
+            [weakSelf updateCurrentAccessories];
+        }]];
+        
         for (HMRoom *room in manager.primaryHome.rooms) {
             NSString *roomName = room.name;
             __weak typeof(self) weakSelf = self;
@@ -193,7 +204,7 @@
         NSString *newName = alertView.textFields.firstObject.text;
         [manager.primaryHome addRoomWithName:newName completionHandler:^(HMRoom * _Nullable room, NSError * _Nullable error) {
             if (error) {
-                NSLog(@"%@", error);
+                [self showError:error];
             } else {
                 self.room = room;
                 self.navigationItem.title = room.name;
@@ -219,11 +230,12 @@
         BOOL changedLockState = ![characteristic.value boolValue];
         
         [characteristic writeValue:[NSNumber numberWithBool:changedLockState] completionHandler:^(NSError *error) {
-            
-            if (error == nil) {
+            if (error) {
+                [self showError:error];
+            } else {
                 dispatch_async(dispatch_get_main_queue(), ^(void) {
                     ((SMRoomTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath]).leftLabel.text = [NSString stringWithFormat:@"%@: %@", characteristic.localizedDescription, characteristic.value ? : @"0"];
-
+                    
                 });
                 
                 [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateCharacteristicValue
@@ -232,8 +244,6 @@
                                                                              @"service": item.service,
                                                                              @"characteristic": characteristic}];
                 
-            } else {
-                NSLog(@"%@", error);
             }
         }];
     }
@@ -252,8 +262,9 @@
     HMCharacteristic *characteristic = item.service.characteristics[indexPath.item];
 
     [characteristic writeValue:[NSNumber numberWithFloat:slider.value] completionHandler:^(NSError *error) {
-        
-        if (error == nil) {
+        if (error) {
+            [self showError:error];
+        } else {
             dispatch_async(dispatch_get_main_queue(), ^(void) {
                 ((SMRoomTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath]).leftLabel.text = [NSString stringWithFormat:@"%.0f", slider.value] ;
             });
@@ -263,8 +274,6 @@
                                                               userInfo:@{@"accessory": item.service.accessory,
                                                                          @"service": item.service,
                                                                          @"characteristic": characteristic}];
-        } else {
-            NSLog(@"%@", error);
         }
     }];
 }

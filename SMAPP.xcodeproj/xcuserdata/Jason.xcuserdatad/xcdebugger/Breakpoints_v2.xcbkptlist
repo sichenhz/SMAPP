@@ -40,11 +40,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SMAPP/Controller/SMHomeViewController.m"
-            timestampString = "579554634.084626"
+            timestampString = "579557045.2633671"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "522"
-            endingLineNumber = "522"
+            startingLineNumber = "539"
+            endingLineNumber = "539"
             landmarkName = "-accessoryDidUpdateName:"
             landmarkType = "7">
          </BreakpointContent>
@@ -56,11 +56,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SMAPP/Controller/SMHomeViewController.m"
-            timestampString = "579554634.084715"
+            timestampString = "579557045.263485"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "526"
-            endingLineNumber = "526"
+            startingLineNumber = "543"
+            endingLineNumber = "543"
             landmarkName = "-accessory:didUpdateNameForService:"
             landmarkType = "7">
          </BreakpointContent>
@@ -72,11 +72,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SMAPP/Controller/SMHomeViewController.m"
-            timestampString = "579554634.084778"
+            timestampString = "579557045.263559"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "530"
-            endingLineNumber = "530"
+            startingLineNumber = "547"
+            endingLineNumber = "547"
             landmarkName = "-accessoryDidUpdateServices:"
             landmarkType = "7">
          </BreakpointContent>
