@@ -141,7 +141,7 @@
                         lockSwitch.on = [characteristic.value boolValue];
                     } else if ([cell.accessoryView isKindOfClass:[UISlider class]]) {
                         UISlider *slider = (UISlider *)cell.accessoryView;
-                        slider.value = [characteristic.value floatValue];
+                        slider.value = [characteristic.value integerValue];
                     }
                 });
             }
@@ -252,7 +252,6 @@
 - (void)changeSliderValue:(id)sender {
     
     UISlider *slider = (UISlider*)sender;
-    
     NSLog(@"%f", slider.value);
     
     CGPoint sliderOriginInTableView = [sender convertPoint:CGPointZero toView:self.tableView];
@@ -261,8 +260,9 @@
     SMRoomViewSectionItem *item = self.dataList[indexPath.section];
     HMCharacteristic *characteristic = item.service.characteristics[indexPath.item];
 
-    [characteristic writeValue:[NSNumber numberWithFloat:slider.value] completionHandler:^(NSError *error) {
+    [characteristic writeValue:[NSNumber numberWithInteger:slider.value] completionHandler:^(NSError *error) {
         if (error) {
+            NSLog(@"error");
             [self showError:error];
         } else {
             dispatch_async(dispatch_get_main_queue(), ^(void) {
@@ -328,8 +328,8 @@
         slider.bounds = CGRectMake(0, 0, 125, slider.bounds.size.height);
         slider.maximumValue = [characteristic.metadata.maximumValue floatValue];
         slider.minimumValue = [characteristic.metadata.minimumValue floatValue];
-        slider.value = [characteristic.value floatValue];
-        slider.continuous = true;
+        slider.value = [characteristic.value integerValue];
+        slider.continuous = YES;
         [slider addTarget:self action:@selector(changeSliderValue:) forControlEvents:UIControlEventValueChanged];
         
         cell.accessoryView = slider;
