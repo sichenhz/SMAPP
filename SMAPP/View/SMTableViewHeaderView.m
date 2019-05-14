@@ -22,14 +22,16 @@
 
 - (void)initSubviews {
         
-    UILabel *titleLabel = [[UILabel alloc] init];
-    titleLabel.font = FONT_BODY_BOLD;
-    [self.contentView addSubview:titleLabel];
-    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(titleLabel.superview).offset(15);
-        make.top.bottom.equalTo(titleLabel.superview);
+    UIButton *titleButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    titleButton.titleLabel.font = FONT_BODY_BOLD;
+    [titleButton setTitleColor:COLOR_TITLE forState:UIControlStateNormal];
+    [self.contentView addSubview:titleButton];
+    [titleButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(titleButton.superview).offset(15);
+        make.top.bottom.equalTo(titleButton.superview);
     }];
-    _titleLabel = titleLabel;
+    [titleButton addTarget:self action:@selector(titleButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    _titleButton = titleButton;
     
     UIButton *arrowButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.contentView addSubview:arrowButton];
@@ -49,6 +51,12 @@
         make.left.bottom.right.equalTo(bottomLine.superview);
         make.height.equalTo(@0.5);
     }];
+}
+
+- (void)titleButtonPressed:(UIButton *)sender {
+    if (self.titleButtonPressed) {
+        self.titleButtonPressed();
+    }
 }
 
 - (void)arrowButtonPressed:(UIButton *)sender {

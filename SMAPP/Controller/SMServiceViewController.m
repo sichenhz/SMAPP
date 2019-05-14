@@ -84,7 +84,7 @@
     CGPoint switchOriginInTableView = [sender convertPoint:CGPointZero toView:self.tableView];
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:switchOriginInTableView];
     
-    HMCharacteristic *characteristic = [self.service.characteristics objectAtIndex:indexPath.row];
+    HMCharacteristic *characteristic = self.service.characteristics[indexPath.row];
     
     if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetLockMechanismState]  ||
         [characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState] ||
@@ -121,7 +121,7 @@
     CGPoint sliderOriginInTableView = [sender convertPoint:CGPointZero toView:self.tableView];
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:sliderOriginInTableView];
     
-    HMCharacteristic *characteristic = [self.service.characteristics objectAtIndex:indexPath.row];
+    HMCharacteristic *characteristic = self.service.characteristics[indexPath.row];
     
     [characteristic writeValue:[NSNumber numberWithFloat:slider.value] completionHandler:^(NSError *error) {
         
@@ -129,6 +129,12 @@
             dispatch_async(dispatch_get_main_queue(), ^(void) {
                 [self.tableView cellForRowAtIndexPath:indexPath].textLabel.text = [NSString stringWithFormat:@"%.0f", slider.value] ;
             });
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateCharacteristicValue
+                                                                object:self
+                                                              userInfo:@{@"accessory": self.service.accessory,
+                                                                         @"service": self.service,
+                                                                         @"characteristic": characteristic}];
         } else {
             NSLog(@"%@", error);
         }

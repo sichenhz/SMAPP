@@ -17,7 +17,8 @@ static NSString *const kDidUpdateCurrentHomeInfo = @"kDidUpdateCurrentHomeInfo";
 static NSString *const kDidUpdateCharacteristicValue = @"kDidUpdateCharacteristicValue";
 
 static NSString *const kUITableViewCell = @"kUITableViewCell";
-static NSString *const kSMTableViewCell = @"kSMTableViewCell";
+static NSString *const kSMHomeTableViewCell = @"kSMHomeTableViewCell";
+static NSString *const kSMRoomTableViewCell = @"kSMRoomTableViewCell";
 static NSString *const kSMTableViewHeaderView = @"kSMTableViewHeaderView";
 static NSString *const kSMCollectionViewCell = @"kSMCollectionViewCell";
 
@@ -32,6 +33,7 @@ static NSString *const kSMCollectionViewCell = @"kSMCollectionViewCell";
 #define COLOR_BACKGROUND HEXCOLOR(0xF2F2F2)
 #define COLOR_BACKGROUND_DARK HEXCOLORA(0xDDDEE0, 0.8)
 #define COLOR_LINE HEXCOLORA(0x000000, 0.3)
+#define COLOR_TITLE HEXCOLOR(0x47525E)
 
 // Font
 #define FONT_H1               [UIFont fontWithName:@"CenturyGothic" size:20]

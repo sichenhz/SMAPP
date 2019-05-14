@@ -8,7 +8,7 @@
 
 #import "SMHomeViewController.h"
 #import "SMServiceViewController.h"
-#import "SMTableViewCell.h"
+#import "SMHomeTableViewCell.h"
 #import "SMTableViewHeaderView.h"
 #import "HMHomeManager+Share.h"
 #import "Const.h"
@@ -16,21 +16,22 @@
 #import "SMAlertView.h"
 #import "Masonry.h"
 #import "SMAddAccessoryViewController.h"
+#import "SMRoomViewController.h"
 
 @interface SMHomeViewSectionItem : NSObject
 
 @property (nonatomic, assign, getter=isShowed) BOOL showed;
-@property (nonatomic, copy) NSString *roomName;
-@property (nonatomic, strong) NSArray *services;
+@property (nonatomic, strong) HMRoom *room;
+@property (nonatomic, strong) NSMutableArray *services;
 
 @end
 
 @implementation SMHomeViewSectionItem
 
-+ (instancetype)itemWithServices:(NSMutableArray *)services roomName:(NSString *)roomName showed:(BOOL)showed {
++ (instancetype)itemWithServices:(NSMutableArray *)services room:(HMRoom *)room showed:(BOOL)showed {
     SMHomeViewSectionItem *sectionItem = [[SMHomeViewSectionItem alloc] init];
-    sectionItem.services = [NSArray arrayWithArray:services];
-    sectionItem.roomName = roomName;
+    sectionItem.services = services;
+    sectionItem.room = room;
     sectionItem.showed = showed;
     return sectionItem;
 }
@@ -55,7 +56,7 @@ HMAccessoryDelegate
 
     HMHomeManager *namager = [HMHomeManager sharedManager];
     self.title = namager.primaryHome.name;
-    self.currentShowedSection = -1; // means there is no showed section
+    self.currentShowedSection = -1; // means there is no showed section  by default
     
     namager.delegate = self;
 
@@ -73,7 +74,7 @@ HMAccessoryDelegate
     self.tableView.tableFooterView = [[UIView alloc] init]; // remove the lines
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeAccessories:) name:kDidRemoveAccessory object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCurrentAccessories) name:kDidUpdateAccessory object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCurrentAccessories:) name:kDidUpdateAccessory object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCharacteristicValue:) name:kDidUpdateCharacteristicValue object:nil];
 }
 
@@ -157,7 +158,7 @@ HMAccessoryDelegate
     }
     if (services.count) {
         BOOL showed = [roomForEntireHome.name isEqualToString:showedRoomName];
-        [self.dataList addObject:[SMHomeViewSectionItem itemWithServices:services roomName:roomForEntireHome.name showed:showed]];
+        [self.dataList addObject:[SMHomeViewSectionItem itemWithServices:services room:roomForEntireHome showed:showed]];
         if (showed) {
             self.currentShowedSection = self.dataList.count - 1;
         }
@@ -175,7 +176,7 @@ HMAccessoryDelegate
         }
         if (services.count) {
             BOOL showed = [room.name isEqualToString:showedRoomName];
-            [self.dataList addObject:[SMHomeViewSectionItem itemWithServices:services roomName:room.name showed:showed]];
+            [self.dataList addObject:[SMHomeViewSectionItem itemWithServices:services room:room showed:showed]];
             if (showed) {
                 self.currentShowedSection = self.dataList.count - 1;
             }
@@ -185,11 +186,50 @@ HMAccessoryDelegate
     [self.tableView reloadData];
 }
 
+#pragma mark - Notification
+
+- (void)removeAccessories:(NSNotification *)notification {
+    HMAccessory *accessory = notification.object;
+    NSMutableArray *indexPaths = [NSMutableArray array];
+    for (SMHomeViewSectionItem *item in self.dataList) {
+        NSInteger section = [self.dataList indexOfObject:item];
+        NSArray *services = item.services;
+        for (HMService *service in services) {
+            if ([service.accessory isEqual:accessory]) {
+                NSInteger row = [services indexOfObject:service];
+                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:section];
+                [indexPaths insertObject:indexPath atIndex:0];
+            }
+        }
+    }
+    // remove rows
+    for (NSIndexPath *indexPath in indexPaths) {
+        SMHomeViewSectionItem *item = self.dataList[indexPath.section];
+        [item.services removeObjectAtIndex:indexPath.row];
+    }
+    [self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+    
+    // remove sections
+    NSMutableIndexSet *sections = [NSMutableIndexSet indexSet];
+    for (SMHomeViewSectionItem *item in self.dataList) {
+        if (item.services.count == 0) {
+            NSInteger section = [self.dataList indexOfObject:item];
+            [sections addIndex:section];
+        }
+    }
+    [self.dataList removeObjectsAtIndexes:sections];
+    [self.tableView deleteSections:sections withRowAnimation:UITableViewRowAnimationAutomatic];
+}
+
+- (void)updateCurrentAccessories:(NSNotification *)notification {
+    [self updateCurrentAccessories];
+}
+
 - (void)updateCharacteristicValue:(NSNotification *)notification {
     
     HMService *service = [[notification userInfo] objectForKey:@"service"];
     HMCharacteristic *characteristic = [[notification userInfo] objectForKey:@"characteristic"];
-
+    
     for (SMHomeViewSectionItem *item in self.dataList) {
         NSArray *services = item.services;
         NSInteger section = [self.dataList indexOfObject:item.services];
@@ -207,26 +247,6 @@ HMAccessoryDelegate
             }
         }
     }
-}
-
-- (void)removeAccessories:(NSNotification *)notification {
-    HMAccessory *accessory = notification.object;
-    NSMutableArray *indexPaths = [NSMutableArray array];
-    for (SMHomeViewSectionItem *item in self.dataList) {
-        NSArray *services = item.services;
-        NSInteger section = [self.dataList indexOfObject:services];
-        for (HMService *service in services) {
-            if ([service.accessory isEqual:accessory]) {
-                NSInteger row = [services indexOfObject:service];
-                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:section];
-                [indexPaths insertObject:indexPath atIndex:0];
-            }
-        }
-    }
-    for (NSIndexPath *indexPath in indexPaths) {
-        [self.dataList[indexPath.section] removeObjectAtIndex:indexPath.row];
-    }
-    [self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationLeft];
 }
 
 #pragma mark - Actions
@@ -388,7 +408,7 @@ HMAccessoryDelegate
 
 - (void)addRoom {
     
-    __weak HMHomeManager *manager = [HMHomeManager sharedManager];
+    HMHomeManager *manager = [HMHomeManager sharedManager];
     
     SMAlertView *alertView = [SMAlertView alertViewWithTitle:@"Add Room..." message:@"Please make sure the name is unique." style:SMAlertViewStyleAlert];
     
@@ -479,7 +499,7 @@ HMAccessoryDelegate
         for (HMService *service in services) {
             if ([service.accessory isEqual:accessory]) {
                 NSInteger row = [services indexOfObject:service];
-                SMTableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:section]];
+                SMHomeTableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:section]];
                 cell.available = accessory.reachable;
                 if ([cell.accessoryView isKindOfClass:[UISwitch class]]) {
                     
@@ -501,7 +521,6 @@ HMAccessoryDelegate
 }
 
 - (void)accessory:(HMAccessory *)accessory service:(HMService *)service didUpdateValueForCharacteristic:(HMCharacteristic *)characteristic {
-
     [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateCharacteristicValue
                                                         object:self
                                                       userInfo:@{@"accessory": accessory,
@@ -533,9 +552,9 @@ HMAccessoryDelegate
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    SMTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kSMTableViewCell];
+    SMHomeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kSMHomeTableViewCell];
     if (!cell) {
-        cell = [[SMTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kSMTableViewCell];
+        cell = [[SMHomeTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kSMHomeTableViewCell];
     }
     
     SMHomeViewSectionItem *item = self.dataList[indexPath.section];
@@ -606,7 +625,7 @@ HMAccessoryDelegate
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    SMTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    SMHomeTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     
     if (cell.selectionStyle == UITableViewCellSelectionStyleDefault) {
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -635,10 +654,16 @@ HMAccessoryDelegate
     }
     
     SMHomeViewSectionItem *item = self.dataList[section];
-    header.titleLabel.text = ((HMService *)item.services.firstObject).accessory.room.name;
+    [header.titleButton setTitle:((HMService *)item.services.firstObject).accessory.room.name forState:UIControlStateNormal];
     header.arrowButton.selected = item.isShowed;
     
     __weak typeof(self) weakSelf = self;
+    
+    header.titleButtonPressed = ^{
+        SMRoomViewController *roomVC = [[SMRoomViewController alloc] initWithRoom:item.room];
+        [weakSelf.navigationController pushViewController:roomVC animated:YES];
+    };
+    
     header.arrowButtonPressed = ^(BOOL isSelected) {
         
         // update the item status
@@ -658,7 +683,7 @@ HMAccessoryDelegate
                 [tableView reloadSections:[NSIndexSet indexSetWithIndex:currentShowedSection] withRowAnimation:UITableViewRowAnimationAutomatic];
             }
 
-            [userDefault setObject:item.roomName forKey:kShowdRoomName];
+            [userDefault setObject:item.room.name forKey:kShowdRoomName];
             weakSelf.currentShowedSection = section;
         } else {
             

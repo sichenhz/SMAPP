@@ -1,16 +1,16 @@
 //
-//  SMTableViewCell.m
+//  SMHomeTableViewCell.m
 //  SMAPP
 //
-//  Created by Sichen on 5/5/19.
+//  Created by Jason on 14/5/19.
 //  Copyright © 2019 RXP. All rights reserved.
 //
 
-#import "SMTableViewCell.h"
+#import "SMHomeTableViewCell.h"
 #import "Const.h"
 #import "Masonry.h"
 
-@implementation SMTableViewCell
+@implementation SMHomeTableViewCell
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
@@ -25,6 +25,7 @@
     
     UILabel *leftLabel = [[UILabel alloc] init];
     leftLabel.font = FONT_BODY;
+    leftLabel.textColor = COLOR_TITLE;
     [self.contentView addSubview:leftLabel];
     [leftLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(leftLabel.superview).offset(15);
@@ -39,7 +40,7 @@
         make.right.top.bottom.equalTo(rightLabel.superview);
     }];
     _rightLabel = rightLabel;
-
+    
 }
 
 - (void)setAvailable:(BOOL)available {

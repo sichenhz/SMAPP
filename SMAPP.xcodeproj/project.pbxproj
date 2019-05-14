@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9619C433228AD20A0025754D /* SMRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9619C432228AD20A0025754D /* SMRoomViewController.m */; };
+		9619C436228AE2E60025754D /* SMHomeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9619C435228AE2E60025754D /* SMHomeTableViewCell.m */; };
+		9619C439228AE3100025754D /* SMRoomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9619C438228AE3100025754D /* SMRoomTableViewCell.m */; };
 		96AD76AA22631659003A0D2A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 96AD76A922631659003A0D2A /* AppDelegate.m */; };
 		96AD76B22263165C003A0D2A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 96AD76B12263165C003A0D2A /* Assets.xcassets */; };
 		96AD76B52263165C003A0D2A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 96AD76B32263165C003A0D2A /* LaunchScreen.storyboard */; };
@@ -29,7 +32,6 @@
 		96E04D11227F0AC0002DE8F2 /* MASConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04D06227F0AC0002DE8F2 /* MASConstraint.m */; };
 		96E04D12227F0AC0002DE8F2 /* MASViewConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04D08227F0AC0002DE8F2 /* MASViewConstraint.m */; };
 		96E04D13227F0AC0002DE8F2 /* MASViewAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04D09227F0AC0002DE8F2 /* MASViewAttribute.m */; };
-		96E04D1E227F0CF9002DE8F2 /* SMTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04D17227F0CF9002DE8F2 /* SMTableViewCell.m */; };
 		96E04D1F227F0CF9002DE8F2 /* SMTableViewHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04D19227F0CF9002DE8F2 /* SMTableViewHeaderView.m */; };
 		96E04D20227F0CF9002DE8F2 /* SMAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04D1A227F0CF9002DE8F2 /* SMAlertView.m */; };
 		96E04D21227F0CF9002DE8F2 /* SMButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04D1D227F0CF9002DE8F2 /* SMButton.m */; };
@@ -44,6 +46,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9619C431228AD20A0025754D /* SMRoomViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMRoomViewController.h; sourceTree = "<group>"; };
+		9619C432228AD20A0025754D /* SMRoomViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMRoomViewController.m; sourceTree = "<group>"; };
+		9619C434228AE2E60025754D /* SMHomeTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMHomeTableViewCell.h; sourceTree = "<group>"; };
+		9619C435228AE2E60025754D /* SMHomeTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMHomeTableViewCell.m; sourceTree = "<group>"; };
+		9619C437228AE3100025754D /* SMRoomTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMRoomTableViewCell.h; sourceTree = "<group>"; };
+		9619C438228AE3100025754D /* SMRoomTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMRoomTableViewCell.m; sourceTree = "<group>"; };
 		96AD76A522631659003A0D2A /* SMAPP.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SMAPP.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		96AD76A822631659003A0D2A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		96AD76A922631659003A0D2A /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -88,11 +96,9 @@
 		96E04D08227F0AC0002DE8F2 /* MASViewConstraint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MASViewConstraint.m; sourceTree = "<group>"; };
 		96E04D09227F0AC0002DE8F2 /* MASViewAttribute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MASViewAttribute.m; sourceTree = "<group>"; };
 		96E04D16227F0CF9002DE8F2 /* SMAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMAlertView.h; sourceTree = "<group>"; };
-		96E04D17227F0CF9002DE8F2 /* SMTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMTableViewCell.m; sourceTree = "<group>"; };
 		96E04D18227F0CF9002DE8F2 /* SMButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMButton.h; sourceTree = "<group>"; };
 		96E04D19227F0CF9002DE8F2 /* SMTableViewHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMTableViewHeaderView.m; sourceTree = "<group>"; };
 		96E04D1A227F0CF9002DE8F2 /* SMAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMAlertView.m; sourceTree = "<group>"; };
-		96E04D1B227F0CF9002DE8F2 /* SMTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMTableViewCell.h; sourceTree = "<group>"; };
 		96E04D1C227F0CF9002DE8F2 /* SMTableViewHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMTableViewHeaderView.h; sourceTree = "<group>"; };
 		96E04D1D227F0CF9002DE8F2 /* SMButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMButton.m; sourceTree = "<group>"; };
 		96E04D23227F1400002DE8F2 /* UIView+Extention.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Extention.m"; sourceTree = "<group>"; };
@@ -230,8 +236,10 @@
 				96E04D1A227F0CF9002DE8F2 /* SMAlertView.m */,
 				96E04D1C227F0CF9002DE8F2 /* SMTableViewHeaderView.h */,
 				96E04D19227F0CF9002DE8F2 /* SMTableViewHeaderView.m */,
-				96E04D1B227F0CF9002DE8F2 /* SMTableViewCell.h */,
-				96E04D17227F0CF9002DE8F2 /* SMTableViewCell.m */,
+				9619C434228AE2E60025754D /* SMHomeTableViewCell.h */,
+				9619C435228AE2E60025754D /* SMHomeTableViewCell.m */,
+				9619C437228AE3100025754D /* SMRoomTableViewCell.h */,
+				9619C438228AE3100025754D /* SMRoomTableViewCell.m */,
 				96E04D18227F0CF9002DE8F2 /* SMButton.h */,
 				96E04D1D227F0CF9002DE8F2 /* SMButton.m */,
 				96B47DF52281B9EC00AFAF32 /* SMCollectionViewCell.h */,
@@ -256,6 +264,8 @@
 			children = (
 				96E04D33227F1468002DE8F2 /* SMHomeViewController.h */,
 				96E04D35227F1468002DE8F2 /* SMHomeViewController.m */,
+				9619C431228AD20A0025754D /* SMRoomViewController.h */,
+				9619C432228AD20A0025754D /* SMRoomViewController.m */,
 				96E04D2A227F1468002DE8F2 /* SMAddAccessoryViewController.h */,
 				96E04D2F227F1468002DE8F2 /* SMAddAccessoryViewController.m */,
 				96E04D2E227F1468002DE8F2 /* SMAccessoryDetailViewController.h */,
@@ -350,6 +360,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9619C439228AE3100025754D /* SMRoomTableViewCell.m in Sources */,
 				96E04D0B227F0AC0002DE8F2 /* ViewController+MASAdditions.m in Sources */,
 				96E04D13227F0AC0002DE8F2 /* MASViewAttribute.m in Sources */,
 				96E04D3E227F28F3002DE8F2 /* SMNotificationViewController.m in Sources */,
@@ -364,7 +375,6 @@
 				96E04D3A227F1468002DE8F2 /* SMAccessoryDetailViewController.m in Sources */,
 				96E04D0F227F0AC0002DE8F2 /* NSArray+MASAdditions.m in Sources */,
 				96E04D0C227F0AC0002DE8F2 /* MASCompositeConstraint.m in Sources */,
-				96E04D1E227F0CF9002DE8F2 /* SMTableViewCell.m in Sources */,
 				96E04D37227F1468002DE8F2 /* SMAddAccessoryViewController.m in Sources */,
 				96E04D11227F0AC0002DE8F2 /* MASConstraint.m in Sources */,
 				96E04D21227F0CF9002DE8F2 /* SMButton.m in Sources */,
@@ -373,7 +383,9 @@
 				96AD76B82263165C003A0D2A /* main.m in Sources */,
 				96E04D20227F0CF9002DE8F2 /* SMAlertView.m in Sources */,
 				96AD76AA22631659003A0D2A /* AppDelegate.m in Sources */,
+				9619C433228AD20A0025754D /* SMRoomViewController.m in Sources */,
 				96E04D39227F1468002DE8F2 /* SMServiceViewController.m in Sources */,
+				9619C436228AE2E60025754D /* SMHomeTableViewCell.m in Sources */,
 				96E04D10227F0AC0002DE8F2 /* View+MASAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

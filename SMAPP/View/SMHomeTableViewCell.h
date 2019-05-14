@@ -1,8 +1,8 @@
 //
-//  SMTableViewCell.h
+//  SMHomeTableViewCell.h
 //  SMAPP
 //
-//  Created by Sichen on 5/5/19.
+//  Created by Jason on 14/5/19.
 //  Copyright © 2019 RXP. All rights reserved.
 //
 
@@ -10,11 +10,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface SMTableViewCell : UITableViewCell
+@interface SMHomeTableViewCell : UITableViewCell
 
 @property (nonatomic, weak) UILabel *leftLabel;
 @property (nonatomic, weak) UILabel *rightLabel;
-@property (nonatomic, weak) UIButton *button;
 
 @property (nonatomic, assign, getter=isAvailable) BOOL available;
 
