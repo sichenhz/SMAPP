@@ -9,7 +9,6 @@
 #import "AppDelegate.h"
 #import "Const.h"
 #import "SMHomeViewController.h"
-#import "SMAddAccessoryViewController.h"
 #import "SMNotificationViewController.h"
 #import "SMSettingViewController.h"
 
@@ -30,23 +29,18 @@
                                                          imageName:@"tabbar_home"
                                                  selectedImageName:@"tabbar_home_selected"];
     
-    UINavigationController *nav2 = [self setUpNavigationController:[[SMAddAccessoryViewController alloc] init]
-                                                             title:@"Add"
-                                                         imageName:@"tabbar_discover"
-                                                 selectedImageName:@"tabbar_discover_selected"];
-    
-    UINavigationController *nav3 = [self setUpNavigationController:[[SMNotificationViewController alloc] init]
+    UINavigationController *nav2 = [self setUpNavigationController:[[SMNotificationViewController alloc] init]
                                                              title:@"Notifications"
                                                          imageName:@"tabbar_message_center"
                                                  selectedImageName:@"tabbar_message_center_selected"];
     
-    UINavigationController *nav4 = [self setUpNavigationController:[[SMSettingViewController alloc] init]
+    UINavigationController *nav3 = [self setUpNavigationController:[[SMSettingViewController alloc] init]
                                                              title:@"Settings"
                                                          imageName:@"tabbar_profile"
                                                  selectedImageName:@"tabbar_profile_selected"];
 
     UITabBarController *tabBarC = [[UITabBarController alloc] init];
-    tabBarC.viewControllers = @[nav1, nav2, nav3, nav4];
+    tabBarC.viewControllers = @[nav1, nav2, nav3];
         
     self.window.rootViewController = tabBarC;
 
@@ -64,8 +58,8 @@
     [controller.tabBarItem setTitleTextAttributes:@{NSFontAttributeName : FONT_BODY, NSForegroundColorAttributeName : [UIColor grayColor]} forState:UIControlStateNormal];
     
     controller.tabBarItem.title = title;
-    controller.tabBarItem.image = [UIImage imageNamed:imageName];
-    controller.tabBarItem.selectedImage = [UIImage imageNamed:selectedImageName];
+    controller.tabBarItem.image = [[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    controller.tabBarItem.selectedImage = [[UIImage imageNamed:selectedImageName] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     return [[UINavigationController alloc] initWithRootViewController:controller];
 }
 

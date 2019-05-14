@@ -71,6 +71,7 @@
 - (void)setServiceType:(NSString *)serviceType {
     _serviceType = serviceType;
     
+    [self.imageView setImage:nil];
     if ([serviceType isEqualToString:HMServiceTypeLightbulb]) {
         if (self.isOn) {
             [self.imageView setImage:[UIImage imageNamed:@"bulb_on"]];

@@ -25,10 +25,22 @@
     self.title = @"Add";
     self.dataList = [NSMutableArray array];
     
+    UIBarButtonItem *doneItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(rightBarButtonPressed:)];
+    self.navigationItem.rightBarButtonItem = doneItem;
+    self.view.backgroundColor = [UIColor whiteColor];
+    
     self.accessoryBrowser = [[HMAccessoryBrowser alloc] init];
     self.accessoryBrowser.delegate = self;
     
     [self.accessoryBrowser startSearchingForNewAccessories];
+}
+
+#pragma mark - Action
+
+- (void)rightBarButtonPressed:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
+    
+    [self.accessoryBrowser stopSearchingForNewAccessories];
 }
 
 #pragma mark - HMAccessoryBrowserDelegate

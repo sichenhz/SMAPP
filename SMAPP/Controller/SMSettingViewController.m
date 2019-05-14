@@ -101,6 +101,7 @@
     
     HMService *service = self.dataList[indexPath.row];
     
+    cell.on = NO;
     for (HMCharacteristic *characteristic in service.characteristics) {
         if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState] ||
             [characteristic.characteristicType isEqualToString:HMCharacteristicTypeObstructionDetected] ||

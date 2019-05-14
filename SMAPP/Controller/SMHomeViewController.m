@@ -15,6 +15,7 @@
 #import "UIView+Extention.h"
 #import "SMAlertView.h"
 #import "Masonry.h"
+#import "SMAddAccessoryViewController.h"
 
 @interface SMHomeViewController () <
 HMHomeManagerDelegate,
@@ -36,19 +37,15 @@ HMAccessoryDelegate
 
     namager.delegate = self;
 
-    [self initNavigationItemWithLeftTitle:@"Homes"];
+    [self initNavigationItems];
     
-    [self initHeaderViewWithCompletionHandler:^(UIButton * _Nonnull leftButton, UIButton * _Nonnull rightButton, UIButton * _Nonnull leftButton2, UIButton * _Nonnull rightButton2) {
-        [leftButton setTitle:@"Remove Home" forState:UIControlStateNormal];
-        [rightButton setTitle:@"Add Home" forState:UIControlStateNormal];
-        [leftButton2 setTitle:@"Remove Room" forState:UIControlStateNormal];
-        [rightButton2 setTitle:@"Add Room" forState:UIControlStateNormal];
-
-        [leftButton addTarget:self action:@selector(removeHome:) forControlEvents:UIControlEventTouchUpInside];
-        [rightButton addTarget:self action:@selector(addHome:) forControlEvents:UIControlEventTouchUpInside];
-        [leftButton2 addTarget:self action:@selector(removeRoom:) forControlEvents:UIControlEventTouchUpInside];
-        [rightButton2 addTarget:self action:@selector(addRoom:) forControlEvents:UIControlEventTouchUpInside];
-    }];
+//    [self initHeaderViewWithCompletionHandler:^(UIButton * _Nonnull leftButton, UIButton * _Nonnull rightButton) {
+//        [leftButton setTitle:@"Remove Home" forState:UIControlStateNormal];
+//        [rightButton setTitle:@"Remove Room" forState:UIControlStateNormal];
+//
+//        [leftButton addTarget:self action:@selector(removeHome:) forControlEvents:UIControlEventTouchUpInside];
+//        [rightButton addTarget:self action:@selector(removeRoom:) forControlEvents:UIControlEventTouchUpInside];
+//    }];
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
@@ -57,23 +54,25 @@ HMAccessoryDelegate
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCharacteristicValue:) name:kDidUpdateCharacteristicValue object:nil];
 }
 
-- (void)initNavigationItemWithLeftTitle:(NSString *)title {
+- (void)initNavigationItems {
     
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD}];
     
-    UIBarButtonItem *leftButtonItem = [[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStylePlain target:self action:@selector(leftButtonItemPressed:)];
+    UIImage *image = [[UIImage imageNamed:@"tab_cate_normal"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    UIBarButtonItem *leftButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(leftButtonItemPressed:)];
     [leftButtonItem setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD, NSForegroundColorAttributeName : COLOR_ORANGE} forState:(UIControlStateNormal)];
     [leftButtonItem setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD, NSForegroundColorAttributeName : COLOR_ORANGE} forState:(UIControlStateHighlighted)];
     self.navigationItem.leftBarButtonItem = leftButtonItem;
     
-//    UIBarButtonItem *rightbuttonItem = [[UIBarButtonItem alloc] initWithTitle:@"Add Accessory" style:UIBarButtonItemStylePlain target:self action:@selector(rightButtonItemPressed:)];
-//    [rightbuttonItem setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD, NSForegroundColorAttributeName : COLOR_ORANGE} forState:(UIControlStateNormal)];
-//    [rightbuttonItem setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD, NSForegroundColorAttributeName : COLOR_ORANGE} forState:(UIControlStateHighlighted)];
-//    self.navigationItem.rightBarButtonItem = rightbuttonItem;
+    image = [[UIImage imageNamed:@"Add"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    UIBarButtonItem *rightbuttonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(rightButtonItemPressed:)];
+    [rightbuttonItem setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD, NSForegroundColorAttributeName : COLOR_ORANGE} forState:(UIControlStateNormal)];
+    [rightbuttonItem setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD, NSForegroundColorAttributeName : COLOR_ORANGE} forState:(UIControlStateHighlighted)];
+    self.navigationItem.rightBarButtonItem = rightbuttonItem;
 }
 
-- (void)initHeaderViewWithCompletionHandler:(void (^)(UIButton *leftButton, UIButton *rightButton, UIButton *leftButton2, UIButton *rightButton2))completion {
-    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 98)];
+- (void)initHeaderViewWithCompletionHandler:(void (^)(UIButton *leftButton, UIButton *rightButton))completion {
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 54)];
     
     UIButton *leftButton = [[UIButton alloc] init];
     [headerView addSubview:leftButton];
@@ -100,36 +99,10 @@ HMAccessoryDelegate
     rightButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
     [rightButton setTitleColor:COLOR_ORANGE forState:UIControlStateNormal];
     [rightButton.titleLabel setFont:FONT_H2_BOLD];
-        
-    UIButton *leftButton2 = [[UIButton alloc] init];
-    [headerView addSubview:leftButton2];
-    [leftButton2 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(leftButton2.superview).offset(15);
-        make.top.equalTo(leftButton.mas_bottom);
-        make.width.equalTo(@120);
-        make.height.equalTo(@44);
-    }];
-    leftButton2.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    [leftButton2 setTitleColor:COLOR_ORANGE forState:UIControlStateNormal];
-    [leftButton2 setTitleColor:[UIColor grayColor] forState:UIControlStateDisabled];
-    [leftButton2.titleLabel setFont:FONT_H2_BOLD];
-    
-    UIButton *rightButton2 = [[UIButton alloc] init];
-    [headerView addSubview:rightButton2];
-    [rightButton2 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(leftButton2.superview).offset(-15);
-        make.top.equalTo(leftButton.mas_bottom);
-        make.width.equalTo(@120);
-        make.height.equalTo(@44);
-    }];
-    
-    rightButton2.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-    [rightButton2 setTitleColor:COLOR_ORANGE forState:UIControlStateNormal];
-    [rightButton2.titleLabel setFont:FONT_H2_BOLD];
     
     self.tableView.tableHeaderView = headerView;
     
-    completion(leftButton, rightButton, leftButton2, rightButton2);
+    completion(leftButton, rightButton);
 }
 
 - (void)updateCurrentHomeInfo {
@@ -246,16 +219,38 @@ HMAccessoryDelegate
     }
 }
 
-//- (void)rightButtonItemPressed:(id)sender {
-//    SMAddAccessoryViewController *vc = [[SMAddAccessoryViewController alloc] init];
-//    vc.didAddAccessory = self.didAddAccessory;
-//    [self presentViewController:[[UINavigationController alloc] initWithRootViewController:vc] animated:YES completion:nil];
-//}
+- (void)rightButtonItemPressed:(id)sender {
+    SMAlertView *alertView = [SMAlertView alertViewWithTitle:nil message:nil style:SMAlertViewStyleActionSheet];
+    
+    [alertView addAction:[SMAlertAction actionWithTitle:@"Remove Home" style:SMAlertActionStyleDefault handler:^(SMAlertAction * _Nonnull action) {
+        [self removeHome];
+    }]];
 
-- (void)removeHome:(id)sender {
+    [alertView addAction:[SMAlertAction actionWithTitle:@"Remove Room" style:SMAlertActionStyleDefault handler:^(SMAlertAction * _Nonnull action) {
+        [self removeRoom];
+    }]];
+
+    [alertView addAction:[SMAlertAction actionWithTitle:@"Add Home" style:SMAlertActionStyleDefault handler:^(SMAlertAction * _Nonnull action) {
+        [self addHome];
+    }]];
+    
+    [alertView addAction:[SMAlertAction actionWithTitle:@"Add Room" style:SMAlertActionStyleDefault handler:^(SMAlertAction * _Nonnull action) {
+        [self addRoom];
+    }]];
+
+    [alertView addAction:[SMAlertAction actionWithTitle:@"Add Device" style:SMAlertActionStyleDefault handler:^(SMAlertAction * _Nonnull action) {
+        [self addDevice];
+    }]];
+    
+    [alertView addAction:[SMAlertAction actionWithTitle:@"Cancel" style:SMAlertActionStyleCancel handler:nil]];
+    
+    [alertView show];
+}
+
+- (void)removeHome {
     
     HMHomeManager *manager = [HMHomeManager sharedManager];
-
+    
     if (manager.primaryHome) {
         NSString *message = [NSString stringWithFormat:@"Are you sure you want to remove %@?", manager.primaryHome.name];
         SMAlertView *alertView = [SMAlertView alertViewWithTitle:nil message:message style:SMAlertViewStyleActionSheet];
@@ -282,41 +277,12 @@ HMAccessoryDelegate
     }
 }
 
-- (void)addHome:(id)sender {
-    
-    __weak HMHomeManager *manager = [HMHomeManager sharedManager];
-
-    SMAlertView *alertView = [SMAlertView alertViewWithTitle:@"Add Home..." message:@"Please make sure the name is unique." style:SMAlertViewStyleAlert];
-    
-    [alertView addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-        textField.placeholder = @"Ex. Vacation Home";
-    }];
-    
-    [alertView addAction:[SMAlertAction actionWithTitle:@"Cancel" style:SMAlertActionStyleCancel handler:nil]];
-    
-    __weak typeof(self) weakSelf = self;
-    [alertView addAction:[SMAlertAction actionWithTitle:@"Confirm" style:SMAlertActionStyleConfirm handler:^(SMAlertAction * _Nonnull action) {
-        NSString *newName = alertView.textFields.firstObject.text;
-        [manager addHomeWithName:newName completionHandler:^(HMHome * _Nullable home, NSError * _Nullable error) {
-            if (error) {
-                NSLog(@"%@", error);
-            } else {
-                [manager updatePrimaryHome:home completionHandler:^(NSError * _Nullable error) {
-                    [weakSelf updateCurrentHomeInfo];
-                    [weakSelf updateCurrentAccessories];
-                }];
-            }
-        }];
-    }]];
-    [alertView show];
-}
-
-- (void)removeRoom:(id)sender {
+- (void)removeRoom {
     
     HMHomeManager *manager = [HMHomeManager sharedManager];
     
     SMAlertView *alertView = [SMAlertView alertViewWithTitle:nil message:nil style:SMAlertViewStyleActionSheet];
-
+    
     for (HMRoom *room in manager.primaryHome.rooms) {
         
         NSString *roomName = room.name;
@@ -350,7 +316,36 @@ HMAccessoryDelegate
     [alertView show];
 }
 
-- (void)addRoom:(id)sender {
+- (void)addHome {
+    
+    __weak HMHomeManager *manager = [HMHomeManager sharedManager];
+
+    SMAlertView *alertView = [SMAlertView alertViewWithTitle:@"Add Home..." message:@"Please make sure the name is unique." style:SMAlertViewStyleAlert];
+    
+    [alertView addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+        textField.placeholder = @"Ex. Vacation Home";
+    }];
+    
+    [alertView addAction:[SMAlertAction actionWithTitle:@"Cancel" style:SMAlertActionStyleCancel handler:nil]];
+    
+    __weak typeof(self) weakSelf = self;
+    [alertView addAction:[SMAlertAction actionWithTitle:@"Confirm" style:SMAlertActionStyleConfirm handler:^(SMAlertAction * _Nonnull action) {
+        NSString *newName = alertView.textFields.firstObject.text;
+        [manager addHomeWithName:newName completionHandler:^(HMHome * _Nullable home, NSError * _Nullable error) {
+            if (error) {
+                NSLog(@"%@", error);
+            } else {
+                [manager updatePrimaryHome:home completionHandler:^(NSError * _Nullable error) {
+                    [weakSelf updateCurrentHomeInfo];
+                    [weakSelf updateCurrentAccessories];
+                }];
+            }
+        }];
+    }]];
+    [alertView show];
+}
+
+- (void)addRoom {
     
     __weak HMHomeManager *manager = [HMHomeManager sharedManager];
     
@@ -373,6 +368,11 @@ HMAccessoryDelegate
         }];
     }]];
     [alertView show];
+}
+
+- (void)addDevice {
+    SMAddAccessoryViewController *addVC = [[SMAddAccessoryViewController alloc] init];
+    [self presentViewController:[[UINavigationController alloc] initWithRootViewController:addVC] animated:YES completion:nil];
 }
 
 #pragma mark - HMHomeManagerDelegate
