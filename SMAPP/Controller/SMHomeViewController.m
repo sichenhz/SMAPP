@@ -372,7 +372,7 @@ HMAccessoryDelegate
 
 - (void)addDevice {
     SMAddAccessoryViewController *addVC = [[SMAddAccessoryViewController alloc] init];
-    [self presentViewController:[[UINavigationController alloc] initWithRootViewController:addVC] animated:YES completion:nil];
+    [self.navigationController pushViewController:addVC animated:YES];
 }
 
 #pragma mark - HMHomeManagerDelegate

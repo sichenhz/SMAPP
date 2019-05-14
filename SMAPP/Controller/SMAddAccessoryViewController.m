@@ -10,7 +10,7 @@
 #import "HMHomeManager+Share.h"
 #import "Const.h"
 
-@interface SMAddAccessoryViewController () <HMAccessoryBrowserDelegate>
+@interface SMAddAccessoryViewController () <HMAccessoryBrowserDelegate, UINavigationControllerDelegate>
 
 @property (nonatomic, strong) HMAccessoryBrowser *accessoryBrowser;
 @property (nonatomic, strong) NSMutableArray *dataList;
@@ -22,26 +22,25 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.navigationController.delegate = self;
+    
     self.title = @"Add";
     self.dataList = [NSMutableArray array];
     
-    UIBarButtonItem *doneItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(rightBarButtonPressed:)];
-    self.navigationItem.rightBarButtonItem = doneItem;
-    self.view.backgroundColor = [UIColor whiteColor];
-    
     self.accessoryBrowser = [[HMAccessoryBrowser alloc] init];
     self.accessoryBrowser.delegate = self;
-    
-    [self.accessoryBrowser startSearchingForNewAccessories];
 }
 
-#pragma mark - Action
+#pragma mark - UINavigationControllerDelegate
 
-- (void)rightBarButtonPressed:(id)sender {
-    [self dismissViewControllerAnimated:YES completion:nil];
-    
-    [self.accessoryBrowser stopSearchingForNewAccessories];
+- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
+    if (![viewController isEqual:self]) {
+        [self.accessoryBrowser stopSearchingForNewAccessories];
+    } else {
+        [self.accessoryBrowser startSearchingForNewAccessories];
+    }
 }
+
 
 #pragma mark - HMAccessoryBrowserDelegate
 
