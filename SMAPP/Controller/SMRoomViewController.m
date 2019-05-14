@@ -99,7 +99,7 @@
 #pragma mark - Notification
 
 - (void)removeAccessories:(NSNotification *)notification {
-    HMAccessory *accessory = notification.object;
+    HMAccessory *accessory = notification.userInfo[@"accessory"];
     NSMutableIndexSet *sections = [NSMutableIndexSet indexSet];
     for (SMRoomViewSectionItem *item in self.dataList) {
         NSInteger section = [self.dataList indexOfObject:item];

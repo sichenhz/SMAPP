@@ -58,7 +58,7 @@
 }
 
 - (void)removeAccessories:(NSNotification *)notification {
-    HMAccessory *accessory = notification.object;
+    HMAccessory *accessory = notification.userInfo[@"accessory"];
     NSMutableArray *indexPaths = [NSMutableArray array];
     NSMutableArray *toRemove = [NSMutableArray array];
     for (HMService *service in self.dataList) {
@@ -132,7 +132,7 @@
                                                             if (error) {
                                                                 NSLog(@"%@", error);
                                                             } else {
-                                                                [[NSNotificationCenter defaultCenter] postNotificationName:kDidRemoveAccessory object:service.accessory];
+                                                                [[NSNotificationCenter defaultCenter] postNotificationName:kDidRemoveAccessory object:self userInfo:@{@"accessory" : service.accessory}];
                                                             }
                                                         }];
                                                     }]];

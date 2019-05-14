@@ -38,9 +38,25 @@
     self.tableView = [[UITableView alloc] initWithFrame:frame style:UITableViewStyleGrouped];
     self.tableView.backgroundColor = COLOR_BACKGROUND;
     self.tableView.tableFooterView = [[UIView alloc] init]; // remove the lines
+    
+    UIBarButtonItem *doneItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(doneButtonPressed:)];
+    self.navigationItem.rightBarButtonItem = doneItem;
 }
 
 #pragma mark - Action
+
+- (void)doneButtonPressed:(id)sender {
+
+    SMTextFieldTableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    [self.home updateName:cell.textField.text completionHandler:^(NSError * _Nullable error) {
+        if (error) {
+            NSLog(@"%@", error);
+        } else {
+            [self.navigationController popViewControllerAnimated:YES];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateHomeName object:self userInfo:@{@"home" : self.home}];
+        }
+    }];
+}
 
 - (void)removeHome {
     HMHomeManager *manager = [HMHomeManager sharedManager];
@@ -56,7 +72,7 @@
                                                                 NSLog(@"%@", error);
                                                             } else {
                                                                 [self.navigationController popViewControllerAnimated:YES];
-                                                                [[NSNotificationCenter defaultCenter] postNotificationName:kDidRemoveHome object:self];
+                                                                [[NSNotificationCenter defaultCenter] postNotificationName:kDidRemoveHome object:self userInfo:@{@"home" : self.home}];
                                                             }
                                                         }];
                                                     }]];

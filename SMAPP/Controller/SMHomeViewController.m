@@ -74,7 +74,7 @@ HMAccessoryDelegate
     self.tableView.backgroundColor = COLOR_BACKGROUND;
     self.tableView.tableFooterView = [[UIView alloc] init]; // remove the lines
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeHome:) name:kDidRemoveHome object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateHomeName:) name:kDidUpdateHomeName object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeAccessories:) name:kDidRemoveAccessory object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCurrentAccessories:) name:kDidUpdateAccessory object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCharacteristicValue:) name:kDidUpdateCharacteristicValue object:nil];
@@ -190,18 +190,17 @@ HMAccessoryDelegate
 
 #pragma mark - Notification
 
-- (void)removeHome:(NSNotification *)notification {
+- (void)updateHomeName:(NSNotification *)notification {
+    HMHome *home = notification.userInfo[@"home"];
     HMHomeManager *manager = [HMHomeManager sharedManager];
-    if (manager.homes.count) {
-        [manager updatePrimaryHome:manager.homes.firstObject completionHandler:^(NSError * _Nullable error) {
-            [self updateCurrentHomeInfo];
-            [self updateCurrentAccessories];
-        }];
+    
+    if ([home isEqual:manager.primaryHome]) {
+        self.navigationItem.title = home.name;
     }
 }
 
 - (void)removeAccessories:(NSNotification *)notification {
-    HMAccessory *accessory = notification.object;
+    HMAccessory *accessory = notification.userInfo[@"accessory"];
     NSMutableArray *indexPaths = [NSMutableArray array];
     for (SMHomeViewSectionItem *item in self.dataList) {
         NSInteger section = [self.dataList indexOfObject:item];
@@ -317,10 +316,6 @@ HMAccessoryDelegate
     [alertView show];
 }
 
-- (void)removeHome {
-    
-}
-
 - (void)removeRoom {
     
     HMHomeManager *manager = [HMHomeManager sharedManager];
@@ -419,41 +414,49 @@ HMAccessoryDelegate
     [self.navigationController pushViewController:addVC animated:YES];
 }
 
+- (void)showNoHomes {
+    SMAlertView *alertView = [SMAlertView alertViewWithTitle:@"No home" message:nil style:SMAlertViewStyleActionSheet];
+    [alertView addAction:[SMAlertAction actionWithTitle:@"OK" style:SMAlertActionStyleCancel handler:nil]];
+    [alertView show];
+}
+
 #pragma mark - HMHomeManagerDelegate
 
+// invokes when app is launched
 - (void)homeManagerDidUpdateHomes:(HMHomeManager *)manager {
     if (manager.primaryHome) {
         [self updateCurrentHomeInfo];
         [self updateCurrentAccessories];
     } else {
-        SMAlertView *alertView = [SMAlertView alertViewWithTitle:@"No home" message:nil style:SMAlertViewStyleActionSheet];
-        [alertView addAction:[SMAlertAction actionWithTitle:@"OK" style:SMAlertActionStyleCancel handler:nil]];
-        [alertView show];
+        [self showNoHomes];
     }
 }
 
+// invokes when other apps did add a home, such as Home
 - (void)homeManager:(HMHomeManager *)manager didAddHome:(HMHome *)home {
-    __weak typeof(self)weakSelf = self;
+    typeof(self)weakSelf = self;
     [[HMHomeManager sharedManager] updatePrimaryHome:home completionHandler:^(NSError * _Nullable error) {
         [weakSelf updateCurrentHomeInfo];
         [weakSelf updateCurrentAccessories];
     }];
-    NSLog(@"didAddHome");
 }
 
-
+// invokes when other apps did remove a home, such as Home
+// after invoking this function, the system will invokes homeManagerDidUpdatePrimaryHome:
 - (void)homeManager:(HMHomeManager *)manager didRemoveHome:(HMHome *)home {
-    NSLog(@"didRemoveHome");
+    // Do nothing.
 }
 
+// invokes when other apps did remove the primaryHome, such as Home
 - (void)homeManagerDidUpdatePrimaryHome:(HMHomeManager *)manager {
     if (manager.primaryHome) {
-        [self updateCurrentHomeInfo];
-        [self updateCurrentAccessories];
+        // When a primaryHome is deleted, the manager.primaryHome.isPrimary will still be NO, so update here
+        [manager updatePrimaryHome:manager.primaryHome completionHandler:^(NSError * _Nullable error) {
+            [self updateCurrentHomeInfo];
+            [self updateCurrentAccessories];
+        }];
     } else {
-        SMAlertView *alertView = [SMAlertView alertViewWithTitle:@"No home" message:nil style:SMAlertViewStyleActionSheet];
-        [alertView addAction:[SMAlertAction actionWithTitle:@"OK" style:SMAlertActionStyleCancel handler:nil]];
-        [alertView show];
+        [self showNoHomes];
     }
 }
 
@@ -464,7 +467,7 @@ HMAccessoryDelegate
 }
 
 - (void)home:(HMHome *)home didRemoveAccessory:(HMAccessory *)accessory {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kDidRemoveAccessory object:accessory];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kDidRemoveAccessory object:self userInfo:@{@"accessory" : accessory}];
 }
 
 - (void)home:(HMHome *)home didUpdateRoom:(HMRoom *)room forAccessory:(HMAccessory *)accessory {
@@ -476,8 +479,8 @@ HMAccessoryDelegate
 - (void)accessoryDidUpdateReachability:(HMAccessory *)accessory {
 
     for (SMHomeViewSectionItem *item in self.dataList) {
+        NSInteger section = [self.dataList indexOfObject:item];
         NSArray *services = item.services;
-        NSInteger section = [self.dataList indexOfObject:services];
         
         for (HMService *service in services) {
             if ([service.accessory isEqual:accessory]) {

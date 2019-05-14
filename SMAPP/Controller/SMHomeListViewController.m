@@ -32,6 +32,7 @@
     self.tableView.backgroundColor = COLOR_BACKGROUND;
     self.tableView.tableFooterView = [[UIView alloc] init]; // remove the lines
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateHomeName:) name:kDidUpdateHomeName object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeHome:) name:kDidRemoveHome object:nil];
 }
 
@@ -48,8 +49,18 @@
 
 #pragma mark - Notification
 
-- (void)removeHome:(NSNotification *)notificaiton {
-    [self.tableView reloadData];
+- (void)updateHomeName:(NSNotification *)notification {
+    HMHome *home = notification.userInfo[@"home"];
+    HMHomeManager *manager = [HMHomeManager sharedManager];
+    NSInteger row = [manager.homes indexOfObject:home];
+    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:row inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+}
+
+- (void)removeHome:(NSNotification *)notification {
+    HMHome *home = notification.userInfo[@"home"];
+    HMHomeManager *manager = [HMHomeManager sharedManager];
+    NSInteger row = [manager.homes indexOfObject:home];
+    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:row inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
 #pragma mark - Action
@@ -67,7 +78,7 @@
     
     [alertView addAction:[SMAlertAction actionWithTitle:@"Save" style:SMAlertActionStyleConfirm handler:^(SMAlertAction * _Nonnull action) {
         NSString *newName = alertView.textFields.firstObject.text;
-        [manager.primaryHome addRoomWithName:newName completionHandler:^(HMRoom * _Nullable room, NSError * _Nullable error) {
+        [manager addHomeWithName:newName completionHandler:^(HMHome * _Nullable home, NSError * _Nullable error) {
             if (error) {
                 NSLog(@"%@", error);
             } else {
