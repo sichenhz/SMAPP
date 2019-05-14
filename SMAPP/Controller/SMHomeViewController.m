@@ -19,16 +19,19 @@
 
 @interface SMHomeViewSectionItem : NSObject
 
-@property (nonatomic, assign, getter=isHidden) BOOL hidden;
+@property (nonatomic, assign, getter=isShowed) BOOL showed;
+@property (nonatomic, copy) NSString *roomName;
 @property (nonatomic, strong) NSArray *services;
 
 @end
 
 @implementation SMHomeViewSectionItem
 
-+ (instancetype)itemWithServices:(NSMutableArray *)services {
++ (instancetype)itemWithServices:(NSMutableArray *)services roomName:(NSString *)roomName showed:(BOOL)showed {
     SMHomeViewSectionItem *sectionItem = [[SMHomeViewSectionItem alloc] init];
     sectionItem.services = [NSArray arrayWithArray:services];
+    sectionItem.roomName = roomName;
+    sectionItem.showed = showed;
     return sectionItem;
 }
 
@@ -40,6 +43,7 @@ HMHomeDelegate,
 HMAccessoryDelegate
 >
 
+@property (nonatomic, assign) NSInteger currentShowedSection;
 @property (nonatomic, strong) NSMutableArray *dataList;
 
 @end
@@ -51,7 +55,8 @@ HMAccessoryDelegate
 
     HMHomeManager *namager = [HMHomeManager sharedManager];
     self.title = namager.primaryHome.name;
-
+    self.currentShowedSection = -1; // means there is no showed section
+    
     namager.delegate = self;
 
     [self initNavigationItems];
@@ -64,7 +69,8 @@ HMAccessoryDelegate
 //        [rightButton addTarget:self action:@selector(removeRoom:) forControlEvents:UIControlEventTouchUpInside];
 //    }];
 
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.backgroundColor = COLOR_BACKGROUND;
+    self.tableView.tableFooterView = [[UIView alloc] init]; // remove the lines
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeAccessories:) name:kDidRemoveAccessory object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCurrentAccessories) name:kDidUpdateAccessory object:nil];
@@ -133,11 +139,15 @@ HMAccessoryDelegate
 
 - (void)updateCurrentAccessories {
     
+    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+    NSString *showedRoomName = [userDefault objectForKey:kShowdRoomName];
+    
     HMHomeManager *manager = [HMHomeManager sharedManager];
     self.dataList = [NSMutableArray array];
     NSMutableArray *services = [NSMutableArray array];
 
-    for (HMAccessory *accessory in manager.primaryHome.roomForEntireHome.accessories) {
+    HMRoom *roomForEntireHome = manager.primaryHome.roomForEntireHome;
+    for (HMAccessory *accessory in roomForEntireHome.accessories) {
         for (HMService *service in accessory.services) {
             if (service.isUserInteractive) {
                 [services addObject:service];
@@ -145,7 +155,13 @@ HMAccessoryDelegate
         }
         accessory.delegate = self;
     }
-    if (services.count) [self.dataList addObject:[SMHomeViewSectionItem itemWithServices:services]];
+    if (services.count) {
+        BOOL showed = [roomForEntireHome.name isEqualToString:showedRoomName];
+        [self.dataList addObject:[SMHomeViewSectionItem itemWithServices:services roomName:roomForEntireHome.name showed:showed]];
+        if (showed) {
+            self.currentShowedSection = self.dataList.count - 1;
+        }
+    };
     
     for (HMRoom *room in manager.primaryHome.rooms) {
         services = [NSMutableArray array];
@@ -157,7 +173,13 @@ HMAccessoryDelegate
             }
             accessory.delegate = self;
         }
-        if (services.count) [self.dataList addObject:[SMHomeViewSectionItem itemWithServices:services]];
+        if (services.count) {
+            BOOL showed = [room.name isEqualToString:showedRoomName];
+            [self.dataList addObject:[SMHomeViewSectionItem itemWithServices:services roomName:room.name showed:showed]];
+            if (showed) {
+                self.currentShowedSection = self.dataList.count - 1;
+            }
+        }
     }
     
     [self.tableView reloadData];
@@ -531,6 +553,8 @@ HMAccessoryDelegate
             [characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetLockMechanismState]) {
 
             UISwitch *lockSwitch = [[UISwitch alloc] init];
+            lockSwitch.backgroundColor = HEXCOLOR(0xE5E9F2);
+            lockSwitch.layer.cornerRadius = 16;
             lockSwitch.enabled = service.accessory.isReachable;
             lockSwitch.on = [characteristic.value boolValue];
             [lockSwitch addTarget:self action:@selector(changeLockState:) forControlEvents:UIControlEventValueChanged];
@@ -588,14 +612,16 @@ HMAccessoryDelegate
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
         
         SMServiceViewController *viewController = [[SMServiceViewController alloc] init];
-        viewController.service = self.dataList[indexPath.section][indexPath.row];
+        SMHomeViewSectionItem *item = self.dataList[indexPath.section];
+        HMService *service = item.services[indexPath.row];
+        viewController.service = service;
         [self.navigationController pushViewController:viewController animated:YES];
     }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     SMHomeViewSectionItem *item = self.dataList[indexPath.section];
-    return item.isHidden ? 0 : 44;
+    return item.isShowed ? 44 : 0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -610,11 +636,35 @@ HMAccessoryDelegate
     
     SMHomeViewSectionItem *item = self.dataList[section];
     header.titleLabel.text = ((HMService *)item.services.firstObject).accessory.room.name;
-    header.arrowButton.selected = item.isHidden;
+    header.arrowButton.selected = item.isShowed;
     
+    __weak typeof(self) weakSelf = self;
     header.arrowButtonPressed = ^(BOOL isSelected) {
-        item.hidden = isSelected;
+        
+        // update the item status
+        item.showed = isSelected;
+        
+        // reload the current section
         [tableView reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationAutomatic];
+
+        NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+        if (item.isShowed) {
+            // reload the showed section
+            if (weakSelf.currentShowedSection >= 0) {
+                NSInteger currentShowedSection = weakSelf.currentShowedSection;
+                SMHomeViewSectionItem *currentItem = weakSelf.dataList[currentShowedSection];
+                currentItem.showed = NO;
+                
+                [tableView reloadSections:[NSIndexSet indexSetWithIndex:currentShowedSection] withRowAnimation:UITableViewRowAnimationAutomatic];
+            }
+
+            [userDefault setObject:item.roomName forKey:kShowdRoomName];
+            weakSelf.currentShowedSection = section;
+        } else {
+            
+            [userDefault removeObjectForKey:kShowdRoomName];
+            weakSelf.currentShowedSection = -1;
+        }
     };
     return header;
 }

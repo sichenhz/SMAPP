@@ -9,6 +9,8 @@
 #ifndef Const_h
 #define Const_h
 
+static NSString *const kShowdRoomName = @"kShowdRoomName";
+
 static NSString *const kDidUpdateAccessory = @"kDidUpdateAccessory";
 static NSString *const kDidRemoveAccessory = @"kDidRemoveAccessory";
 static NSString *const kDidUpdateCurrentHomeInfo = @"kDidUpdateCurrentHomeInfo";
@@ -23,7 +25,13 @@ static NSString *const kSMCollectionViewCell = @"kSMCollectionViewCell";
 #define RandomColor [UIColor colorWithRed:(arc4random_uniform(256)/255.0) green:(arc4random_uniform(256)/255.0) blue:(arc4random_uniform(256)/255.0) alpha:1]
 
 #define HEXCOLOR(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
+
+#define HEXCOLORA(rgbValue, a)          [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:(a)]
+
 #define COLOR_ORANGE HEXCOLOR(0xFFA500)
+#define COLOR_BACKGROUND HEXCOLOR(0xF2F2F2)
+#define COLOR_BACKGROUND_DARK HEXCOLORA(0xDDDEE0, 0.8)
+#define COLOR_LINE HEXCOLORA(0x000000, 0.3)
 
 // Font
 #define FONT_H1               [UIFont fontWithName:@"CenturyGothic" size:20]

@@ -14,6 +14,7 @@
 
 - (instancetype)initWithReuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithReuseIdentifier:reuseIdentifier]) {
+        self.contentView.backgroundColor = [UIColor whiteColor];
         [self initSubviews];
     }
     return self;
@@ -32,8 +33,8 @@
     
     UIButton *arrowButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.contentView addSubview:arrowButton];
-    [arrowButton setImage:[UIImage imageNamed:@"arrow-drop-down"] forState:UIControlStateNormal];
-    [arrowButton setImage:[UIImage imageNamed:@"arrow"] forState:UIControlStateSelected];
+    [arrowButton setImage:[UIImage imageNamed:@"arrow"] forState:UIControlStateNormal];
+    [arrowButton setImage:[UIImage imageNamed:@"arrow-drop-down"] forState:UIControlStateSelected];
     [arrowButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.top.bottom.equalTo(arrowButton.superview);
         make.width.equalTo(@44);
@@ -41,19 +42,11 @@
     [arrowButton addTarget:self action:@selector(arrowButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     _arrowButton = arrowButton;
     
-    UIView *topLine = [[UIView alloc] init];
-    topLine.backgroundColor = [UIColor lightGrayColor];
-    [self.contentView addSubview:topLine];
-    [topLine mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.top.right.equalTo(topLine.superview);
-        make.height.equalTo(@0.5);
-    }];
-                       
     UIView *bottomLine = [[UIView alloc] init];
-    bottomLine.backgroundColor = [UIColor lightGrayColor];
+    bottomLine.backgroundColor = COLOR_LINE;
     [self.contentView addSubview:bottomLine];
     [bottomLine mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.bottom.right.equalTo(topLine.superview);
+        make.left.bottom.right.equalTo(bottomLine.superview);
         make.height.equalTo(@0.5);
     }];
 }

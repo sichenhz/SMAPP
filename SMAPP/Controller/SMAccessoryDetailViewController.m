@@ -58,7 +58,7 @@
             HMService *service = self.accessory.services[indexPath.row];
             cell.textLabel.text = service.name;
             cell.detailTextLabel.text = service.localizedDescription;
-            cell.detailTextLabel.textColor = [UIColor lightGrayColor];
+            cell.detailTextLabel.textColor = COLOR_LINE;
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
             break;
