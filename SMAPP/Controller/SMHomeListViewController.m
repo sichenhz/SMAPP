@@ -12,7 +12,7 @@
 #import "SMAlertView.h"
 #import "SMHomeListTableViewCell.h"
 #import "Masonry.h"
-#import "SMSettingViewController.h"
+#import "SMHomeSettingViewController.h"
 
 @interface SMHomeListViewController ()
 
@@ -30,7 +30,9 @@
     CGRect frame = self.tableView.frame;
     self.tableView = [[UITableView alloc] initWithFrame:frame style:UITableViewStyleGrouped];
     self.tableView.backgroundColor = COLOR_BACKGROUND;
-    self.tableView.tableFooterView = [[UIView alloc] init]; // remove the lines    
+    self.tableView.tableFooterView = [[UIView alloc] init]; // remove the lines
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeHome:) name:kDidRemoveHome object:nil];
 }
 
 - (void)initNavigationItems {
@@ -42,6 +44,12 @@
     [rightbuttonItem setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD, NSForegroundColorAttributeName : COLOR_ORANGE} forState:(UIControlStateNormal)];
     [rightbuttonItem setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD, NSForegroundColorAttributeName : COLOR_ORANGE} forState:(UIControlStateHighlighted)];
     self.navigationItem.rightBarButtonItems = @[rightbuttonItem];
+}
+
+#pragma mark - Notification
+
+- (void)removeHome:(NSNotification *)notificaiton {
+    [self.tableView reloadData];
 }
 
 #pragma mark - Action
@@ -105,8 +113,8 @@
     UITableViewHeaderFooterView *header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:kUITableViewHeaderView];
     if (!header) {
         header = [[UITableViewHeaderFooterView alloc] initWithReuseIdentifier:kUITableViewHeaderView];
-        header.textLabel.text = @"Home list:";
     }
+    header.textLabel.text = @"Home list:";
     return header;
 }
 
@@ -121,7 +129,7 @@
     
     HMHomeManager *manager = [HMHomeManager sharedManager];
     HMHome *home = manager.homes[indexPath.item];
-    SMSettingViewController *settingVC = [[SMSettingViewController alloc] initWithHome:home];
+    SMHomeSettingViewController *settingVC = [[SMHomeSettingViewController alloc] initWithHome:home];
     [self.navigationController pushViewController:settingVC animated:YES];
 }
 

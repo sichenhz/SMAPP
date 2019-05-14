@@ -74,6 +74,7 @@ HMAccessoryDelegate
     self.tableView.backgroundColor = COLOR_BACKGROUND;
     self.tableView.tableFooterView = [[UIView alloc] init]; // remove the lines
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeHome:) name:kDidRemoveHome object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeAccessories:) name:kDidRemoveAccessory object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCurrentAccessories:) name:kDidUpdateAccessory object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCharacteristicValue:) name:kDidUpdateCharacteristicValue object:nil];
@@ -188,6 +189,16 @@ HMAccessoryDelegate
 }
 
 #pragma mark - Notification
+
+- (void)removeHome:(NSNotification *)notification {
+    HMHomeManager *manager = [HMHomeManager sharedManager];
+    if (manager.homes.count) {
+        [manager updatePrimaryHome:manager.homes.firstObject completionHandler:^(NSError * _Nullable error) {
+            [self updateCurrentHomeInfo];
+            [self updateCurrentAccessories];
+        }];
+    }
+}
 
 - (void)removeAccessories:(NSNotification *)notification {
     HMAccessory *accessory = notification.object;
@@ -308,32 +319,6 @@ HMAccessoryDelegate
 
 - (void)removeHome {
     
-    HMHomeManager *manager = [HMHomeManager sharedManager];
-    
-    if (manager.primaryHome) {
-        NSString *message = [NSString stringWithFormat:@"Are you sure you want to remove %@?", manager.primaryHome.name];
-        SMAlertView *alertView = [SMAlertView alertViewWithTitle:nil message:message style:SMAlertViewStyleActionSheet];
-        
-        __weak typeof(self) weakSelf = self;
-        [alertView addAction:[SMAlertAction actionWithTitle:@"Remove" style:SMAlertActionStyleConfirm
-                                                    handler:^(SMAlertAction * _Nonnull action) {
-                                                        [manager removeHome:manager.primaryHome completionHandler:^(NSError * _Nullable error) {
-                                                            if (error) {
-                                                                NSLog(@"%@", error);
-                                                            } else {
-                                                                if (manager.homes.count) {
-                                                                    [manager updatePrimaryHome:manager.homes.firstObject completionHandler:^(NSError * _Nullable error) {
-                                                                        [weakSelf updateCurrentHomeInfo];
-                                                                        [weakSelf updateCurrentAccessories];
-                                                                    }];
-                                                                }
-                                                            }
-                                                        }];
-                                                    }]];
-        [alertView addAction:[SMAlertAction actionWithTitle:@"Cancel" style:SMAlertActionStyleCancel
-                                                    handler:nil]];
-        [alertView show];
-    }
 }
 
 - (void)removeRoom {

@@ -11,6 +11,7 @@
 
 static NSString *const kShowdRoomName = @"kShowdRoomName";
 
+static NSString *const kDidRemoveHome = @"kDidRemoveHome";
 static NSString *const kDidUpdateAccessory = @"kDidUpdateAccessory";
 static NSString *const kDidRemoveAccessory = @"kDidRemoveAccessory";
 static NSString *const kDidUpdateCurrentHomeInfo = @"kDidUpdateCurrentHomeInfo";
@@ -19,6 +20,7 @@ static NSString *const kDidUpdateCharacteristicValue = @"kDidUpdateCharacteristi
 static NSString *const kUITableViewHeaderView = @"kUITableViewHeaderView";
 static NSString *const kUITableViewCell = @"kUITableViewCell";
 
+static NSString *const kSMButtonTableViewCell = @"kSMButtonTableViewCell";
 static NSString *const kSMTextFieldTableViewCell = @"kSMTextFieldTableViewCell";
 static NSString *const kSMTextViewTableViewCell = @"kSMTextViewTableViewCell";
 static NSString *const kSMTableViewHeaderView = @"kSMTableViewHeaderView";

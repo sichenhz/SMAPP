@@ -15,6 +15,8 @@
 		9619C442228B027C0025754D /* SMHomeListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9619C441228B027C0025754D /* SMHomeListTableViewCell.m */; };
 		9619C445228B10800025754D /* SMTextFieldTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9619C444228B10800025754D /* SMTextFieldTableViewCell.m */; };
 		9619C448228B108E0025754D /* SMTextViewTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9619C447228B108E0025754D /* SMTextViewTableViewCell.m */; };
+		9619C44B228B13E60025754D /* UITextView+Placeholder.m in Sources */ = {isa = PBXBuildFile; fileRef = 9619C44A228B13E60025754D /* UITextView+Placeholder.m */; };
+		9619C44E228B15280025754D /* SMButtonTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9619C44D228B15280025754D /* SMButtonTableViewCell.m */; };
 		96AD76AA22631659003A0D2A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 96AD76A922631659003A0D2A /* AppDelegate.m */; };
 		96AD76B22263165C003A0D2A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 96AD76B12263165C003A0D2A /* Assets.xcassets */; };
 		96AD76B52263165C003A0D2A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 96AD76B32263165C003A0D2A /* LaunchScreen.storyboard */; };
@@ -47,7 +49,7 @@
 		96E04D3A227F1468002DE8F2 /* SMAccessoryDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04D32227F1468002DE8F2 /* SMAccessoryDetailViewController.m */; };
 		96E04D3B227F1468002DE8F2 /* SMHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04D35227F1468002DE8F2 /* SMHomeViewController.m */; };
 		96E04D3E227F28F3002DE8F2 /* SMNotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04D3D227F28F3002DE8F2 /* SMNotificationViewController.m */; };
-		96E04D41227F28FF002DE8F2 /* SMSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04D40227F28FF002DE8F2 /* SMSettingViewController.m */; };
+		96E04D41227F28FF002DE8F2 /* SMHomeSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04D40227F28FF002DE8F2 /* SMHomeSettingViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -67,6 +69,10 @@
 		9619C444228B10800025754D /* SMTextFieldTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMTextFieldTableViewCell.m; sourceTree = "<group>"; };
 		9619C446228B108E0025754D /* SMTextViewTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMTextViewTableViewCell.h; sourceTree = "<group>"; };
 		9619C447228B108E0025754D /* SMTextViewTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMTextViewTableViewCell.m; sourceTree = "<group>"; };
+		9619C449228B13E60025754D /* UITextView+Placeholder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UITextView+Placeholder.h"; sourceTree = "<group>"; };
+		9619C44A228B13E60025754D /* UITextView+Placeholder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UITextView+Placeholder.m"; sourceTree = "<group>"; };
+		9619C44C228B15280025754D /* SMButtonTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMButtonTableViewCell.h; sourceTree = "<group>"; };
+		9619C44D228B15280025754D /* SMButtonTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMButtonTableViewCell.m; sourceTree = "<group>"; };
 		96AD76A522631659003A0D2A /* SMAPP.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SMAPP.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		96AD76A822631659003A0D2A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		96AD76A922631659003A0D2A /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -130,8 +136,8 @@
 		96E04D35227F1468002DE8F2 /* SMHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMHomeViewController.m; sourceTree = "<group>"; };
 		96E04D3C227F28F3002DE8F2 /* SMNotificationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMNotificationViewController.h; sourceTree = "<group>"; };
 		96E04D3D227F28F3002DE8F2 /* SMNotificationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMNotificationViewController.m; sourceTree = "<group>"; };
-		96E04D3F227F28FF002DE8F2 /* SMSettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMSettingViewController.h; sourceTree = "<group>"; };
-		96E04D40227F28FF002DE8F2 /* SMSettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMSettingViewController.m; sourceTree = "<group>"; };
+		96E04D3F227F28FF002DE8F2 /* SMHomeSettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMHomeSettingViewController.h; sourceTree = "<group>"; };
+		96E04D40227F28FF002DE8F2 /* SMHomeSettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMHomeSettingViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -265,6 +271,8 @@
 				9619C444228B10800025754D /* SMTextFieldTableViewCell.m */,
 				9619C446228B108E0025754D /* SMTextViewTableViewCell.h */,
 				9619C447228B108E0025754D /* SMTextViewTableViewCell.m */,
+				9619C44C228B15280025754D /* SMButtonTableViewCell.h */,
+				9619C44D228B15280025754D /* SMButtonTableViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -276,6 +284,8 @@
 				96E04D28227F1431002DE8F2 /* HMHomeManager+Share.m */,
 				96E04D24227F1400002DE8F2 /* UIView+Extention.h */,
 				96E04D23227F1400002DE8F2 /* UIView+Extention.m */,
+				9619C449228B13E60025754D /* UITextView+Placeholder.h */,
+				9619C44A228B13E60025754D /* UITextView+Placeholder.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -295,8 +305,8 @@
 				96E04D31227F1468002DE8F2 /* SMServiceViewController.m */,
 				9619C43D228AFF080025754D /* SMHomeListViewController.h */,
 				9619C43E228AFF080025754D /* SMHomeListViewController.m */,
-				96E04D3F227F28FF002DE8F2 /* SMSettingViewController.h */,
-				96E04D40227F28FF002DE8F2 /* SMSettingViewController.m */,
+				96E04D3F227F28FF002DE8F2 /* SMHomeSettingViewController.h */,
+				96E04D40227F28FF002DE8F2 /* SMHomeSettingViewController.m */,
 				96E04D3C227F28F3002DE8F2 /* SMNotificationViewController.h */,
 				96E04D3D227F28F3002DE8F2 /* SMNotificationViewController.m */,
 				9619C43A228AFE4F0025754D /* SMAccessoryListViewController.h */,
@@ -389,6 +399,7 @@
 				96E04D0B227F0AC0002DE8F2 /* ViewController+MASAdditions.m in Sources */,
 				9619C442228B027C0025754D /* SMHomeListTableViewCell.m in Sources */,
 				96E04D13227F0AC0002DE8F2 /* MASViewAttribute.m in Sources */,
+				9619C44B228B13E60025754D /* UITextView+Placeholder.m in Sources */,
 				96E04D3E227F28F3002DE8F2 /* SMNotificationViewController.m in Sources */,
 				96E04D0E227F0AC0002DE8F2 /* MASLayoutConstraint.m in Sources */,
 				96B47DF72281B9EC00AFAF32 /* SMCollectionViewCell.m in Sources */,
@@ -404,7 +415,7 @@
 				96E04D37227F1468002DE8F2 /* SMAddAccessoryViewController.m in Sources */,
 				96E04D11227F0AC0002DE8F2 /* MASConstraint.m in Sources */,
 				96E04D21227F0CF9002DE8F2 /* SMButton.m in Sources */,
-				96E04D41227F28FF002DE8F2 /* SMSettingViewController.m in Sources */,
+				96E04D41227F28FF002DE8F2 /* SMHomeSettingViewController.m in Sources */,
 				96E04D3B227F1468002DE8F2 /* SMHomeViewController.m in Sources */,
 				96AD76B82263165C003A0D2A /* main.m in Sources */,
 				96E04D20227F0CF9002DE8F2 /* SMAlertView.m in Sources */,
@@ -415,6 +426,7 @@
 				96E04D39227F1468002DE8F2 /* SMServiceViewController.m in Sources */,
 				9619C43C228AFE4F0025754D /* SMAccessoryListViewController.m in Sources */,
 				9619C43F228AFF090025754D /* SMHomeListViewController.m in Sources */,
+				9619C44E228B15280025754D /* SMButtonTableViewCell.m in Sources */,
 				9619C436228AE2E60025754D /* SMHomeTableViewCell.m in Sources */,
 				96E04D10227F0AC0002DE8F2 /* View+MASAdditions.m in Sources */,
 			);

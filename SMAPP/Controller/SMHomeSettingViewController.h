@@ -1,5 +1,5 @@
 //
-//  SMSettingViewController.h
+//  SMHomeSettingViewController.h
 //  SMAPP
 //
 //  Created by Jason on 6/5/19.
@@ -11,10 +11,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface SMSettingViewController : UITableViewController
+@interface SMHomeSettingViewController : UITableViewController
 
 - (instancetype)initWithHome:(HMHome *)home;
-- (instancetype)initWithRome:(HMRoom *)rome;
 @end
 
 NS_ASSUME_NONNULL_END
