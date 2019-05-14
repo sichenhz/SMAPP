@@ -30,6 +30,17 @@
     }];
     _titleLabel = titleLabel;
     
+    UIButton *arrowButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.contentView addSubview:arrowButton];
+    [arrowButton setImage:[UIImage imageNamed:@"arrow-drop-down"] forState:UIControlStateNormal];
+    [arrowButton setImage:[UIImage imageNamed:@"arrow"] forState:UIControlStateSelected];
+    [arrowButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.top.bottom.equalTo(arrowButton.superview);
+        make.width.equalTo(@44);
+    }];
+    [arrowButton addTarget:self action:@selector(arrowButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    _arrowButton = arrowButton;
+    
     UIView *topLine = [[UIView alloc] init];
     topLine.backgroundColor = [UIColor lightGrayColor];
     [self.contentView addSubview:topLine];
@@ -45,6 +56,13 @@
         make.left.bottom.right.equalTo(topLine.superview);
         make.height.equalTo(@0.5);
     }];
+}
+
+- (void)arrowButtonPressed:(UIButton *)sender {
+    if (self.arrowButtonPressed) {
+        sender.selected = !sender.isSelected;
+        self.arrowButtonPressed(sender.isSelected);
+    }
 }
 
 @end

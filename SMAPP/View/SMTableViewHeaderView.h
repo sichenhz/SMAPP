@@ -12,8 +12,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface SMTableViewHeaderView : UITableViewHeaderFooterView
 
-@property (nonatomic, weak) UILabel *titleLabel;
-@property (nonatomic, weak) UIButton *button;
+@property (nonatomic, weak, readonly) UILabel *titleLabel;
+@property (nonatomic, weak, readonly) UIButton *arrowButton;
+
+@property (nonatomic, copy) void(^arrowButtonPressed)(BOOL isSelected);
 
 @end
 

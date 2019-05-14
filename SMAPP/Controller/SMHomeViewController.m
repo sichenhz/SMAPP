@@ -17,6 +17,23 @@
 #import "Masonry.h"
 #import "SMAddAccessoryViewController.h"
 
+@interface SMHomeViewSectionItem : NSObject
+
+@property (nonatomic, assign, getter=isHidden) BOOL hidden;
+@property (nonatomic, strong) NSArray *services;
+
+@end
+
+@implementation SMHomeViewSectionItem
+
++ (instancetype)itemWithServices:(NSMutableArray *)services {
+    SMHomeViewSectionItem *sectionItem = [[SMHomeViewSectionItem alloc] init];
+    sectionItem.services = [NSArray arrayWithArray:services];
+    return sectionItem;
+}
+
+@end
+
 @interface SMHomeViewController () <
 HMHomeManagerDelegate,
 HMHomeDelegate,
@@ -128,7 +145,7 @@ HMAccessoryDelegate
         }
         accessory.delegate = self;
     }
-    if (services.count) [self.dataList addObject:services];
+    if (services.count) [self.dataList addObject:[SMHomeViewSectionItem itemWithServices:services]];
     
     for (HMRoom *room in manager.primaryHome.rooms) {
         services = [NSMutableArray array];
@@ -140,7 +157,7 @@ HMAccessoryDelegate
             }
             accessory.delegate = self;
         }
-        if (services.count) [self.dataList addObject:services];
+        if (services.count) [self.dataList addObject:[SMHomeViewSectionItem itemWithServices:services]];
     }
     
     [self.tableView reloadData];
@@ -151,8 +168,9 @@ HMAccessoryDelegate
     HMService *service = [[notification userInfo] objectForKey:@"service"];
     HMCharacteristic *characteristic = [[notification userInfo] objectForKey:@"characteristic"];
 
-    for (NSArray *services in self.dataList) {
-        NSInteger section = [self.dataList indexOfObject:services];
+    for (SMHomeViewSectionItem *item in self.dataList) {
+        NSArray *services = item.services;
+        NSInteger section = [self.dataList indexOfObject:item.services];
         for (HMService *item in services) {
             if ([item isEqual:service]) {
                 NSInteger row = [services indexOfObject:item];
@@ -172,7 +190,8 @@ HMAccessoryDelegate
 - (void)removeAccessories:(NSNotification *)notification {
     HMAccessory *accessory = notification.object;
     NSMutableArray *indexPaths = [NSMutableArray array];
-    for (NSArray *services in self.dataList) {
+    for (SMHomeViewSectionItem *item in self.dataList) {
+        NSArray *services = item.services;
         NSInteger section = [self.dataList indexOfObject:services];
         for (HMService *service in services) {
             if ([service.accessory isEqual:accessory]) {
@@ -430,8 +449,9 @@ HMAccessoryDelegate
 #pragma mark - HMAccessoryDelegate
 
 - (void)accessoryDidUpdateReachability:(HMAccessory *)accessory {
-    NSLog(@"监听到设备的断开或连接");
-    for (NSArray *services in self.dataList) {
+
+    for (SMHomeViewSectionItem *item in self.dataList) {
+        NSArray *services = item.services;
         NSInteger section = [self.dataList indexOfObject:services];
         
         for (HMService *service in services) {
@@ -459,7 +479,7 @@ HMAccessoryDelegate
 }
 
 - (void)accessory:(HMAccessory *)accessory service:(HMService *)service didUpdateValueForCharacteristic:(HMCharacteristic *)characteristic {
-    NSLog(@"监听到设备被操作");
+
     [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateCharacteristicValue
                                                         object:self
                                                       userInfo:@{@"accessory": accessory,
@@ -486,8 +506,8 @@ HMAccessoryDelegate
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    NSArray *services = self.dataList[section];
-    return services.count;
+    SMHomeViewSectionItem *item = self.dataList[section];
+    return item.services.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -496,8 +516,8 @@ HMAccessoryDelegate
         cell = [[SMTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kSMTableViewCell];
     }
     
-    NSArray *services = self.dataList[indexPath.section];
-    HMService *service = services[indexPath.row];
+    SMHomeViewSectionItem *item = self.dataList[indexPath.section];
+    HMService *service = item.services[indexPath.row];
     
     cell.leftLabel.text = service.name;
     cell.available = service.accessory.reachable;
@@ -529,8 +549,8 @@ HMAccessoryDelegate
     CGPoint switchOriginInTableView = [sender convertPoint:CGPointZero toView:self.tableView];
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:switchOriginInTableView];
 
-    NSArray *services = self.dataList[indexPath.section];
-    HMService *service = services[indexPath.row];
+    SMHomeViewSectionItem *item = self.dataList[indexPath.section];
+    HMService *service = item.services[indexPath.row];
 
     for (HMCharacteristic *characteristic in service.characteristics) {
         if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetLockMechanismState]  ||
@@ -574,7 +594,8 @@ HMAccessoryDelegate
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 44;
+    SMHomeViewSectionItem *item = self.dataList[indexPath.section];
+    return item.isHidden ? 0 : 44;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -587,8 +608,14 @@ HMAccessoryDelegate
         header = [[SMTableViewHeaderView alloc] initWithReuseIdentifier:kSMTableViewHeaderView];
     }
     
-    NSArray *services = self.dataList[section];
-    header.titleLabel.text = ((HMService *)services.firstObject).accessory.room.name;
+    SMHomeViewSectionItem *item = self.dataList[section];
+    header.titleLabel.text = ((HMService *)item.services.firstObject).accessory.room.name;
+    header.arrowButton.selected = item.isHidden;
+    
+    header.arrowButtonPressed = ^(BOOL isSelected) {
+        item.hidden = isSelected;
+        [tableView reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationAutomatic];
+    };
     return header;
 }
 
