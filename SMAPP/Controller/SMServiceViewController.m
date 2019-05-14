@@ -18,7 +18,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = self.service.name;
+    self.navigationItem.title = self.service.name;
     
     [self.tableView reloadData];
     

@@ -21,7 +21,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = self.accessory.name;
+    self.navigationItem.title = self.accessory.name;
     
     CGRect frame = self.tableView.frame;
     self.tableView = [[UITableView alloc] initWithFrame:frame style:UITableViewStyleGrouped];
@@ -105,7 +105,7 @@
                 
                 [alertView addAction:[SMAlertAction actionWithTitle:@"Cancel" style:SMAlertActionStyleCancel handler:nil]];
                 
-                [alertView addAction:[SMAlertAction actionWithTitle:@"Confirm" style:SMAlertActionStyleConfirm handler:^(SMAlertAction * _Nonnull action) {
+                [alertView addAction:[SMAlertAction actionWithTitle:@"Save" style:SMAlertActionStyleConfirm handler:^(SMAlertAction * _Nonnull action) {
                     NSString *newName = alertView.textFields.firstObject.text;
                     [manager.primaryHome addRoomWithName:newName completionHandler:^(HMRoom * _Nullable room, NSError * _Nullable error) {
                         if (error) {

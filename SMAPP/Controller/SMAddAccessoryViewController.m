@@ -24,7 +24,7 @@
     
     self.navigationController.delegate = self;
     
-    self.title = @"Add";
+    self.navigationItem.title = @"Add";
     self.dataList = [NSMutableArray array];
     
     self.accessoryBrowser = [[HMAccessoryBrowser alloc] init];

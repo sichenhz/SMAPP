@@ -55,7 +55,7 @@ HMAccessoryDelegate
     [super viewDidLoad];
 
     HMHomeManager *namager = [HMHomeManager sharedManager];
-    self.title = namager.primaryHome.name;
+    self.navigationItem.title = namager.primaryHome.name;
     self.currentShowedSection = -1; // means there is no showed section  by default
     
     namager.delegate = self;
@@ -390,7 +390,7 @@ HMAccessoryDelegate
     [alertView addAction:[SMAlertAction actionWithTitle:@"Cancel" style:SMAlertActionStyleCancel handler:nil]];
     
     __weak typeof(self) weakSelf = self;
-    [alertView addAction:[SMAlertAction actionWithTitle:@"Confirm" style:SMAlertActionStyleConfirm handler:^(SMAlertAction * _Nonnull action) {
+    [alertView addAction:[SMAlertAction actionWithTitle:@"Save" style:SMAlertActionStyleConfirm handler:^(SMAlertAction * _Nonnull action) {
         NSString *newName = alertView.textFields.firstObject.text;
         [manager addHomeWithName:newName completionHandler:^(HMHome * _Nullable home, NSError * _Nullable error) {
             if (error) {
@@ -418,7 +418,7 @@ HMAccessoryDelegate
     
     [alertView addAction:[SMAlertAction actionWithTitle:@"Cancel" style:SMAlertActionStyleCancel handler:nil]];
     
-    [alertView addAction:[SMAlertAction actionWithTitle:@"Confirm" style:SMAlertActionStyleConfirm handler:^(SMAlertAction * _Nonnull action) {
+    [alertView addAction:[SMAlertAction actionWithTitle:@"Save" style:SMAlertActionStyleConfirm handler:^(SMAlertAction * _Nonnull action) {
         NSString *newName = alertView.textFields.firstObject.text;
         [manager.primaryHome addRoomWithName:newName completionHandler:^(HMRoom * _Nullable room, NSError * _Nullable error) {
             if (error) {
