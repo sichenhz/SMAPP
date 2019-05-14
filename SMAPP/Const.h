@@ -11,7 +11,9 @@
 
 static NSString *const kShowdRoomName = @"kShowdRoomName";
 
+static NSString *const kDidUpdateRoomName = @"kDidUpdateRoomName";
 static NSString *const kDidUpdateHomeName = @"kDidUpdateHomeName";
+static NSString *const kDidRemoveRoom = @"kDidRemoveRoom";
 static NSString *const kDidRemoveHome = @"kDidRemoveHome";
 static NSString *const kDidUpdateAccessory = @"kDidUpdateAccessory";
 static NSString *const kDidRemoveAccessory = @"kDidRemoveAccessory";

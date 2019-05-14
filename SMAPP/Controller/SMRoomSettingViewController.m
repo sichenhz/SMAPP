@@ -1,30 +1,28 @@
 //
-//  SMHomeSettingViewController.m
+//  SMRoomSettingViewController.m
 //  SMAPP
 //
-//  Created by Jason on 6/5/19.
+//  Created by Jason on 15/5/19.
 //  Copyright © 2019 RXP. All rights reserved.
 //
 
-#import "SMHomeSettingViewController.h"
+#import "SMRoomSettingViewController.h"
 #import "Const.h"
 #import "SMTextFieldTableViewCell.h"
-#import "SMTextViewTableViewCell.h"
 #import "SMButtonTableViewCell.h"
-#import "UITextView+Placeholder.h"
 #import "SMAlertView.h"
 
-@interface SMHomeSettingViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
+@interface SMRoomSettingViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
 
-@property (nonatomic, strong) HMHome *home;
+@property (nonatomic, strong) HMRoom *room;
 
 @end
 
-@implementation SMHomeSettingViewController
+@implementation SMRoomSettingViewController
 
-- (instancetype)initWithHome:(HMHome *)home {
+- (instancetype)initWithRoom:(HMRoom *)room {
     if (self = [super init]) {
-        _home = home;
+        _room = room;
     }
     return self;
 }
@@ -32,7 +30,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.navigationItem.title = self.home.name;
+    self.navigationItem.title = self.room.name;
     
     CGRect frame = self.tableView.frame;
     self.tableView = [[UITableView alloc] initWithFrame:frame style:UITableViewStyleGrouped];
@@ -46,46 +44,42 @@
 #pragma mark - Action
 
 - (void)doneButtonPressed:(id)sender {
-
+    
     SMTextFieldTableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-    [self.home updateName:cell.textField.text completionHandler:^(NSError * _Nullable error) {
+    [self.room updateName:cell.textField.text completionHandler:^(NSError * _Nullable error) {
         if (error) {
             NSLog(@"%@", error);
         } else {
             [self.navigationController popViewControllerAnimated:YES];
-            [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateHomeName object:self userInfo:@{@"home" : self.home}];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateRoomName object:self userInfo:@{@"room" : self.room}];
         }
     }];
 }
 
-- (void)removeHome {
-    HMHomeManager *manager = [HMHomeManager sharedManager];
+- (void)removeRoom {
+    NSString *message = [NSString stringWithFormat:@"Are you sure you want to remove %@?", self.room.name];
+    SMAlertView *alertView = [SMAlertView alertViewWithTitle:nil message:message style:SMAlertViewStyleActionSheet];
     
-    if (manager.primaryHome) {
-        NSString *message = [NSString stringWithFormat:@"Are you sure you want to remove %@?", manager.primaryHome.name];
-        SMAlertView *alertView = [SMAlertView alertViewWithTitle:nil message:message style:SMAlertViewStyleActionSheet];
-        
-        [alertView addAction:[SMAlertAction actionWithTitle:@"Remove" style:SMAlertActionStyleConfirm
-                                                    handler:^(SMAlertAction * _Nonnull action) {
-                                                        [manager removeHome:self.home completionHandler:^(NSError * _Nullable error) {
-                                                            if (error) {
-                                                                NSLog(@"%@", error);
-                                                            } else {
-                                                                [self.navigationController popViewControllerAnimated:YES];
-                                                                [[NSNotificationCenter defaultCenter] postNotificationName:kDidRemoveHome object:self userInfo:@{@"home" : self.home}];
-                                                            }
-                                                        }];
-                                                    }]];
-        [alertView addAction:[SMAlertAction actionWithTitle:@"Cancel" style:SMAlertActionStyleCancel
-                                                    handler:nil]];
-        [alertView show];
-    }
+    [alertView addAction:[SMAlertAction actionWithTitle:@"Remove" style:SMAlertActionStyleConfirm
+                                                handler:^(SMAlertAction * _Nonnull action) {
+                                                    [[HMHomeManager sharedManager].primaryHome removeRoom:self.room completionHandler:^(NSError * _Nullable error) {
+                                                        if (error) {
+                                                            NSLog(@"%@", error);
+                                                        } else {
+                                                            [self.navigationController popViewControllerAnimated:YES];
+                                                            [[NSNotificationCenter defaultCenter] postNotificationName:kDidRemoveRoom object:self userInfo:@{@"room" : self.room}];
+                                                        }
+                                                    }];
+                                                }]];
+    [alertView addAction:[SMAlertAction actionWithTitle:@"Cancel" style:SMAlertActionStyleCancel
+                                                handler:nil]];
+    [alertView show];
 }
 
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 4;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -95,9 +89,6 @@
             break;
         case 1:
             return 3;
-            break;
-        case 2:
-            return 1;
             break;
         default:
             return 1;
@@ -116,7 +107,7 @@
                 cell.textField.delegate = self;
                 cell.textField.returnKeyType = UIReturnKeyDone;
             }
-            cell.textField.text = self.home.name;
+            cell.textField.text = self.room.name;
             return cell;
         }
             break;
@@ -143,16 +134,6 @@
             return cell;
         }
             break;
-        case 2:
-        {
-            SMTextViewTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kSMTextViewTableViewCell];
-            if (!cell) {
-                cell = [[SMTextViewTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kUITableViewCell];
-                cell.textView.placeholder = @"Add notes for people who are sharing your home.";
-            }
-            return cell;
-        }
-            break;
         default:
         {
             SMButtonTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kSMButtonTableViewCell];
@@ -161,7 +142,7 @@
                 [cell.button setTitle:@"Remove Home" forState:UIControlStateNormal];
                 __weak typeof(self) weakSelf = self;
                 cell.cellPressed = ^{
-                    [weakSelf removeHome];
+                    [weakSelf removeRoom];
                 };
             }
             return cell;
@@ -173,11 +154,7 @@
 #pragma mark - UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 2) {
-        return 172;
-    } else {
-        return 44;
-    }
+    return 44;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -197,14 +174,11 @@
         case 1:
             header.textLabel.text = @"Floor Plan";
             break;
-        case 2:
-            header.textLabel.text = @"Home Notes";
-            break;
         default:
             header.textLabel.text = @"";
             break;
     }
-
+    
     return header;
 }
 

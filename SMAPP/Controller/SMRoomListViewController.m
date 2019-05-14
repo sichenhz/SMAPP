@@ -1,25 +1,37 @@
 //
-//  SMHomeListViewController.m
+//  SMRoomListViewController.m
 //  SMAPP
 //
-//  Created by Jason on 14/5/19.
+//  Created by Jason on 15/5/19.
 //  Copyright © 2019 RXP. All rights reserved.
 //
 
-#import "SMHomeListViewController.h"
-#import "HMHomeManager+Share.h"
+#import "SMRoomListViewController.h"
 #import "Const.h"
 #import "SMAlertView.h"
 #import "SMHomeListTableViewCell.h"
 #import "Masonry.h"
-#import "SMHomeSettingViewController.h"
+#import "SMRoomSettingViewController.h"
 
-@implementation SMHomeListViewController
+@interface SMRoomListViewController ()
+
+@property (nonatomic, strong) HMHome *home;
+
+@end
+
+@implementation SMRoomListViewController
+
+- (instancetype)initWithHome:(HMHome *)home {
+    if (self = [super init]) {
+        _home = home;
+    }
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.navigationItem.title = @"Homes";
+    self.navigationItem.title = @"Rooms";
     
     [self initNavigationItems];
     
@@ -28,8 +40,8 @@
     self.tableView.backgroundColor = COLOR_BACKGROUND;
     self.tableView.tableFooterView = [[UIView alloc] init]; // remove the lines
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateHomeName:) name:kDidUpdateHomeName object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeHome:) name:kDidRemoveHome object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRoomName:) name:kDidUpdateRoomName object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeRoom:) name:kDidRemoveRoom object:nil];
 }
 
 - (void)initNavigationItems {
@@ -45,34 +57,33 @@
 
 #pragma mark - Notification
 
-- (void)updateHomeName:(NSNotification *)notification {
+- (void)updateRoomName:(NSNotification *)notification {
     [self.tableView reloadData];
 }
 
-- (void)removeHome:(NSNotification *)notification {
+- (void)removeRoom:(NSNotification *)notification {
     [self.tableView reloadData];
 }
 
 #pragma mark - Action
 
-- (void)rightButtonItemPressed:(id)sender {
-    HMHomeManager *manager = [HMHomeManager sharedManager];
-    
-    SMAlertView *alertView = [SMAlertView alertViewWithTitle:@"Add Home..." message:@"Please make sure the name is unique." style:SMAlertViewStyleAlert];
+- (void)rightButtonItemPressed:(id)sender {    
+    SMAlertView *alertView = [SMAlertView alertViewWithTitle:@"Add Room..." message:@"Please make sure the name is unique." style:SMAlertViewStyleAlert];
     
     [alertView addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-        textField.placeholder = @"Ex. Vacation Home";
+        textField.placeholder = @"Ex. Kitchen, Living Room";
     }];
     
     [alertView addAction:[SMAlertAction actionWithTitle:@"Cancel" style:SMAlertActionStyleCancel handler:nil]];
     
     [alertView addAction:[SMAlertAction actionWithTitle:@"Save" style:SMAlertActionStyleConfirm handler:^(SMAlertAction * _Nonnull action) {
         NSString *newName = alertView.textFields.firstObject.text;
-        [manager addHomeWithName:newName completionHandler:^(HMHome * _Nullable home, NSError * _Nullable error) {
+        __weak typeof(self) weakSelf = self;
+        [self.home addRoomWithName:newName completionHandler:^(HMRoom * _Nullable room, NSError * _Nullable error) {
             if (error) {
                 NSLog(@"%@", error);
             } else {
-                [self.tableView reloadData];
+                [weakSelf.tableView reloadData];
             }
         }];
     }]];
@@ -82,8 +93,7 @@
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    HMHomeManager *manager = [HMHomeManager sharedManager];
-    return manager.homes.count;
+    return self.home.rooms.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -92,10 +102,9 @@
         cell = [[SMHomeListTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kUITableViewCell];
     }
     
-    HMHomeManager *manager = [HMHomeManager sharedManager];
-    HMHome *home = manager.homes[indexPath.row];
-    cell.leftLabel.text = home.name;
-    cell.selectedImageView.hidden = !home.isPrimary;
+    HMRoom *room = self.home.rooms[indexPath.row];
+    cell.leftLabel.text = room.name;
+    cell.selectedImageView.hidden = YES;
     
     return cell;
 }
@@ -115,7 +124,7 @@
     if (!header) {
         header = [[UITableViewHeaderFooterView alloc] initWithReuseIdentifier:kUITableViewHeaderView];
     }
-    header.textLabel.text = @"Home list:";
+    header.textLabel.text = @"Room list:";
     return header;
 }
 
@@ -128,9 +137,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    HMHomeManager *manager = [HMHomeManager sharedManager];
-    HMHome *home = manager.homes[indexPath.item];
-    SMHomeSettingViewController *settingVC = [[SMHomeSettingViewController alloc] initWithHome:home];
+    HMRoom *room = self.home.rooms[indexPath.item];
+    SMRoomSettingViewController *settingVC = [[SMRoomSettingViewController alloc] initWithRoom:room];
     [self.navigationController pushViewController:settingVC animated:YES];
 }
 

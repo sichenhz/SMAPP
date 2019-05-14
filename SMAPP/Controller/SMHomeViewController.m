@@ -462,15 +462,21 @@ HMAccessoryDelegate
 #pragma mark - HMHomeDelegate
 
 - (void)home:(HMHome *)home didAddAccessory:(HMAccessory *)accessory {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:self];
+    if ([home isEqual:[HMHomeManager sharedManager].primaryHome]) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:self];
+    }
 }
 
 - (void)home:(HMHome *)home didRemoveAccessory:(HMAccessory *)accessory {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kDidRemoveAccessory object:self userInfo:@{@"accessory" : accessory}];
+    if ([home isEqual:[HMHomeManager sharedManager].primaryHome]) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kDidRemoveAccessory object:self userInfo:@{@"accessory" : accessory}];
+    }
 }
 
 - (void)home:(HMHome *)home didUpdateRoom:(HMRoom *)room forAccessory:(HMAccessory *)accessory {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:self];
+    if ([home isEqual:[HMHomeManager sharedManager].primaryHome]) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:self];
+    }
 }
 
 #pragma mark - HMAccessoryDelegate

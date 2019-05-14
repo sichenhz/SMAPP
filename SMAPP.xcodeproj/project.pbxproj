@@ -17,6 +17,8 @@
 		9619C448228B108E0025754D /* SMTextViewTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9619C447228B108E0025754D /* SMTextViewTableViewCell.m */; };
 		9619C44B228B13E60025754D /* UITextView+Placeholder.m in Sources */ = {isa = PBXBuildFile; fileRef = 9619C44A228B13E60025754D /* UITextView+Placeholder.m */; };
 		9619C44E228B15280025754D /* SMButtonTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9619C44D228B15280025754D /* SMButtonTableViewCell.m */; };
+		965906B7228B476000035CD5 /* SMRoomListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 965906B6228B476000035CD5 /* SMRoomListViewController.m */; };
+		965906BA228B47B400035CD5 /* SMRoomSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 965906B9228B47B400035CD5 /* SMRoomSettingViewController.m */; };
 		96AD76AA22631659003A0D2A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 96AD76A922631659003A0D2A /* AppDelegate.m */; };
 		96AD76B22263165C003A0D2A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 96AD76B12263165C003A0D2A /* Assets.xcassets */; };
 		96AD76B52263165C003A0D2A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 96AD76B32263165C003A0D2A /* LaunchScreen.storyboard */; };
@@ -73,6 +75,10 @@
 		9619C44A228B13E60025754D /* UITextView+Placeholder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UITextView+Placeholder.m"; sourceTree = "<group>"; };
 		9619C44C228B15280025754D /* SMButtonTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMButtonTableViewCell.h; sourceTree = "<group>"; };
 		9619C44D228B15280025754D /* SMButtonTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMButtonTableViewCell.m; sourceTree = "<group>"; };
+		965906B5228B476000035CD5 /* SMRoomListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMRoomListViewController.h; sourceTree = "<group>"; };
+		965906B6228B476000035CD5 /* SMRoomListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMRoomListViewController.m; sourceTree = "<group>"; };
+		965906B8228B47B400035CD5 /* SMRoomSettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMRoomSettingViewController.h; sourceTree = "<group>"; };
+		965906B9228B47B400035CD5 /* SMRoomSettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMRoomSettingViewController.m; sourceTree = "<group>"; };
 		96AD76A522631659003A0D2A /* SMAPP.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SMAPP.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		96AD76A822631659003A0D2A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		96AD76A922631659003A0D2A /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -305,8 +311,12 @@
 				96E04D31227F1468002DE8F2 /* SMServiceViewController.m */,
 				9619C43D228AFF080025754D /* SMHomeListViewController.h */,
 				9619C43E228AFF080025754D /* SMHomeListViewController.m */,
+				965906B5228B476000035CD5 /* SMRoomListViewController.h */,
+				965906B6228B476000035CD5 /* SMRoomListViewController.m */,
 				96E04D3F227F28FF002DE8F2 /* SMHomeSettingViewController.h */,
 				96E04D40227F28FF002DE8F2 /* SMHomeSettingViewController.m */,
+				965906B8228B47B400035CD5 /* SMRoomSettingViewController.h */,
+				965906B9228B47B400035CD5 /* SMRoomSettingViewController.m */,
 				96E04D3C227F28F3002DE8F2 /* SMNotificationViewController.h */,
 				96E04D3D227F28F3002DE8F2 /* SMNotificationViewController.m */,
 				9619C43A228AFE4F0025754D /* SMAccessoryListViewController.h */,
@@ -425,8 +435,10 @@
 				9619C445228B10800025754D /* SMTextFieldTableViewCell.m in Sources */,
 				96E04D39227F1468002DE8F2 /* SMServiceViewController.m in Sources */,
 				9619C43C228AFE4F0025754D /* SMAccessoryListViewController.m in Sources */,
+				965906BA228B47B400035CD5 /* SMRoomSettingViewController.m in Sources */,
 				9619C43F228AFF090025754D /* SMHomeListViewController.m in Sources */,
 				9619C44E228B15280025754D /* SMButtonTableViewCell.m in Sources */,
+				965906B7228B476000035CD5 /* SMRoomListViewController.m in Sources */,
 				9619C436228AE2E60025754D /* SMHomeTableViewCell.m in Sources */,
 				96E04D10227F0AC0002DE8F2 /* View+MASAdditions.m in Sources */,
 			);

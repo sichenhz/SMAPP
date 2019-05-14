@@ -11,6 +11,7 @@
 #import "SMRoomTableViewCell.h"
 #import "SMTableViewHeaderView.h"
 #import "SMAlertView.h"
+#import "SMRoomListViewController.h"
 
 @interface SMRoomViewSectionItem : NSObject
 
@@ -150,7 +151,31 @@
 #pragma mark - Action
 
 - (void)leftButtonItemPressed:(id)sender {
+    HMHomeManager *manager = [HMHomeManager sharedManager];
     
+    if (manager.primaryHome.rooms.count > 0) {
+        
+        SMAlertView *alertView = [SMAlertView alertViewWithTitle:nil message:nil style:SMAlertViewStyleActionSheet];
+        
+        for (HMRoom *room in manager.primaryHome.rooms) {
+            NSString *roomName = room.name;
+            __weak typeof(self) weakSelf = self;
+            BOOL isSelected = [roomName isEqualToString:self.navigationItem.title];
+            [alertView addAction:[SMAlertAction actionWithTitle:roomName style:SMAlertActionStyleDefault selected:isSelected handler:^(SMAlertAction * _Nonnull action) {
+                weakSelf.room = room;
+                weakSelf.navigationItem.title = room.name;
+                [weakSelf updateCurrentAccessories];
+            }]];
+        }
+        
+        [alertView addAction:[SMAlertAction actionWithTitle:@"Room Settings..." style:SMAlertActionStyleDefault handler:^(SMAlertAction * _Nonnull action) {
+            SMRoomListViewController *roomListVC = [[SMRoomListViewController alloc] initWithHome:manager.primaryHome];
+            [self.navigationController pushViewController:roomListVC animated:YES];
+        }]];
+        
+        [alertView addAction:[SMAlertAction actionWithTitle:@"Cancel" style:SMAlertActionStyleCancel handler:nil]];
+        [alertView show];
+    }
 }
 
 - (void)rightButtonItemPressed:(id)sender {
