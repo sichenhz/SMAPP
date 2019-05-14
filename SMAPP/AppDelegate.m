@@ -10,7 +10,7 @@
 #import "Const.h"
 #import "SMHomeViewController.h"
 #import "SMNotificationViewController.h"
-#import "SMSettingViewController.h"
+#import "SMAccessoryListViewController.h"
 
 @interface AppDelegate ()
 
@@ -34,8 +34,8 @@
                                                          imageName:@"tabbar_message_center"
                                                  selectedImageName:@"tabbar_message_center_selected"];
     
-    UINavigationController *nav3 = [self setUpNavigationController:[[SMSettingViewController alloc] init]
-                                                             title:@"Settings"
+    UINavigationController *nav3 = [self setUpNavigationController:[[SMAccessoryListViewController alloc] init]
+                                                             title:@"My Devices"
                                                          imageName:@"tabbar_profile"
                                                  selectedImageName:@"tabbar_profile_selected"];
 

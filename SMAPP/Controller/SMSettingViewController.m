@@ -7,148 +7,148 @@
 //
 
 #import "SMSettingViewController.h"
-#import "Masonry.h"
-#import "SMCollectionViewCell.h"
 #import "Const.h"
-#import "HMHomeManager+Share.h"
-#import "SMAccessoryDetailViewController.h"
-#import "SMAlertView.h"
 
-@interface SMSettingViewController () <UICollectionViewDelegate, UICollectionViewDataSource>
+@interface SMSettingViewController () <UITableViewDataSource, UITableViewDelegate>
 
-@property (nonatomic, weak) UICollectionView *collectionView;
-@property (nonatomic, strong) NSMutableArray *dataList;
+@property (nonatomic, strong) HMHome *home;
+@property (nonatomic, strong) HMRoom *room;
 
 @end
 
 @implementation SMSettingViewController
 
+- (instancetype)initWithHome:(HMHome *)home {
+    if (self = [super init]) {
+        _home = home;
+    }
+    return self;
+}
+
+- (instancetype)initWithRome:(HMRoom *)room {
+    if (self = [super init]) {
+        _room = room;
+    }
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-    self.navigationItem.title = @"My Devices";
     
-    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-    CGFloat itemWidth = ([UIScreen mainScreen].bounds.size.width - 40) / 3;
-    layout.itemSize = CGSizeMake(itemWidth, itemWidth * 1.33);
-    layout.minimumInteritemSpacing = 10;
-    layout.minimumLineSpacing = 10;
-    layout.sectionInset = UIEdgeInsetsMake(5, 10, 5, 10);
-    layout.scrollDirection = UICollectionViewScrollDirectionVertical;
-
-    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
-    [self.view addSubview:collectionView];
-    [collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(collectionView.superview);
-    }];
-
-    [collectionView registerClass:[SMCollectionViewCell class] forCellWithReuseIdentifier:kSMCollectionViewCell];
-    collectionView.backgroundColor = [UIColor whiteColor];
-    collectionView.dataSource = self;
-    collectionView.delegate = self;
-    collectionView.alwaysBounceVertical = YES; // make collectionView bounce even datasource has only 1 item
-    _collectionView = collectionView;
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadAccessories:) name:kDidUpdateAccessory object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeAccessories:) name:kDidRemoveAccessory object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadAccessories:) name:kDidUpdateCurrentHomeInfo object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadAccessories:) name:kDidUpdateCharacteristicValue object:nil];
-
-    [self updateCurrentAccessories];
+    CGRect frame = self.tableView.frame;
+    self.tableView = [[UITableView alloc] initWithFrame:frame style:UITableViewStyleGrouped];
+    self.tableView.backgroundColor = COLOR_BACKGROUND;
+    self.tableView.tableFooterView = [[UIView alloc] init]; // remove the lines
 }
 
-- (void)removeAccessories:(NSNotification *)notification {
-    HMAccessory *accessory = notification.object;
-    NSMutableArray *indexPaths = [NSMutableArray array];
-    NSMutableArray *toRemove = [NSMutableArray array];
-    for (HMService *service in self.dataList) {
-        if ([service.accessory isEqual:accessory]) {
-            NSIndexPath *indexPath = [NSIndexPath indexPathForItem:[self.dataList indexOfObject:service] inSection:0];
-            [indexPaths addObject:indexPath];
-            [toRemove addObject:service];
-        }
-    }
-    [self.dataList removeObjectsInArray:toRemove];
-    [self.collectionView deleteItemsAtIndexPaths:indexPaths];
+#pragma mark - UITableViewDataSource
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 4;
 }
 
-- (void)reloadAccessories:(NSNotification *)notification {
-    [self updateCurrentAccessories];
-    [self.collectionView reloadData];
-}
-
-- (void)updateCurrentAccessories {
-    HMHomeManager *manager = [HMHomeManager sharedManager];
-    self.dataList = [NSMutableArray array];
-    
-    for (HMAccessory *accessory in manager.primaryHome.accessories) {
-        for (HMService *service in accessory.services) {
-            if (service.isUserInteractive) {
-                [self.dataList addObject:service];
-            }
-        }
-    }
-}
-
-#pragma mark - UICollectionViewDataSource
-
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return self.dataList.count;
-}
-
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    SMCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kSMCollectionViewCell forIndexPath:indexPath];
-    
-    HMService *service = self.dataList[indexPath.row];
-    
-    cell.on = NO;
-    for (HMCharacteristic *characteristic in service.characteristics) {
-        if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState] ||
-            [characteristic.characteristicType isEqualToString:HMCharacteristicTypeObstructionDetected] ||
-            [characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetLockMechanismState]) {
-            cell.on = [characteristic.value boolValue];
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    switch (section) {
+        case 0:
+            return 1;
             break;
-        }
+        case 1:
+            return 3;
+            break;
+        case 2:
+            return 1;
+            break;
+        default:
+            return 1;
+            break;
+    }
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kUITableViewCell];
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kUITableViewCell];
+        cell.textLabel.font = FONT_BODY;
+        cell.textLabel.textColor = COLOR_TITLE;
     }
 
-    cell.topLabel.text = [NSString stringWithFormat:@"%@ > %@", service.accessory.room.name, service.name];
-    cell.serviceType = service.serviceType;
-    
-    __weak typeof(self) weakSelf = self;
-    cell.editButtonPressed = ^{
-        SMAccessoryDetailViewController *vc = [[SMAccessoryDetailViewController alloc] init];
-        vc.accessory = service.accessory;
-        [weakSelf.navigationController pushViewController:vc animated:YES];
-    };
-
-    cell.removeButtonPressed = ^{
-        NSString *message = [NSString stringWithFormat:@"Are you sure you want to remove %@ from your home?", service.accessory.name];
-        SMAlertView *alertView = [SMAlertView alertViewWithTitle:nil message:message style:SMAlertViewStyleActionSheet];
-
-        [alertView addAction:[SMAlertAction actionWithTitle:@"Remove" style:SMAlertActionStyleConfirm
-                                                    handler:^(SMAlertAction * _Nonnull action) {
-                                                        HMHomeManager *namager = [HMHomeManager sharedManager];
-                                                        [namager.primaryHome removeAccessory:service.accessory completionHandler:^(NSError * _Nullable error) {
-                                                            if (error) {
-                                                                NSLog(@"%@", error);
-                                                            } else {
-                                                                [[NSNotificationCenter defaultCenter] postNotificationName:kDidRemoveAccessory object:service.accessory];
-                                                            }
-                                                        }];
-                                                    }]];
-        [alertView addAction:[SMAlertAction actionWithTitle:@"Cancel" style:SMAlertActionStyleCancel
-                                                    handler:nil]];
-        [alertView show];
-
-    };
-    
-    
+    switch (indexPath.section) {
+        case 0:
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            cell.textLabel.text = self.home.name;
+            break;
+        case 1:
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            switch (indexPath.row) {
+                case 0:
+                    cell.textLabel.text = @"Take Photo...";
+                    break;
+                case 1:
+                    cell.textLabel.text = @"Draw";
+                    break;
+                default:
+                    cell.textLabel.text = @"Choose from Existing";
+                    break;
+            }
+            break;
+        case 2:
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            break;
+        default:
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            break;
+    }
     return cell;
 }
 
+#pragma mark - UITableViewDelegate
 
-#pragma mark - UICollectionViewDelegate
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 2) {
+        return 172;
+    } else {
+        return 44;
+    }
+}
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 44;
+}
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    UITableViewHeaderFooterView *header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:kUITableViewHeaderView];
+    if (!header) {
+        header = [[UITableViewHeaderFooterView alloc] initWithReuseIdentifier:kUITableViewHeaderView];
+    }
+    
+    switch (section) {
+        case 0:
+            header.textLabel.text = @"Name";
+            break;
+        case 1:
+            header.textLabel.text = @"Floor Plan";
+            break;
+        case 2:
+            header.textLabel.text = @"Home Notes";
+            break;
+        default:
+            header.textLabel.text = @"";
+            break;
+    }
+
+    return header;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section {
+    UITableViewHeaderFooterView *header = (UITableViewHeaderFooterView *)view;
+    header.textLabel.font = FONT_BODY_BOLD;
+    header.textLabel.textColor = COLOR_TITLE;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+}
 
 @end

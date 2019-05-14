@@ -17,6 +17,7 @@
 #import "Masonry.h"
 #import "SMAddAccessoryViewController.h"
 #import "SMRoomViewController.h"
+#import "SMHomeListViewController.h"
 
 @interface SMHomeViewSectionItem : NSObject
 
@@ -275,6 +276,11 @@ HMAccessoryDelegate
             }]];
         }
         
+        [alertView addAction:[SMAlertAction actionWithTitle:@"Home Settings..." style:SMAlertActionStyleDefault handler:^(SMAlertAction * _Nonnull action) {
+            SMHomeListViewController *HomeListVC = [[SMHomeListViewController alloc] init];
+            [self.navigationController pushViewController:HomeListVC animated:YES];
+        }]];
+
         [alertView addAction:[SMAlertAction actionWithTitle:@"Cancel" style:SMAlertActionStyleCancel handler:nil]];
         [alertView show];
     }
@@ -283,14 +289,6 @@ HMAccessoryDelegate
 - (void)rightButtonItemPressed:(id)sender {
     SMAlertView *alertView = [SMAlertView alertViewWithTitle:nil message:nil style:SMAlertViewStyleActionSheet];
     
-    [alertView addAction:[SMAlertAction actionWithTitle:@"Remove Home" style:SMAlertActionStyleDefault handler:^(SMAlertAction * _Nonnull action) {
-        [self removeHome];
-    }]];
-
-    [alertView addAction:[SMAlertAction actionWithTitle:@"Remove Room" style:SMAlertActionStyleDefault handler:^(SMAlertAction * _Nonnull action) {
-        [self removeRoom];
-    }]];
-
     [alertView addAction:[SMAlertAction actionWithTitle:@"Add Home" style:SMAlertActionStyleDefault handler:^(SMAlertAction * _Nonnull action) {
         [self addHome];
     }]];

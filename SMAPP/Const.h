@@ -16,10 +16,15 @@ static NSString *const kDidRemoveAccessory = @"kDidRemoveAccessory";
 static NSString *const kDidUpdateCurrentHomeInfo = @"kDidUpdateCurrentHomeInfo";
 static NSString *const kDidUpdateCharacteristicValue = @"kDidUpdateCharacteristicValue";
 
+static NSString *const kUITableViewHeaderView = @"kUITableViewHeaderView";
 static NSString *const kUITableViewCell = @"kUITableViewCell";
+
+static NSString *const kSMTextFieldTableViewCell = @"kSMTextFieldTableViewCell";
+static NSString *const kSMTextViewTableViewCell = @"kSMTextViewTableViewCell";
+static NSString *const kSMTableViewHeaderView = @"kSMTableViewHeaderView";
 static NSString *const kSMHomeTableViewCell = @"kSMHomeTableViewCell";
 static NSString *const kSMRoomTableViewCell = @"kSMRoomTableViewCell";
-static NSString *const kSMTableViewHeaderView = @"kSMTableViewHeaderView";
+static NSString *const kSMHomeListTableViewCell = @"kSMHomeListTableViewCell";
 static NSString *const kSMCollectionViewCell = @"kSMCollectionViewCell";
 
 // Color

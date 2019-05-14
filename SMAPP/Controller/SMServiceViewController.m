@@ -37,6 +37,8 @@
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:kUITableViewCell];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.textLabel.font = FONT_BODY;
+        cell.textLabel.textColor = COLOR_TITLE;
     }
     HMCharacteristic *characteristic = self.service.characteristics[indexPath.row];
     if (characteristic.value != nil) {
