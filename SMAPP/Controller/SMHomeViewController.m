@@ -237,13 +237,12 @@ HMAccessoryDelegate
 }
 
 - (void)updateCharacteristicValue:(NSNotification *)notification {
-    
     HMService *service = [[notification userInfo] objectForKey:@"service"];
     HMCharacteristic *characteristic = [[notification userInfo] objectForKey:@"characteristic"];
     
     for (SMHomeViewSectionItem *item in self.dataList) {
+        NSInteger section = [self.dataList indexOfObject:item];
         NSArray *services = item.services;
-        NSInteger section = [self.dataList indexOfObject:item.services];
         for (HMService *item in services) {
             if ([item isEqual:service]) {
                 NSInteger row = [services indexOfObject:item];
@@ -477,7 +476,6 @@ HMAccessoryDelegate
 #pragma mark - HMAccessoryDelegate
 
 - (void)accessoryDidUpdateReachability:(HMAccessory *)accessory {
-
     for (SMHomeViewSectionItem *item in self.dataList) {
         NSInteger section = [self.dataList indexOfObject:item];
         NSArray *services = item.services;
