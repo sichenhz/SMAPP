@@ -26,9 +26,6 @@
 - (instancetype)initWithHome:(HMHome *)home {
     if (self = [super init]) {
         _home = home;
-        _dataList = [NSMutableArray array];
-        [_dataList addObject:home.roomForEntireHome];
-        [_dataList addObjectsFromArray:home.rooms];
     }
     return self;
 }
@@ -45,8 +42,10 @@
     self.tableView.backgroundColor = COLOR_BACKGROUND;
     self.tableView.tableFooterView = [[UIView alloc] init]; // remove the lines
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRoomName:) name:kDidUpdateRoomName object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeRoom:) name:kDidRemoveRoom object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCurrentRooms:) name:kDidUpdateRoomName object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCurrentRooms:) name:kDidUpdateRoom object:nil];
+    
+    [self updateCurrentRooms];
 }
 
 - (void)initNavigationItems {
@@ -60,14 +59,17 @@
     self.navigationItem.rightBarButtonItems = @[rightbuttonItem];
 }
 
-#pragma mark - Notification
-
-- (void)updateRoomName:(NSNotification *)notification {
+- (void)updateCurrentRooms {
+    self.dataList = [NSMutableArray array];
+    [self.dataList addObject:self.home.roomForEntireHome];
+    [self.dataList addObjectsFromArray:self.home.rooms];
     [self.tableView reloadData];
 }
 
-- (void)removeRoom:(NSNotification *)notification {
-    [self.tableView reloadData];
+#pragma mark - Notification
+
+- (void)updateCurrentRooms:(NSNotification *)notification {
+    [self updateCurrentRooms];
 }
 
 #pragma mark - Action

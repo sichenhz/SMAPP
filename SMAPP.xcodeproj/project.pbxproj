@@ -316,6 +316,10 @@
 			children = (
 				96E04D33227F1468002DE8F2 /* SMHomeViewController.h */,
 				96E04D35227F1468002DE8F2 /* SMHomeViewController.m */,
+				96E04D3C227F28F3002DE8F2 /* SMNotificationViewController.h */,
+				96E04D3D227F28F3002DE8F2 /* SMNotificationViewController.m */,
+				9619C43A228AFE4F0025754D /* SMAccessoryListViewController.h */,
+				9619C43B228AFE4F0025754D /* SMAccessoryListViewController.m */,
 				9619C431228AD20A0025754D /* SMRoomViewController.h */,
 				9619C432228AD20A0025754D /* SMRoomViewController.m */,
 				96E04D2A227F1468002DE8F2 /* SMAddAccessoryViewController.h */,
@@ -326,16 +330,12 @@
 				96E04D31227F1468002DE8F2 /* SMServiceViewController.m */,
 				9619C43D228AFF080025754D /* SMHomeListViewController.h */,
 				9619C43E228AFF080025754D /* SMHomeListViewController.m */,
-				965906B5228B476000035CD5 /* SMRoomListViewController.h */,
-				965906B6228B476000035CD5 /* SMRoomListViewController.m */,
 				96E04D3F227F28FF002DE8F2 /* SMHomeSettingViewController.h */,
 				96E04D40227F28FF002DE8F2 /* SMHomeSettingViewController.m */,
+				965906B5228B476000035CD5 /* SMRoomListViewController.h */,
+				965906B6228B476000035CD5 /* SMRoomListViewController.m */,
 				965906B8228B47B400035CD5 /* SMRoomSettingViewController.h */,
 				965906B9228B47B400035CD5 /* SMRoomSettingViewController.m */,
-				96E04D3C227F28F3002DE8F2 /* SMNotificationViewController.h */,
-				96E04D3D227F28F3002DE8F2 /* SMNotificationViewController.m */,
-				9619C43A228AFE4F0025754D /* SMAccessoryListViewController.h */,
-				9619C43B228AFE4F0025754D /* SMAccessoryListViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";

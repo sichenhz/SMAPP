@@ -68,7 +68,7 @@
                                                             [self showError:error];
                                                         } else {
                                                             [self.navigationController popViewControllerAnimated:YES];
-                                                            [[NSNotificationCenter defaultCenter] postNotificationName:kDidRemoveRoom object:self userInfo:@{@"room" : self.room}];
+                                                            [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateRoom object:self userInfo:@{@"room" : self.room}];
                                                         }
                                                     }];
                                                 }]];

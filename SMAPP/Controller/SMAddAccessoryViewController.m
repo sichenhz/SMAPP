@@ -91,7 +91,7 @@
         } else {
             [tableView reloadData];
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:self];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:self userInfo:@{@"accessory" : accessory}];
         }
     }];
 }

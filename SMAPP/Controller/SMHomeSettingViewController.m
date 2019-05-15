@@ -73,7 +73,7 @@
                                                                 [self showError:error];
                                                             } else {
                                                                 [self.navigationController popViewControllerAnimated:YES];
-                                                                [[NSNotificationCenter defaultCenter] postNotificationName:kDidRemoveHome object:self userInfo:@{@"home" : self.home}];
+                                                                [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateHome object:self userInfo:@{@"home" : self.home}];
                                                             }
                                                         }];
                                                     }]];

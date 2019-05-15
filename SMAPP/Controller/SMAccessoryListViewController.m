@@ -50,17 +50,15 @@
     collectionView.alwaysBounceVertical = YES; // make collectionView bounce even datasource has only 1 item
     _collectionView = collectionView;
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadAccessories:) name:kDidUpdateAccessory object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadAccessories:) name:kDidRemoveAccessory object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadAccessories:) name:kDidUpdatePrimaryHome object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadAccessories:) name:kDidUpdateCharacteristicValue object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCurrentAccessories:) name:kDidUpdateAccessory object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCurrentAccessories:) name:kDidUpdatePrimaryHome object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCurrentAccessories:) name:kDidUpdateCharacteristicValue object:nil];
     
     [self updateCurrentAccessories];
 }
 
-- (void)reloadAccessories:(NSNotification *)notification {
+- (void)updateCurrentAccessories:(NSNotification *)notification {
     [self updateCurrentAccessories];
-    [self.collectionView reloadData];
 }
 
 - (void)updateCurrentAccessories {
@@ -74,6 +72,7 @@
             }
         }
     }
+    [self.collectionView reloadData];
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -119,7 +118,7 @@
                                                             if (error) {
                                                                 [self showError:error];
                                                             } else {
-                                                                [[NSNotificationCenter defaultCenter] postNotificationName:kDidRemoveAccessory object:self userInfo:@{@"accessory" : accessory}];
+                                                                [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:self userInfo:@{@"accessory" : accessory}];
                                                             }
                                                         }];
                                                     }]];

@@ -64,20 +64,11 @@ HMAccessoryDelegate
 
     [self initNavigationItems];
     
-//    [self initHeaderViewWithCompletionHandler:^(UIButton * _Nonnull leftButton, UIButton * _Nonnull rightButton) {
-//        [leftButton setTitle:@"Remove Home" forState:UIControlStateNormal];
-//        [rightButton setTitle:@"Remove Room" forState:UIControlStateNormal];
-//
-//        [leftButton addTarget:self action:@selector(removeHome:) forControlEvents:UIControlEventTouchUpInside];
-//        [rightButton addTarget:self action:@selector(removeRoom:) forControlEvents:UIControlEventTouchUpInside];
-//    }];
-
     self.tableView.backgroundColor = COLOR_BACKGROUND;
     self.tableView.tableFooterView = [[UIView alloc] init]; // remove the lines
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateHomeName:) name:kDidUpdateHomeName object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCurrentAccessories:) name:kDidRemoveAccessory object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCurrentAccessories:) name:kDidUpdateAccessory object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCurrentAccessories:) name:kDidUpdateAccessory object:nil];    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCharacteristicValue:) name:kDidUpdateCharacteristicValue object:nil];
 }
 
@@ -98,41 +89,7 @@ HMAccessoryDelegate
     self.navigationItem.rightBarButtonItem = rightbuttonItem;
 }
 
-- (void)initHeaderViewWithCompletionHandler:(void (^)(UIButton *leftButton, UIButton *rightButton))completion {
-    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 54)];
-    
-    UIButton *leftButton = [[UIButton alloc] init];
-    [headerView addSubview:leftButton];
-    [leftButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(leftButton.superview).offset(15);
-        make.top.equalTo(leftButton.superview).offset(5);
-        make.width.equalTo(@120);
-        make.height.equalTo(@44);
-    }];
-    leftButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    [leftButton setTitleColor:COLOR_ORANGE forState:UIControlStateNormal];
-    [leftButton setTitleColor:[UIColor grayColor] forState:UIControlStateDisabled];
-    [leftButton.titleLabel setFont:FONT_H2_BOLD];
-    
-    UIButton *rightButton = [[UIButton alloc] init];
-    [headerView addSubview:rightButton];
-    [rightButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(leftButton.superview).offset(-15);
-        make.top.equalTo(leftButton.superview).offset(5);
-        make.width.equalTo(@120);
-        make.height.equalTo(@44);
-    }];
-
-    rightButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-    [rightButton setTitleColor:COLOR_ORANGE forState:UIControlStateNormal];
-    [rightButton.titleLabel setFont:FONT_H2_BOLD];
-    
-    self.tableView.tableHeaderView = headerView;
-    
-    completion(leftButton, rightButton);
-}
-
-- (void)updateCurrentHomeInfo {
+- (void)UpdatePrimaryHome {
     HMHomeManager *manager = [HMHomeManager sharedManager];
 
     self.navigationItem.title = manager.primaryHome.name;
@@ -144,7 +101,7 @@ HMAccessoryDelegate
 - (void)updateCurrentAccessories {
     
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
-    NSString *showedRoomName = [userDefault objectForKey:kShowdRoomName];
+    NSString *showedRoomName = [userDefault objectForKey:kShowedRoomName];
     
     HMHomeManager *manager = [HMHomeManager sharedManager];
     self.dataList = [NSMutableArray array];
@@ -246,7 +203,7 @@ HMAccessoryDelegate
                         [self showError:error];
                     } else {
                         NSLog(@"Primary home updated.");
-                        [weakSelf updateCurrentHomeInfo];
+                        [weakSelf UpdatePrimaryHome];
                         [weakSelf updateCurrentAccessories];
                     }
                 }];
@@ -283,49 +240,6 @@ HMAccessoryDelegate
     [alertView show];
 }
 
-- (void)removeRoom {
-    
-    HMHomeManager *manager = [HMHomeManager sharedManager];
-    
-    SMAlertView *alertView = [SMAlertView alertViewWithTitle:nil message:nil style:SMAlertViewStyleActionSheet];
-    
-    for (HMRoom *room in manager.primaryHome.rooms) {
-        
-        NSString *roomName = room.name;
-        __weak typeof(self) weakSelf = self;
-        [alertView addAction:[SMAlertAction actionWithTitle:roomName style:SMAlertActionStyleDefault handler:^(SMAlertAction * _Nonnull action) {
-            NSString *message = [NSString stringWithFormat:@"Are you sure you want to remove %@?", roomName];
-            SMAlertView *alertView = [SMAlertView alertViewWithTitle:nil message:message style:SMAlertViewStyleActionSheet];
-            
-            [alertView addAction:[SMAlertAction actionWithTitle:@"Remove" style:SMAlertActionStyleConfirm
-                                                        handler:^(SMAlertAction * _Nonnull action) {
-                                                            
-                                                            [manager.primaryHome removeRoom:room completionHandler:^(NSError * _Nullable error) {
-                                                                if (error) {
-                                                                    [weakSelf showError:error];
-                                                                } else {
-                                                                    if (manager.homes.count) {
-                                                                        [manager updatePrimaryHome:manager.homes.firstObject completionHandler:^(NSError * _Nullable error) {
-                                                                            if (error) {
-                                                                                [weakSelf showError:error];
-                                                                            } else {
-                                                                                [weakSelf updateCurrentHomeInfo];
-                                                                                [weakSelf updateCurrentAccessories];
-                                                                            }
-                                                                        }];
-                                                                    }
-                                                                }
-                                                            }];
-                                                        }]];
-            [alertView addAction:[SMAlertAction actionWithTitle:@"Cancel" style:SMAlertActionStyleCancel
-                                                        handler:nil]];
-            [alertView show];
-        }]];
-    }
-    [alertView addAction:[SMAlertAction actionWithTitle:@"Cancel" style:SMAlertActionStyleCancel handler:nil]];
-    [alertView show];
-}
-
 - (void)addHome {
     
     __weak HMHomeManager *manager = [HMHomeManager sharedManager];
@@ -349,7 +263,7 @@ HMAccessoryDelegate
                     if (error) {
                         [weakSelf showError:error];
                     } else {
-                        [weakSelf updateCurrentHomeInfo];
+                        [weakSelf UpdatePrimaryHome];
                         [weakSelf updateCurrentAccessories];
                     }
                 }];
@@ -400,7 +314,7 @@ HMAccessoryDelegate
 // invokes when app is launched
 - (void)homeManagerDidUpdateHomes:(HMHomeManager *)manager {
     if (manager.primaryHome) {
-        [self updateCurrentHomeInfo];
+        [self UpdatePrimaryHome];
         [self updateCurrentAccessories];
     } else {
         [self showNoHomes];
@@ -414,7 +328,7 @@ HMAccessoryDelegate
         if (error) {
             [self showError:error];
         } else {
-            [weakSelf updateCurrentHomeInfo];
+            [weakSelf UpdatePrimaryHome];
             [weakSelf updateCurrentAccessories];
         }
     }];
@@ -426,7 +340,7 @@ HMAccessoryDelegate
     // Do nothing.
 }
 
-// invokes when other apps did remove the primaryHome, such as Home
+// invokes when home is removed
 - (void)homeManagerDidUpdatePrimaryHome:(HMHomeManager *)manager {
     if (manager.primaryHome) {
         // When a primaryHome is deleted, the manager.primaryHome.isPrimary will still be NO, so update here
@@ -434,7 +348,7 @@ HMAccessoryDelegate
             if (error) {
                 [self showError:error];
             } else {
-                [self updateCurrentHomeInfo];
+                [self UpdatePrimaryHome];
                 [self updateCurrentAccessories];
             }
         }];
@@ -450,29 +364,43 @@ HMAccessoryDelegate
 }
 
 - (void)home:(HMHome *)home didAddAccessory:(HMAccessory *)accessory {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:self userInfo:@{@"accessory" : accessory}];
 }
 
 - (void)home:(HMHome *)home didRemoveAccessory:(HMAccessory *)accessory {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kDidRemoveAccessory object:self userInfo:@{@"accessory" : accessory}];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:self userInfo:@{@"accessory" : accessory}];
 }
 
 - (void)home:(HMHome *)home didUpdateRoom:(HMRoom *)room forAccessory:(HMAccessory *)accessory {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:self userInfo:@{@"accessory" : accessory}];
+}
+
+- (void)home:(HMHome *)home didAddRoom:(HMRoom *)room {
+    [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateRoom object:self userInfo:@{@"room" : room}];
+}
+
+
+- (void)home:(HMHome *)home didRemoveRoom:(HMRoom *)room {
+    [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateRoom object:self userInfo:@{@"room" : room}];
+}
+
+
+- (void)home:(HMHome *)home didUpdateNameForRoom:(HMRoom *)room {
+    [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateRoomName object:self userInfo:@{@"home" : home, @"room" : room}];
 }
 
 #pragma mark - HMAccessoryDelegate
 
 - (void)accessoryDidUpdateName:(HMAccessory *)accessory {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:self userInfo:@{@"accessory" : accessory}];
 }
 
 - (void)accessory:(HMAccessory *)accessory didUpdateNameForService:(HMService *)service {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:self userInfo:@{@"accessory" : accessory, @"service" : accessory}];
 }
 
 - (void)accessoryDidUpdateServices:(HMAccessory *)accessory {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:self userInfo:@{@"accessory" : accessory}];
 }
 
 - (void)accessoryDidUpdateReachability:(HMAccessory *)accessory {
@@ -619,7 +547,7 @@ HMAccessoryDelegate
     return 44;
 }
 
-- (nullable UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     SMTableViewHeaderView *header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:kSMTableViewHeaderView];
     if (!header) {
         header = [[SMTableViewHeaderView alloc] initWithReuseIdentifier:kSMTableViewHeaderView];
@@ -656,11 +584,11 @@ HMAccessoryDelegate
                 [tableView reloadSections:[NSIndexSet indexSetWithIndex:currentShowedSection] withRowAnimation:UITableViewRowAnimationAutomatic];
             }
 
-            [userDefault setObject:item.room.name forKey:kShowdRoomName];
+            [userDefault setObject:item.room.name forKey:kShowedRoomName];
             weakSelf.currentShowedSection = section;
         } else {
             
-            [userDefault removeObjectForKey:kShowdRoomName];
+            [userDefault removeObjectForKey:kShowedRoomName];
             weakSelf.currentShowedSection = -1;
         }
     };

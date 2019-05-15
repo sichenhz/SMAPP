@@ -142,7 +142,7 @@
         if (error) {
             [self showError:error];
         } else {
-            [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:self];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:self userInfo:@{@"accessory" : accessory, @"room" : room}];
             [self.navigationController popViewControllerAnimated:YES];
         }
     }];

@@ -29,8 +29,9 @@
     self.tableView.backgroundColor = COLOR_BACKGROUND;
     self.tableView.tableFooterView = [[UIView alloc] init]; // remove the lines
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateHomeName:) name:kDidUpdateHomeName object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeHome:) name:kDidRemoveHome object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadHomes:) name:kDidUpdateHomeName object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadHomes:) name:kDidUpdateHome object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadHomes:) name:kDidUpdatePrimaryHome object:nil];
 }
 
 - (void)initNavigationItems {
@@ -46,11 +47,7 @@
 
 #pragma mark - Notification
 
-- (void)updateHomeName:(NSNotification *)notification {
-    [self.tableView reloadData];
-}
-
-- (void)removeHome:(NSNotification *)notification {
+- (void)reloadHomes:(NSNotification *)notification {
     [self.tableView reloadData];
 }
 

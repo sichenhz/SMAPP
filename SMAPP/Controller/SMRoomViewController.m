@@ -62,9 +62,9 @@
     
     [self updateCurrentAccessories];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCurrentAccessories:) name:kDidRemoveAccessory object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCurrentAccessories:) name:kDidUpdateAccessory object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCharacteristicValue:) name:kDidUpdateCharacteristicValue object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRoomName:) name:kDidUpdateRoomName object:nil];
 }
 
 - (void)initNavigationItems {
@@ -81,6 +81,14 @@
     [rightbuttonItem setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD, NSForegroundColorAttributeName : COLOR_ORANGE} forState:(UIControlStateNormal)];
     [rightbuttonItem setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD, NSForegroundColorAttributeName : COLOR_ORANGE} forState:(UIControlStateHighlighted)];
     self.navigationItem.rightBarButtonItems = @[rightbuttonItem, leftButtonItem];
+}
+
+- (void)updateRoomName:(NSNotification *)notification {
+    HMRoom *room = notification.userInfo[@"room"];
+    
+    if ([room isEqual:self.room]) {
+        self.navigationItem.title = room.name;
+    }
 }
 
 - (void)updateCurrentAccessories {
@@ -280,6 +288,7 @@
     SMRoomTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kSMRoomTableViewCell];
     if (!cell) {
         cell = [[SMRoomTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kSMRoomTableViewCell];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
     SMRoomViewSectionItem *item = self.dataList[indexPath.section];
@@ -287,7 +296,6 @@
     
     cell.leftLabel.text = [NSString stringWithFormat:@"%@: %@", characteristic.localizedDescription, characteristic.value ? : @"0"];
     cell.accessoryView = nil;
-    cell.selectionStyle = UITableViewCellSelectionStyleDefault;
     
     if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState] ||
         [characteristic.characteristicType isEqualToString:HMCharacteristicTypeObstructionDetected] ||
@@ -302,7 +310,6 @@
         
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.accessoryView = lockSwitch;
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     } else if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypeSaturation] ||
                [characteristic.characteristicType isEqualToString:HMCharacteristicTypeBrightness] ||
                [characteristic.characteristicType isEqualToString:HMCharacteristicTypeHue] ||
