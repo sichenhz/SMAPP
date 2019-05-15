@@ -138,7 +138,7 @@ HMAccessoryDelegate
     self.navigationItem.title = manager.primaryHome.name;
     manager.primaryHome.delegate = self;
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateCurrentHomeInfo object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdatePrimaryHome object:self];
 }
 
 - (void)updateCurrentAccessories {
@@ -478,25 +478,35 @@ HMAccessoryDelegate
 
 #pragma mark - HMHomeDelegate
 
+- (void)homeDidUpdateName:(HMHome *)home {
+    [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateHomeName object:self userInfo:@{@"home" : home}];
+}
+
 - (void)home:(HMHome *)home didAddAccessory:(HMAccessory *)accessory {
-    if ([home isEqual:[HMHomeManager sharedManager].primaryHome]) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:self];
-    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:self];
 }
 
 - (void)home:(HMHome *)home didRemoveAccessory:(HMAccessory *)accessory {
-    if ([home isEqual:[HMHomeManager sharedManager].primaryHome]) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:kDidRemoveAccessory object:self userInfo:@{@"accessory" : accessory}];
-    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:kDidRemoveAccessory object:self userInfo:@{@"accessory" : accessory}];
 }
 
 - (void)home:(HMHome *)home didUpdateRoom:(HMRoom *)room forAccessory:(HMAccessory *)accessory {
-    if ([home isEqual:[HMHomeManager sharedManager].primaryHome]) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:self];
-    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:self];
 }
 
 #pragma mark - HMAccessoryDelegate
+
+- (void)accessoryDidUpdateName:(HMAccessory *)accessory {
+    [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:self];
+}
+
+- (void)accessory:(HMAccessory *)accessory didUpdateNameForService:(HMService *)service {
+    [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:self];
+}
+
+- (void)accessoryDidUpdateServices:(HMAccessory *)accessory {
+    [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:self];
+}
 
 - (void)accessoryDidUpdateReachability:(HMAccessory *)accessory {
     for (SMHomeViewSectionItem *item in self.dataList) {
@@ -533,18 +543,6 @@ HMAccessoryDelegate
                                                       userInfo:@{@"accessory": accessory,
                                                                  @"service": service,
                                                                  @"characteristic": characteristic}];
-}
-
-- (void)accessoryDidUpdateName:(HMAccessory *)accessory {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:self];
-}
-
-- (void)accessory:(HMAccessory *)accessory didUpdateNameForService:(HMService *)service {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:self];
-}
-
-- (void)accessoryDidUpdateServices:(HMAccessory *)accessory {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:self];
 }
 
 #pragma mark - UITableViewDataSource
