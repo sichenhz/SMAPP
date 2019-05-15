@@ -63,7 +63,7 @@
     HMHomeManager *manager = [HMHomeManager sharedManager];
     
     if (manager.primaryHome) {
-        NSString *message = [NSString stringWithFormat:@"Are you sure you want to remove %@?", manager.primaryHome.name];
+        NSString *message = [NSString stringWithFormat:@"Are you sure you want to remove %@?", self.home.name];
         SMAlertView *alertView = [SMAlertView alertViewWithTitle:nil message:message style:SMAlertViewStyleActionSheet];
         
         [alertView addAction:[SMAlertAction actionWithTitle:@"Remove" style:SMAlertActionStyleConfirm
