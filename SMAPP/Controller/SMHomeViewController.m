@@ -76,7 +76,7 @@ HMAccessoryDelegate
     self.tableView.tableFooterView = [[UIView alloc] init]; // remove the lines
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateHomeName:) name:kDidUpdateHomeName object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeAccessories:) name:kDidRemoveAccessory object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCurrentAccessories:) name:kDidRemoveAccessory object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCurrentAccessories:) name:kDidUpdateAccessory object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCharacteristicValue:) name:kDidUpdateCharacteristicValue object:nil];
 }
@@ -198,39 +198,6 @@ HMAccessoryDelegate
     if ([home isEqual:manager.primaryHome]) {
         self.navigationItem.title = home.name;
     }
-}
-
-- (void)removeAccessories:(NSNotification *)notification {
-    HMAccessory *accessory = notification.userInfo[@"accessory"];
-    NSMutableArray *indexPaths = [NSMutableArray array];
-    for (SMHomeViewSectionItem *item in self.dataList) {
-        NSInteger section = [self.dataList indexOfObject:item];
-        NSArray *services = item.services;
-        for (HMService *service in services) {
-            if ([service.accessory isEqual:accessory]) {
-                NSInteger row = [services indexOfObject:service];
-                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:section];
-                [indexPaths insertObject:indexPath atIndex:0];
-            }
-        }
-    }
-    // remove rows
-    for (NSIndexPath *indexPath in indexPaths) {
-        SMHomeViewSectionItem *item = self.dataList[indexPath.section];
-        [item.services removeObjectAtIndex:indexPath.row];
-    }
-    [self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
-    
-    // remove sections
-    NSMutableIndexSet *sections = [NSMutableIndexSet indexSet];
-    for (SMHomeViewSectionItem *item in self.dataList) {
-        if (item.services.count == 0) {
-            NSInteger section = [self.dataList indexOfObject:item];
-            [sections addIndex:section];
-        }
-    }
-    [self.dataList removeObjectsAtIndexes:sections];
-    [self.tableView deleteSections:sections withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
 - (void)updateCurrentAccessories:(NSNotification *)notification {
@@ -674,6 +641,7 @@ HMAccessoryDelegate
         // update the item status
         item.showed = isSelected;
         
+#warning Cell里如果用block，必须在section变化后立即reload，否则section不会同步导致越界
         // reload the current section
         [tableView reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationAutomatic];
 

@@ -51,26 +51,11 @@
     _collectionView = collectionView;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadAccessories:) name:kDidUpdateAccessory object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeAccessories:) name:kDidRemoveAccessory object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadAccessories:) name:kDidRemoveAccessory object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadAccessories:) name:kDidUpdatePrimaryHome object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadAccessories:) name:kDidUpdateCharacteristicValue object:nil];
     
     [self updateCurrentAccessories];
-}
-
-- (void)removeAccessories:(NSNotification *)notification {
-    HMAccessory *accessory = notification.userInfo[@"accessory"];
-    NSMutableArray *indexPaths = [NSMutableArray array];
-    NSMutableArray *toRemove = [NSMutableArray array];
-    for (HMService *service in self.dataList) {
-        if ([service.accessory isEqual:accessory]) {
-            NSIndexPath *indexPath = [NSIndexPath indexPathForItem:[self.dataList indexOfObject:service] inSection:0];
-            [indexPaths addObject:indexPath];
-            [toRemove addObject:service];
-        }
-    }
-    [self.dataList removeObjectsInArray:toRemove];
-    [self.collectionView deleteItemsAtIndexPaths:indexPaths];
 }
 
 - (void)reloadAccessories:(NSNotification *)notification {
@@ -101,6 +86,7 @@
     SMCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kSMCollectionViewCell forIndexPath:indexPath];
     
     HMService *service = self.dataList[indexPath.row];
+    HMAccessory *accessory = service.accessory;
     
     cell.on = NO;
     for (HMCharacteristic *characteristic in service.characteristics) {
@@ -112,28 +98,28 @@
         }
     }
     
-    cell.topLabel.text = [NSString stringWithFormat:@"%@ > %@", service.accessory.room.name, service.name];
+    cell.topLabel.text = [NSString stringWithFormat:@"%@ > %@", accessory.room.name, service.name];
     cell.serviceType = service.serviceType;
     
     __weak typeof(self) weakSelf = self;
     cell.editButtonPressed = ^{
         SMAccessoryDetailViewController *vc = [[SMAccessoryDetailViewController alloc] init];
-        vc.accessory = service.accessory;
+        vc.accessory = accessory;
         [weakSelf.navigationController pushViewController:vc animated:YES];
     };
     
     cell.removeButtonPressed = ^{
-        NSString *message = [NSString stringWithFormat:@"Are you sure you want to remove %@ from your home?", service.accessory.name];
+        NSString *message = [NSString stringWithFormat:@"Are you sure you want to remove %@ from your home?", accessory.name];
         SMAlertView *alertView = [SMAlertView alertViewWithTitle:nil message:message style:SMAlertViewStyleActionSheet];
         
         [alertView addAction:[SMAlertAction actionWithTitle:@"Remove" style:SMAlertActionStyleConfirm
                                                     handler:^(SMAlertAction * _Nonnull action) {
                                                         HMHomeManager *namager = [HMHomeManager sharedManager];
-                                                        [namager.primaryHome removeAccessory:service.accessory completionHandler:^(NSError * _Nullable error) {
+                                                        [namager.primaryHome removeAccessory:accessory completionHandler:^(NSError * _Nullable error) {
                                                             if (error) {
                                                                 [self showError:error];
                                                             } else {
-                                                                [[NSNotificationCenter defaultCenter] postNotificationName:kDidRemoveAccessory object:self userInfo:@{@"accessory" : service.accessory}];
+                                                                [[NSNotificationCenter defaultCenter] postNotificationName:kDidRemoveAccessory object:self userInfo:@{@"accessory" : accessory}];
                                                             }
                                                         }];
                                                     }]];

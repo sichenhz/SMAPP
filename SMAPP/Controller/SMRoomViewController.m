@@ -62,7 +62,7 @@
     
     [self updateCurrentAccessories];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeAccessories:) name:kDidRemoveAccessory object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCurrentAccessories:) name:kDidRemoveAccessory object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCurrentAccessories:) name:kDidUpdateAccessory object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCharacteristicValue:) name:kDidUpdateCharacteristicValue object:nil];
 }
@@ -99,19 +99,6 @@
 }
 
 #pragma mark - Notification
-
-- (void)removeAccessories:(NSNotification *)notification {
-    HMAccessory *accessory = notification.userInfo[@"accessory"];
-    NSMutableIndexSet *sections = [NSMutableIndexSet indexSet];
-    for (SMRoomViewSectionItem *item in self.dataList) {
-        NSInteger section = [self.dataList indexOfObject:item];
-        if ([item.service.accessory isEqual:accessory]) {
-            [sections addIndex:section];
-        }
-    }
-    [self.dataList removeObjectsAtIndexes:sections];
-    [self.tableView deleteSections:sections withRowAnimation:UITableViewRowAnimationAutomatic];
-}
 
 - (void)updateCurrentAccessories:(NSNotification *)notification {
     [self updateCurrentAccessories];
