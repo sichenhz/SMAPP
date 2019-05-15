@@ -53,7 +53,6 @@
     [super viewDidLoad];
     
     self.navigationItem.title = self.room.name;
-    self.currentShowedSection = -1; // means there is no showed section by default
 
     [self initNavigationItems];
         
@@ -93,12 +92,23 @@
 
 - (void)updateCurrentAccessories {
     
+    self.currentShowedSection = -1; // means there is no showed section by default
+
+    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+    NSDictionary *showedServiceMap = [userDefault objectForKey:kShowedService];
+    NSString *homeName = [HMHomeManager sharedManager].primaryHome.name;
+    NSString *roomName = self.room.name;
+    
     self.dataList = [NSMutableArray array];
     
     for (HMAccessory *accessory in self.room.accessories) {
         for (HMService *service in accessory.services) {
             if (service.isUserInteractive) {
-                [self.dataList addObject:[SMRoomViewSectionItem itemWithService:service showed:NO]];
+                BOOL showed = [service.name isEqualToString:showedServiceMap[homeName][roomName]];
+                [self.dataList addObject:[SMRoomViewSectionItem itemWithService:service showed:showed]];
+                if (showed) {
+                    self.currentShowedSection = self.dataList.count - 1;
+                }
             }
         }
     }
@@ -343,12 +353,12 @@
     return 44;
 }
 
-- (nullable UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     SMTableViewHeaderView *header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:kSMTableViewHeaderView];
     if (!header) {
         header = [[SMTableViewHeaderView alloc] initWithReuseIdentifier:kSMTableViewHeaderView];
     }
-    
+
     SMRoomViewSectionItem *item = self.dataList[section];
 
     [header.titleButton setTitle:item.service.name forState:UIControlStateNormal];
@@ -364,6 +374,10 @@
         // reload the current section
         [tableView reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationAutomatic];
         
+        NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+        NSString *homeName = [HMHomeManager sharedManager].primaryHome.name;
+        NSString *roomName = weakSelf.room.name;
+        
         if (item.isShowed) {
             // reload the showed section
             if (weakSelf.currentShowedSection >= 0) {
@@ -374,9 +388,21 @@
                 [tableView reloadSections:[NSIndexSet indexSetWithIndex:currentShowedSection] withRowAnimation:UITableViewRowAnimationAutomatic];
             }
             
+            NSMutableDictionary *homesMap = [NSMutableDictionary dictionaryWithDictionary:[userDefault objectForKey:kShowedService]];
+            NSMutableDictionary *roomsMap = [NSMutableDictionary dictionaryWithDictionary:[homesMap objectForKey:homeName]];
+            [roomsMap setObject:item.service.name forKey:roomName];
+            [homesMap setObject:roomsMap forKey:homeName];
+            [userDefault setObject:homesMap forKey:kShowedService];
+            
             weakSelf.currentShowedSection = section;
         } else {
             
+            NSMutableDictionary *homesMap = [NSMutableDictionary dictionaryWithDictionary:[userDefault objectForKey:kShowedService]];
+            NSMutableDictionary *roomsMap = [NSMutableDictionary dictionaryWithDictionary:[homesMap objectForKey:homeName]];
+            [roomsMap removeObjectForKey:roomName];
+            [homesMap setObject:roomsMap forKey:homeName];
+            [userDefault setObject:homesMap forKey:kShowedService];
+
             weakSelf.currentShowedSection = -1;
         }
     };

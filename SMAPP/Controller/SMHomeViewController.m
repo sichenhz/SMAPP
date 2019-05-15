@@ -58,7 +58,6 @@ HMAccessoryDelegate
 
     HMHomeManager *namager = [HMHomeManager sharedManager];
     self.navigationItem.title = namager.primaryHome.name;
-    self.currentShowedSection = -1; // means there is no showed section  by default
     
     namager.delegate = self;
 
@@ -100,10 +99,13 @@ HMAccessoryDelegate
 
 - (void)updateCurrentAccessories {
     
+    self.currentShowedSection = -1; // means there is no showed section  by default
+
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
-    NSString *showedRoomName = [userDefault objectForKey:kShowedRoomName];
+    NSDictionary *showedRoomMap = [userDefault objectForKey:kShowedRoom];
     
     HMHomeManager *manager = [HMHomeManager sharedManager];
+    NSString *homeName = manager.primaryHome.name;
     self.dataList = [NSMutableArray array];
     NSMutableArray *services = [NSMutableArray array];
 
@@ -117,7 +119,7 @@ HMAccessoryDelegate
         accessory.delegate = self;
     }
     if (services.count) {
-        BOOL showed = [roomForEntireHome.name isEqualToString:showedRoomName];
+        BOOL showed = [roomForEntireHome.name isEqualToString:showedRoomMap[homeName]];
         [self.dataList addObject:[SMHomeViewSectionItem itemWithServices:services room:roomForEntireHome showed:showed]];
         if (showed) {
             self.currentShowedSection = self.dataList.count - 1;
@@ -135,7 +137,7 @@ HMAccessoryDelegate
             accessory.delegate = self;
         }
         if (services.count) {
-            BOOL showed = [room.name isEqualToString:showedRoomName];
+            BOOL showed = [room.name isEqualToString:showedRoomMap[homeName]];
             [self.dataList addObject:[SMHomeViewSectionItem itemWithServices:services room:room showed:showed]];
             if (showed) {
                 self.currentShowedSection = self.dataList.count - 1;
@@ -569,11 +571,12 @@ HMAccessoryDelegate
         // update the item status
         item.showed = isSelected;
         
-#warning Cell里如果用block，必须在section变化后立即reload，否则section不会同步导致越界
         // reload the current section
         [tableView reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationAutomatic];
 
         NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+        NSString *homeName = [HMHomeManager sharedManager].primaryHome.name;
+
         if (item.isShowed) {
             // reload the showed section
             if (weakSelf.currentShowedSection >= 0) {
@@ -584,11 +587,17 @@ HMAccessoryDelegate
                 [tableView reloadSections:[NSIndexSet indexSetWithIndex:currentShowedSection] withRowAnimation:UITableViewRowAnimationAutomatic];
             }
 
-            [userDefault setObject:item.room.name forKey:kShowedRoomName];
+            NSMutableDictionary *roomsMap = [NSMutableDictionary dictionaryWithDictionary:[userDefault objectForKey:kShowedRoom]];
+            [roomsMap setObject:item.room.name forKey:homeName];
+            [userDefault setObject:roomsMap forKey:kShowedRoom];
+            
             weakSelf.currentShowedSection = section;
         } else {
             
-            [userDefault removeObjectForKey:kShowedRoomName];
+            NSMutableDictionary *roomsMap = [NSMutableDictionary dictionaryWithDictionary:[userDefault objectForKey:kShowedRoom]];
+            [roomsMap removeObjectForKey:homeName];
+            [userDefault setObject:roomsMap forKey:kShowedRoom];
+
             weakSelf.currentShowedSection = -1;
         }
     };
