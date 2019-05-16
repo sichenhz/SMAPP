@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak, readonly) UIButton *arrowButton;
 
 @property (nonatomic, copy) void(^titleButtonPressed)(void);
-@property (nonatomic, copy) void(^arrowButtonPressed)(BOOL isSelected);
+@property (nonatomic, copy) void(^arrowButtonPressed)(UIButton *button);
 
 @end
 

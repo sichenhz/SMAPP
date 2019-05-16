@@ -61,8 +61,7 @@
 
 - (void)arrowButtonPressed:(UIButton *)sender {
     if (self.arrowButtonPressed) {
-        sender.selected = !sender.isSelected;
-        self.arrowButtonPressed(sender.isSelected);
+        self.arrowButtonPressed(sender);
     }
 }
 

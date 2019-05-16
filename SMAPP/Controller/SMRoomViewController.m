@@ -366,44 +366,50 @@
     
     __weak typeof(self) weakSelf = self;
     
-    header.arrowButtonPressed = ^(BOOL isSelected) {
+    header.arrowButtonPressed = ^(UIButton *sender) {
         
-        // update the item status
-        item.showed = isSelected;
-        
-        // reload the current section
-        [tableView reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationAutomatic];
-        
-        NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
-        NSString *homeName = [HMHomeManager sharedManager].primaryHome.name;
-        NSString *roomName = weakSelf.room.name;
-        
-        if (item.isShowed) {
-            // reload the showed section
-            if (weakSelf.currentShowedSection >= 0) {
-                NSInteger currentShowedSection = weakSelf.currentShowedSection;
-                SMRoomViewSectionItem *currentItem = weakSelf.dataList[currentShowedSection];
-                currentItem.showed = NO;
+        if (item.service.characteristics.count) {
+            sender.selected = !sender.isSelected;
+            
+            // update the item status
+            item.showed = sender.isSelected;
+            
+            // reload the current section
+            [tableView reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationAutomatic];
+            
+            NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+            NSString *homeName = [HMHomeManager sharedManager].primaryHome.name;
+            NSString *roomName = weakSelf.room.name;
+            
+            if (item.isShowed) {
+                // reload the showed section
+                if (weakSelf.currentShowedSection >= 0) {
+                    NSInteger currentShowedSection = weakSelf.currentShowedSection;
+                    SMRoomViewSectionItem *currentItem = weakSelf.dataList[currentShowedSection];
+                    currentItem.showed = NO;
+                    
+                    [tableView reloadSections:[NSIndexSet indexSetWithIndex:currentShowedSection] withRowAnimation:UITableViewRowAnimationAutomatic];
+                }
                 
-                [tableView reloadSections:[NSIndexSet indexSetWithIndex:currentShowedSection] withRowAnimation:UITableViewRowAnimationAutomatic];
+                NSMutableDictionary *homesMap = [NSMutableDictionary dictionaryWithDictionary:[userDefault objectForKey:kShowedService]];
+                NSMutableDictionary *roomsMap = [NSMutableDictionary dictionaryWithDictionary:[homesMap objectForKey:homeName]];
+                [roomsMap setObject:item.service.name forKey:roomName];
+                [homesMap setObject:roomsMap forKey:homeName];
+                [userDefault setObject:homesMap forKey:kShowedService];
+                
+                weakSelf.currentShowedSection = section;
+            } else {
+                
+                NSMutableDictionary *homesMap = [NSMutableDictionary dictionaryWithDictionary:[userDefault objectForKey:kShowedService]];
+                NSMutableDictionary *roomsMap = [NSMutableDictionary dictionaryWithDictionary:[homesMap objectForKey:homeName]];
+                [roomsMap removeObjectForKey:roomName];
+                [homesMap setObject:roomsMap forKey:homeName];
+                [userDefault setObject:homesMap forKey:kShowedService];
+                
+                weakSelf.currentShowedSection = -1;
             }
-            
-            NSMutableDictionary *homesMap = [NSMutableDictionary dictionaryWithDictionary:[userDefault objectForKey:kShowedService]];
-            NSMutableDictionary *roomsMap = [NSMutableDictionary dictionaryWithDictionary:[homesMap objectForKey:homeName]];
-            [roomsMap setObject:item.service.name forKey:roomName];
-            [homesMap setObject:roomsMap forKey:homeName];
-            [userDefault setObject:homesMap forKey:kShowedService];
-            
-            weakSelf.currentShowedSection = section;
         } else {
-            
-            NSMutableDictionary *homesMap = [NSMutableDictionary dictionaryWithDictionary:[userDefault objectForKey:kShowedService]];
-            NSMutableDictionary *roomsMap = [NSMutableDictionary dictionaryWithDictionary:[homesMap objectForKey:homeName]];
-            [roomsMap removeObjectForKey:roomName];
-            [homesMap setObject:roomsMap forKey:homeName];
-            [userDefault setObject:homesMap forKey:kShowedService];
-
-            weakSelf.currentShowedSection = -1;
+            [weakSelf showText:@"No characteristics for this service."];
         }
     };
     return header;

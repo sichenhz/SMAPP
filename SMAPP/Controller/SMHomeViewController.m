@@ -119,13 +119,12 @@ HMAccessoryDelegate
         }
         accessory.delegate = self;
     }
-    if (services.count) {
-        BOOL showed = [roomForEntireHome.name isEqualToString:showedRoomMap[homeName]];
-        [self.dataList addObject:[SMHomeViewSectionItem itemWithServices:services room:roomForEntireHome showed:showed]];
-        if (showed) {
-            self.currentShowedSection = self.dataList.count - 1;
-        }
-    };
+    
+    BOOL showed = [roomForEntireHome.name isEqualToString:showedRoomMap[homeName]];
+    [self.dataList addObject:[SMHomeViewSectionItem itemWithServices:services room:roomForEntireHome showed:showed]];
+    if (showed) {
+        self.currentShowedSection = self.dataList.count - 1;
+    }
     
     for (HMRoom *room in manager.primaryHome.rooms) {
         services = [NSMutableArray array];
@@ -137,12 +136,10 @@ HMAccessoryDelegate
             }
             accessory.delegate = self;
         }
-        if (services.count) {
-            BOOL showed = [room.name isEqualToString:showedRoomMap[homeName]];
-            [self.dataList addObject:[SMHomeViewSectionItem itemWithServices:services room:room showed:showed]];
-            if (showed) {
-                self.currentShowedSection = self.dataList.count - 1;
-            }
+        BOOL showed = [room.name isEqualToString:showedRoomMap[homeName]];
+        [self.dataList addObject:[SMHomeViewSectionItem itemWithServices:services room:room showed:showed]];
+        if (showed) {
+            self.currentShowedSection = self.dataList.count - 1;
         }
     }
     
@@ -557,7 +554,7 @@ HMAccessoryDelegate
     }
     
     SMHomeViewSectionItem *item = self.dataList[section];
-    [header.titleButton setTitle:((HMService *)item.services.firstObject).accessory.room.name forState:UIControlStateNormal];
+    [header.titleButton setTitle:item.room.name forState:UIControlStateNormal];
     header.arrowButton.selected = item.isShowed;
     
     __weak typeof(self) weakSelf = self;
@@ -567,39 +564,45 @@ HMAccessoryDelegate
         [weakSelf.navigationController pushViewController:roomVC animated:YES];
     };
     
-    header.arrowButtonPressed = ^(BOOL isSelected) {
+    header.arrowButtonPressed = ^(UIButton *sender) {
         
-        // update the item status
-        item.showed = isSelected;
-        
-        // reload the current section
-        [tableView reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationAutomatic];
-
-        NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
-        NSString *homeName = [HMHomeManager sharedManager].primaryHome.name;
-
-        if (item.isShowed) {
-            // reload the showed section
-            if (weakSelf.currentShowedSection >= 0) {
-                NSInteger currentShowedSection = weakSelf.currentShowedSection;
-                SMHomeViewSectionItem *currentItem = weakSelf.dataList[currentShowedSection];
-                currentItem.showed = NO;
+        if (item.services.count) {
+            sender.selected = !sender.isSelected;
+            
+            // update the item status
+            item.showed = sender.isSelected;
+            
+            // reload the current section
+            [tableView reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationAutomatic];
+            
+            NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+            NSString *homeName = [HMHomeManager sharedManager].primaryHome.name;
+            
+            if (item.isShowed) {
+                // reload the showed section
+                if (weakSelf.currentShowedSection >= 0) {
+                    NSInteger currentShowedSection = weakSelf.currentShowedSection;
+                    SMHomeViewSectionItem *currentItem = weakSelf.dataList[currentShowedSection];
+                    currentItem.showed = NO;
+                    
+                    [tableView reloadSections:[NSIndexSet indexSetWithIndex:currentShowedSection] withRowAnimation:UITableViewRowAnimationAutomatic];
+                }
                 
-                [tableView reloadSections:[NSIndexSet indexSetWithIndex:currentShowedSection] withRowAnimation:UITableViewRowAnimationAutomatic];
+                NSMutableDictionary *roomsMap = [NSMutableDictionary dictionaryWithDictionary:[userDefault objectForKey:kShowedRoom]];
+                [roomsMap setObject:item.room.name forKey:homeName];
+                [userDefault setObject:roomsMap forKey:kShowedRoom];
+                
+                weakSelf.currentShowedSection = section;
+            } else {
+                
+                NSMutableDictionary *roomsMap = [NSMutableDictionary dictionaryWithDictionary:[userDefault objectForKey:kShowedRoom]];
+                [roomsMap removeObjectForKey:homeName];
+                [userDefault setObject:roomsMap forKey:kShowedRoom];
+                
+                weakSelf.currentShowedSection = -1;
             }
-
-            NSMutableDictionary *roomsMap = [NSMutableDictionary dictionaryWithDictionary:[userDefault objectForKey:kShowedRoom]];
-            [roomsMap setObject:item.room.name forKey:homeName];
-            [userDefault setObject:roomsMap forKey:kShowedRoom];
-            
-            weakSelf.currentShowedSection = section;
         } else {
-            
-            NSMutableDictionary *roomsMap = [NSMutableDictionary dictionaryWithDictionary:[userDefault objectForKey:kShowedRoom]];
-            [roomsMap removeObjectForKey:homeName];
-            [userDefault setObject:roomsMap forKey:kShowedRoom];
-
-            weakSelf.currentShowedSection = -1;
+            [weakSelf showText:@"No accessories for this room.\n You can go 'My Devices' -> 'Ddit Icon' to assign an accessory to this room.'" duration:3.0];
         }
     };
     return header;
