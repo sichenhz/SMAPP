@@ -123,7 +123,7 @@
                [serviceType isEqualToString:HMServiceTypeSmokeSensor] ||
                [serviceType isEqualToString:HMServiceTypeTemperatureSensor]) {
         self.cellType = SMCollectionViewCellTypeSensor;
-        [self.iconButton setImage:[UIImage imageNamed:@"arrow"] forState:UIControlStateNormal];
+        [self.iconButton setImage:[UIImage imageNamed:@"sensor"] forState:UIControlStateNormal];
     }
 }
 
