@@ -14,6 +14,7 @@
 #import "SMAccessoryDetailViewController.h"
 #import "SMAlertView.h"
 #import "UIViewController+Show.h"
+#import "SMServiceViewController.h"
 
 @interface SMAccessoryListViewController () <UICollectionViewDelegate, UICollectionViewDataSource>
 
@@ -75,6 +76,41 @@
     [self.collectionView reloadData];
 }
 
+#pragma mark - Action
+
+- (void)changeLockState:(id)sender {
+    CGPoint switchOriginInTableView = [sender convertPoint:CGPointZero toView:self.collectionView];
+    NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:switchOriginInTableView];
+    
+    HMService *service = self.dataList[indexPath.row];
+    
+    for (HMCharacteristic *characteristic in service.characteristics) {
+        if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetLockMechanismState]  ||
+            [characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState] ||
+            [characteristic.characteristicType isEqualToString:HMCharacteristicTypeObstructionDetected]) {
+            
+            BOOL changedLockState = ![characteristic.value boolValue];
+            
+            [characteristic writeValue:[NSNumber numberWithBool:changedLockState] completionHandler:^(NSError *error) {
+                if (error) {
+                    [self showError:error];
+                } else {
+                    dispatch_async(dispatch_get_main_queue(), ^(void) {
+                        NSLog(@"Changed Lock State: %@", characteristic.value);
+                    });
+                    
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateCharacteristicValue
+                                                                        object:self
+                                                                      userInfo:@{@"accessory": service.accessory,
+                                                                                 @"service": service,
+                                                                                 @"characteristic": characteristic}];
+                }
+            }];
+            break;
+        }
+    }
+}
+
 #pragma mark - UICollectionViewDataSource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
@@ -87,12 +123,12 @@
     HMService *service = self.dataList[indexPath.row];
     HMAccessory *accessory = service.accessory;
     
-    cell.on = NO;
+    cell.iconButton.selected = NO;
     for (HMCharacteristic *characteristic in service.characteristics) {
         if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState] ||
             [characteristic.characteristicType isEqualToString:HMCharacteristicTypeObstructionDetected] ||
             [characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetLockMechanismState]) {
-            cell.on = [characteristic.value boolValue];
+            cell.iconButton.selected = [characteristic.value boolValue];
             break;
         }
     }
@@ -101,6 +137,18 @@
     cell.serviceType = service.serviceType;
     
     __weak typeof(self) weakSelf = self;
+    
+    cell.iconButtonPressed = ^(UIButton *sender) {
+        if (cell.cellType == SMCollectionViewCellTypeBulb ||
+            cell.cellType == SMCollectionViewCellTypeSwitch) {
+            [weakSelf changeLockState:sender];
+        } else {
+            SMServiceViewController *viewController = [[SMServiceViewController alloc] init];
+            viewController.service = service;
+            [weakSelf.navigationController pushViewController:viewController animated:YES];
+        }
+    };
+    
     cell.editButtonPressed = ^{
         SMAccessoryDetailViewController *vc = [[SMAccessoryDetailViewController alloc] init];
         vc.accessory = accessory;

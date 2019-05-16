@@ -8,16 +8,24 @@
 
 #import <UIKit/UIKit.h>
 
+typedef enum : NSUInteger {
+    SMCollectionViewCellTypeSensor,
+    SMCollectionViewCellTypeSwitch,
+    SMCollectionViewCellTypeBulb,
+} SMCollectionViewCellType;
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface SMCollectionViewCell : UICollectionViewCell
 
-@property (nonatomic, weak) UILabel *topLabel;
+@property (nonatomic, weak, readonly) UILabel *topLabel;
+@property (nonatomic, weak, readonly) UIButton *iconButton;
 
+@property (nonatomic, copy) void(^iconButtonPressed)(UIButton *sender);
 @property (nonatomic, copy) void(^editButtonPressed)(void);
 @property (nonatomic, copy) void(^removeButtonPressed)(void);
 
-@property (nonatomic, assign, getter=isOn) BOOL on;
+@property (nonatomic, assign) SMCollectionViewCellType cellType;
 @property (nonatomic, copy) NSString *serviceType;
 
 @end
