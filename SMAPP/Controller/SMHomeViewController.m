@@ -602,7 +602,7 @@ HMAccessoryDelegate
                 weakSelf.currentShowedSection = -1;
             }
         } else {
-            [weakSelf showText:@"No accessories for this room.\n You can go 'My Devices' -> 'Ddit Icon' to assign an accessory to this room.'" duration:3.0];
+            [weakSelf showText:@"No accessories in this room.\n You can go 'My Devices' -> 'Ddit Icon' to assign an accessory to this room.'" duration:3.0];
         }
     };
     return header;

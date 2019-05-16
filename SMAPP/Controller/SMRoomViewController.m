@@ -409,7 +409,7 @@
                 weakSelf.currentShowedSection = -1;
             }
         } else {
-            [weakSelf showText:@"No characteristics for this service."];
+            [weakSelf showText:@"No characteristics in this service."];
         }
     };
     return header;
