@@ -90,7 +90,7 @@
             if (error) {
                 [weakSelf showError:error];
             } else {
-                [weakSelf.tableView reloadData];
+                [weakSelf updateCurrentRooms];
             }
         }];
     }]];
