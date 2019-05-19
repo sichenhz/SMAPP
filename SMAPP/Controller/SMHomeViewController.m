@@ -68,6 +68,7 @@ HMAccessoryDelegate
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateHomeName:) name:kDidUpdateHomeName object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCurrentAccessories:) name:kDidUpdateRoomName object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCurrentAccessories:) name:kDidUpdateRoom object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCurrentAccessories:) name:kDidUpdateAccessory object:nil];    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCharacteristicValue:) name:kDidUpdateCharacteristicValue object:nil];
 }
@@ -291,7 +292,7 @@ HMAccessoryDelegate
             if (error) {
                 [self showError:error];
             } else {
-                // TODO
+                [self updateCurrentAccessories];
             }
         }];
     }]];

@@ -14,46 +14,12 @@ static NSString *const kShowedRoom = @"kShowedRoom";
 static NSString *const kShowedService = @"kShowedService";
 
 // Notification
-
-/*
- *  HomeVC: Switch Home by Users & Add Home by Users & HMHomeManagerDelegate
- */
 static NSString *const kDidUpdatePrimaryHome = @"kDidUpdatePrimaryHome";
-
-/*
- *  HomeVC: HMHomeManagerDelegate
- *  HomeSettingVC: Edit by Users
- */
 static NSString *const kDidUpdateHomeName = @"kDidUpdateHomeName";
-
-/*
- *  HomeSettingVC: Remove Home by Users
- */
 static NSString *const kDidUpdateHome = @"kDidUpdateHome";
-
-/*
- *  RoomSettingVC: Edit by Users
- */
 static NSString *const kDidUpdateRoomName = @"kDidUpdateRoomName";
-
-/*
- *  RoomSettingVC: Remove Room by Users
- */
 static NSString *const kDidUpdateRoom = @"kDidUpdateRoom";
-
-/*
- * HomeVC: HMHomeDelegate & HMAccessoryDelegate
- * AddAccessoryVC: Add by Users
- * AccessoryDetailVC: Assign Accessory to Room by Users
- * AccessoryListVC: Remove Accessory by Users
- */
 static NSString *const kDidUpdateAccessory = @"kDidUpdateAccessory";
-
-/*
- * HomeVC: HMAccessoryDelegate & Control Switch by Users (repeated invocks)
- * RoomVC: Control Switch by Users & Slide Slider by Users
- * ServiceVC: Control Switch by Users & Slide Slider by Users
- */
 static NSString *const kDidUpdateCharacteristicValue = @"kDidUpdateCharacteristicValue";
 
 // Reuse Identifier
