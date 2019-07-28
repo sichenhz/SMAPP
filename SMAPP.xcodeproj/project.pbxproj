@@ -56,6 +56,19 @@
 		96E04D3E227F28F3002DE8F2 /* SMNotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04D3D227F28F3002DE8F2 /* SMNotificationViewController.m */; };
 		96E04D41227F28FF002DE8F2 /* SMHomeSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04D40227F28FF002DE8F2 /* SMHomeSettingViewController.m */; };
 		96E446D022EDA389005E8B78 /* SMSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E446CF22EDA389005E8B78 /* SMSettingsViewController.m */; };
+		96E446D322EDACE0005E8B78 /* SMMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E446D222EDACE0005E8B78 /* SMMainViewController.m */; };
+		96E4471022EDD29E005E8B78 /* SMImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E446FA22EDD29D005E8B78 /* SMImagePickerController.m */; };
+		96E4471122EDD29E005E8B78 /* SMAlbumsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E446FB22EDD29D005E8B78 /* SMAlbumsViewController.m */; };
+		96E4471222EDD29E005E8B78 /* SMGridViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E446FC22EDD29D005E8B78 /* SMGridViewCell.m */; };
+		96E4471322EDD29E005E8B78 /* SMImageClipViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E4470122EDD29D005E8B78 /* SMImageClipViewController.m */; };
+		96E4471422EDD29E005E8B78 /* SMBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E4470222EDD29D005E8B78 /* SMBadgeView.m */; };
+		96E4471522EDD29E005E8B78 /* UIImage+SMHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E4470322EDD29D005E8B78 /* UIImage+SMHelper.m */; };
+		96E4471622EDD29E005E8B78 /* SMCameraViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E4470522EDD29D005E8B78 /* SMCameraViewCell.m */; };
+		96E4471722EDD29E005E8B78 /* SMCameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E4470722EDD29D005E8B78 /* SMCameraViewController.m */; };
+		96E4471822EDD29E005E8B78 /* SMGridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E4470822EDD29D005E8B78 /* SMGridViewController.m */; };
+		96E4471922EDD29E005E8B78 /* SMCameraController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E4470922EDD29D005E8B78 /* SMCameraController.m */; };
+		96E4471A22EDD29E005E8B78 /* SMAlbumsViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E4470A22EDD29D005E8B78 /* SMAlbumsViewCell.m */; };
+		96E4471B22EDD29E005E8B78 /* SMImagePickerController.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 96E4470F22EDD29E005E8B78 /* SMImagePickerController.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -156,6 +169,31 @@
 		96E04D40227F28FF002DE8F2 /* SMHomeSettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMHomeSettingViewController.m; sourceTree = "<group>"; };
 		96E446CE22EDA389005E8B78 /* SMSettingsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMSettingsViewController.h; sourceTree = "<group>"; };
 		96E446CF22EDA389005E8B78 /* SMSettingsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMSettingsViewController.m; sourceTree = "<group>"; };
+		96E446D122EDACE0005E8B78 /* SMMainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMMainViewController.h; sourceTree = "<group>"; };
+		96E446D222EDACE0005E8B78 /* SMMainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMMainViewController.m; sourceTree = "<group>"; };
+		96E446F922EDD29D005E8B78 /* SMCameraViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMCameraViewCell.h; sourceTree = "<group>"; };
+		96E446FA22EDD29D005E8B78 /* SMImagePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMImagePickerController.m; sourceTree = "<group>"; };
+		96E446FB22EDD29D005E8B78 /* SMAlbumsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMAlbumsViewController.m; sourceTree = "<group>"; };
+		96E446FC22EDD29D005E8B78 /* SMGridViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMGridViewCell.m; sourceTree = "<group>"; };
+		96E446FD22EDD29D005E8B78 /* SMGridViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMGridViewController.h; sourceTree = "<group>"; };
+		96E446FE22EDD29D005E8B78 /* SMCameraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMCameraViewController.h; sourceTree = "<group>"; };
+		96E446FF22EDD29D005E8B78 /* SMCameraController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMCameraController.h; sourceTree = "<group>"; };
+		96E4470022EDD29D005E8B78 /* SMAlbumsViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMAlbumsViewCell.h; sourceTree = "<group>"; };
+		96E4470122EDD29D005E8B78 /* SMImageClipViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMImageClipViewController.m; sourceTree = "<group>"; };
+		96E4470222EDD29D005E8B78 /* SMBadgeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMBadgeView.m; sourceTree = "<group>"; };
+		96E4470322EDD29D005E8B78 /* UIImage+SMHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+SMHelper.m"; sourceTree = "<group>"; };
+		96E4470422EDD29D005E8B78 /* SMImagePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMImagePickerController.h; sourceTree = "<group>"; };
+		96E4470522EDD29D005E8B78 /* SMCameraViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMCameraViewCell.m; sourceTree = "<group>"; };
+		96E4470622EDD29D005E8B78 /* SMImageClipViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMImageClipViewController.h; sourceTree = "<group>"; };
+		96E4470722EDD29D005E8B78 /* SMCameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMCameraViewController.m; sourceTree = "<group>"; };
+		96E4470822EDD29D005E8B78 /* SMGridViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMGridViewController.m; sourceTree = "<group>"; };
+		96E4470922EDD29D005E8B78 /* SMCameraController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMCameraController.m; sourceTree = "<group>"; };
+		96E4470A22EDD29D005E8B78 /* SMAlbumsViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMAlbumsViewCell.m; sourceTree = "<group>"; };
+		96E4470B22EDD29E005E8B78 /* SMGridViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMGridViewCell.h; sourceTree = "<group>"; };
+		96E4470C22EDD29E005E8B78 /* SMAlbumsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMAlbumsViewController.h; sourceTree = "<group>"; };
+		96E4470D22EDD29E005E8B78 /* UIImage+SMHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+SMHelper.h"; sourceTree = "<group>"; };
+		96E4470E22EDD29E005E8B78 /* SMBadgeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMBadgeView.h; sourceTree = "<group>"; };
+		96E4470F22EDD29E005E8B78 /* SMImagePickerController.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SMImagePickerController.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -231,6 +269,8 @@
 		96E04CEF227F0A9C002DE8F2 /* Lib */ = {
 			isa = PBXGroup;
 			children = (
+				96E4470F22EDD29E005E8B78 /* SMImagePickerController.bundle */,
+				96E446F822EDD29D005E8B78 /* SMImagePickerController */,
 				96E04CF0227F0AC0002DE8F2 /* Masonry */,
 			);
 			path = Lib;
@@ -317,6 +357,8 @@
 		96E04D26227F1419002DE8F2 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				96E446D122EDACE0005E8B78 /* SMMainViewController.h */,
+				96E446D222EDACE0005E8B78 /* SMMainViewController.m */,
 				96E04D33227F1468002DE8F2 /* SMHomeViewController.h */,
 				96E04D35227F1468002DE8F2 /* SMHomeViewController.m */,
 				96E04D3C227F28F3002DE8F2 /* SMNotificationViewController.h */,
@@ -343,6 +385,35 @@
 				96E446CF22EDA389005E8B78 /* SMSettingsViewController.m */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		96E446F822EDD29D005E8B78 /* SMImagePickerController */ = {
+			isa = PBXGroup;
+			children = (
+				96E4470422EDD29D005E8B78 /* SMImagePickerController.h */,
+				96E446FA22EDD29D005E8B78 /* SMImagePickerController.m */,
+				96E4470C22EDD29E005E8B78 /* SMAlbumsViewController.h */,
+				96E446FB22EDD29D005E8B78 /* SMAlbumsViewController.m */,
+				96E446FD22EDD29D005E8B78 /* SMGridViewController.h */,
+				96E4470822EDD29D005E8B78 /* SMGridViewController.m */,
+				96E4470622EDD29D005E8B78 /* SMImageClipViewController.h */,
+				96E4470122EDD29D005E8B78 /* SMImageClipViewController.m */,
+				96E446FE22EDD29D005E8B78 /* SMCameraViewController.h */,
+				96E4470722EDD29D005E8B78 /* SMCameraViewController.m */,
+				96E446FF22EDD29D005E8B78 /* SMCameraController.h */,
+				96E4470922EDD29D005E8B78 /* SMCameraController.m */,
+				96E446F922EDD29D005E8B78 /* SMCameraViewCell.h */,
+				96E4470522EDD29D005E8B78 /* SMCameraViewCell.m */,
+				96E4470022EDD29D005E8B78 /* SMAlbumsViewCell.h */,
+				96E4470A22EDD29D005E8B78 /* SMAlbumsViewCell.m */,
+				96E4470B22EDD29E005E8B78 /* SMGridViewCell.h */,
+				96E446FC22EDD29D005E8B78 /* SMGridViewCell.m */,
+				96E4470E22EDD29E005E8B78 /* SMBadgeView.h */,
+				96E4470222EDD29D005E8B78 /* SMBadgeView.m */,
+				96E4470D22EDD29E005E8B78 /* UIImage+SMHelper.h */,
+				96E4470322EDD29D005E8B78 /* UIImage+SMHelper.m */,
+			);
+			path = SMImagePickerController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -412,6 +483,7 @@
 				96AD773C22671BE0003A0D2A /* Nunito-Regular.ttf in Resources */,
 				96AD773A22671BE0003A0D2A /* Nunito-Italic.ttf in Resources */,
 				96AD773622671305003A0D2A /* GOTHICI.TTF in Resources */,
+				96E4471B22EDD29E005E8B78 /* SMImagePickerController.bundle in Resources */,
 				96AD773522671305003A0D2A /* GOTHIC.TTF in Resources */,
 				96AD76B22263165C003A0D2A /* Assets.xcassets in Resources */,
 				96AD773422671305003A0D2A /* GOTHICB.TTF in Resources */,
@@ -435,34 +507,46 @@
 				96E04D0E227F0AC0002DE8F2 /* MASLayoutConstraint.m in Sources */,
 				96B47DF72281B9EC00AFAF32 /* SMCollectionViewCell.m in Sources */,
 				96E04D1F227F0CF9002DE8F2 /* SMTableViewHeaderView.m in Sources */,
+				96E4471722EDD29E005E8B78 /* SMCameraViewController.m in Sources */,
 				96E04D0D227F0AC0002DE8F2 /* MASConstraintMaker.m in Sources */,
+				96E4471322EDD29E005E8B78 /* SMImageClipViewController.m in Sources */,
+				96E4471922EDD29E005E8B78 /* SMCameraController.m in Sources */,
 				96E04D29227F1431002DE8F2 /* HMHomeManager+Share.m in Sources */,
 				96E04D25227F1400002DE8F2 /* UIView+Extention.m in Sources */,
+				96E4471122EDD29E005E8B78 /* SMAlbumsViewController.m in Sources */,
 				96E04D12227F0AC0002DE8F2 /* MASViewConstraint.m in Sources */,
 				96E04D0A227F0AC0002DE8F2 /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
 				96E04D3A227F1468002DE8F2 /* SMAccessoryDetailViewController.m in Sources */,
 				96E04D0F227F0AC0002DE8F2 /* NSArray+MASAdditions.m in Sources */,
 				96E04D0C227F0AC0002DE8F2 /* MASCompositeConstraint.m in Sources */,
 				96E04D37227F1468002DE8F2 /* SMAddAccessoryViewController.m in Sources */,
+				96E4471822EDD29E005E8B78 /* SMGridViewController.m in Sources */,
 				96E04D11227F0AC0002DE8F2 /* MASConstraint.m in Sources */,
 				96E04D21227F0CF9002DE8F2 /* SMButton.m in Sources */,
 				96E446D022EDA389005E8B78 /* SMSettingsViewController.m in Sources */,
 				96E04D41227F28FF002DE8F2 /* SMHomeSettingViewController.m in Sources */,
+				96E4471522EDD29E005E8B78 /* UIImage+SMHelper.m in Sources */,
 				965906C0228B51EA00035CD5 /* UIViewController+Show.m in Sources */,
+				96E4471422EDD29E005E8B78 /* SMBadgeView.m in Sources */,
 				96E04D3B227F1468002DE8F2 /* SMHomeViewController.m in Sources */,
 				965906BD228B512E00035CD5 /* SMToastView.m in Sources */,
 				96AD76B82263165C003A0D2A /* main.m in Sources */,
 				96E04D20227F0CF9002DE8F2 /* SMAlertView.m in Sources */,
 				9619C448228B108E0025754D /* SMTextViewTableViewCell.m in Sources */,
+				96E4471622EDD29E005E8B78 /* SMCameraViewCell.m in Sources */,
 				96AD76AA22631659003A0D2A /* AppDelegate.m in Sources */,
 				9619C433228AD20A0025754D /* SMRoomViewController.m in Sources */,
 				9619C445228B10800025754D /* SMTextFieldTableViewCell.m in Sources */,
+				96E4471A22EDD29E005E8B78 /* SMAlbumsViewCell.m in Sources */,
+				96E446D322EDACE0005E8B78 /* SMMainViewController.m in Sources */,
 				96E04D39227F1468002DE8F2 /* SMServiceViewController.m in Sources */,
 				9619C43C228AFE4F0025754D /* SMAccessoryListViewController.m in Sources */,
 				965906BA228B47B400035CD5 /* SMRoomSettingViewController.m in Sources */,
 				9619C43F228AFF090025754D /* SMHomeListViewController.m in Sources */,
 				9619C44E228B15280025754D /* SMButtonTableViewCell.m in Sources */,
 				965906B7228B476000035CD5 /* SMRoomListViewController.m in Sources */,
+				96E4471222EDD29E005E8B78 /* SMGridViewCell.m in Sources */,
+				96E4471022EDD29E005E8B78 /* SMImagePickerController.m in Sources */,
 				9619C436228AE2E60025754D /* SMHomeTableViewCell.m in Sources */,
 				96E04D10227F0AC0002DE8F2 /* View+MASAdditions.m in Sources */,
 			);

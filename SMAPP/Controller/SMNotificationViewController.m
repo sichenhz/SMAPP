@@ -2,7 +2,7 @@
 //  SMNotificationViewController.m
 //  SMAPP
 //
-//  Created by Jason on 6/5/19.
+//  Created by Sichen on 6/5/19.
 //  Copyright © 2019 RXP. All rights reserved.
 //
 
@@ -17,7 +17,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.navigationItem.title = @"Notifications";
+    self.navigationItem.title = @"Notifications (under construction)";
 }
 
 @end

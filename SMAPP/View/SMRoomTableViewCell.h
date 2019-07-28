@@ -2,7 +2,7 @@
 //  SMRoomTableViewCell.h
 //  SMAPP
 //
-//  Created by Jason on 14/5/19.
+//  Created by Sichen on 14/5/19.
 //  Copyright © 2019 RXP. All rights reserved.
 //
 

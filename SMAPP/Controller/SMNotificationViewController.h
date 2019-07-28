@@ -2,7 +2,7 @@
 //  SMNotificationViewController.h
 //  SMAPP
 //
-//  Created by Jason on 6/5/19.
+//  Created by Sichen on 6/5/19.
 //  Copyright © 2019 RXP. All rights reserved.
 //
 

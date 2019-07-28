@@ -96,7 +96,7 @@ HMAccessoryDelegate
     self.navigationItem.title = manager.primaryHome.name;
     manager.primaryHome.delegate = self;
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdatePrimaryHome object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdatePrimaryHome object:nil userInfo:@{@"home" : manager.primaryHome}];
 }
 
 - (void)updateCurrentAccessories {

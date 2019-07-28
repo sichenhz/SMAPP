@@ -2,7 +2,7 @@
 //  SMCollectionViewCell.h
 //  SMAPP
 //
-//  Created by Jason on 7/5/19.
+//  Created by Sichen on 7/5/19.
 //  Copyright © 2019 RXP. All rights reserved.
 //
 

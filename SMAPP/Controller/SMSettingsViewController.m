@@ -2,7 +2,7 @@
 //  SMSettingsViewController.m
 //  SMAPP
 //
-//  Created by Jason on 28/7/19.
+//  Created by Sichen on 28/7/19.
 //  Copyright © 2019 RXP. All rights reserved.
 //
 
@@ -40,16 +40,16 @@
             cell.textLabel.text = @"My Devices";
             break;
         case 1:
-            cell.textLabel.text = @"App Settings";
+            cell.textLabel.text = @"App Settings (under construction)";
             break;
         case 2:
-            cell.textLabel.text = @"Help";
+            cell.textLabel.text = @"Help (under construction)";
             break;
         case 3:
-            cell.textLabel.text = @"Term and Conditions";
+            cell.textLabel.text = @"Term and Conditions (under construction)";
             break;
         case 4:
-            cell.textLabel.text = @"About SMAPP";
+            cell.textLabel.text = @"About SMAPP (under construction)";
             break;
     }
     return cell;

@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "Const.h"
+#import "SMMainViewController.h"
 #import "SMHomeViewController.h"
 #import "SMNotificationViewController.h"
 #import "SMAccessoryListViewController.h"
@@ -53,6 +54,8 @@
         make.top.bottom.equalTo(tabBarC.view);
         make.left.equalTo(tabBarC.view.mas_left);
     }];
+
+    self.nav1_l.view.hidden = NO;
 
     return YES;
 }
@@ -129,20 +132,22 @@
     return _nav3_r;
 }
 
-//- (UINavigationController *)nav1_l {
-//
-//}
-//
+- (UINavigationController *)nav1_l {
+    if (!_nav1_l) {
+        _nav1_l = [[UINavigationController alloc] initWithRootViewController:[[SMMainViewController alloc] init]];
+        [self.window addSubview:_nav1_l.view];
+        _nav1_l.view.width = self.window.width - WIDTH_NAV_R;
+    }
+    return _nav1_l;
+}
+
 //- (UINavigationController *)nav2_l {
 //
 //}
 
 - (UINavigationController *)nav3_l {
     if (!_nav3_l) {
-        _nav3_l = [self setUpNavigationController:[[SMAccessoryListViewController alloc] init]
-                                            title:@"My Devices"
-                                        imageName:@"tabbar_profile"
-                                selectedImageName:@"tabbar_profile_selected"];
+        _nav3_l = [[UINavigationController alloc] initWithRootViewController:[[SMAccessoryListViewController alloc] init]];
         [self.window addSubview:_nav3_l.view];
         _nav3_l.view.width = self.window.width - WIDTH_NAV_R;
     }
@@ -158,7 +163,7 @@
     self.nav3_l.view.hidden = YES;
     
     if ([viewController isEqual:self.nav1_r]) {
-        
+        self.nav1_l.view.hidden = NO;
     } else if ([viewController isEqual:self.nav2_r]) {
 
     } else if ([viewController isEqual:self.nav3_r]) {

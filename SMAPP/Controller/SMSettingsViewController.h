@@ -2,7 +2,7 @@
 //  SMSettingsViewController.h
 //  SMAPP
 //
-//  Created by Jason on 28/7/19.
+//  Created by Sichen on 28/7/19.
 //  Copyright © 2019 RXP. All rights reserved.
 //
 

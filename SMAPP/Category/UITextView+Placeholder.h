@@ -2,7 +2,7 @@
 //  UITextView+Placeholder.h
 //  SMAPP
 //
-//  Created by Jason on 15/5/19.
+//  Created by Sichen on 15/5/19.
 //  Copyright © 2019 RXP. All rights reserved.
 //
 
