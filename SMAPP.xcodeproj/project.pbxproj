@@ -55,6 +55,7 @@
 		96E04D3B227F1468002DE8F2 /* SMHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04D35227F1468002DE8F2 /* SMHomeViewController.m */; };
 		96E04D3E227F28F3002DE8F2 /* SMNotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04D3D227F28F3002DE8F2 /* SMNotificationViewController.m */; };
 		96E04D41227F28FF002DE8F2 /* SMHomeSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04D40227F28FF002DE8F2 /* SMHomeSettingViewController.m */; };
+		96E446D022EDA389005E8B78 /* SMSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E446CF22EDA389005E8B78 /* SMSettingsViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -153,6 +154,8 @@
 		96E04D3D227F28F3002DE8F2 /* SMNotificationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMNotificationViewController.m; sourceTree = "<group>"; };
 		96E04D3F227F28FF002DE8F2 /* SMHomeSettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMHomeSettingViewController.h; sourceTree = "<group>"; };
 		96E04D40227F28FF002DE8F2 /* SMHomeSettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMHomeSettingViewController.m; sourceTree = "<group>"; };
+		96E446CE22EDA389005E8B78 /* SMSettingsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMSettingsViewController.h; sourceTree = "<group>"; };
+		96E446CF22EDA389005E8B78 /* SMSettingsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMSettingsViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -336,6 +339,8 @@
 				965906B6228B476000035CD5 /* SMRoomListViewController.m */,
 				965906B8228B47B400035CD5 /* SMRoomSettingViewController.h */,
 				965906B9228B47B400035CD5 /* SMRoomSettingViewController.m */,
+				96E446CE22EDA389005E8B78 /* SMSettingsViewController.h */,
+				96E446CF22EDA389005E8B78 /* SMSettingsViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -441,6 +446,7 @@
 				96E04D37227F1468002DE8F2 /* SMAddAccessoryViewController.m in Sources */,
 				96E04D11227F0AC0002DE8F2 /* MASConstraint.m in Sources */,
 				96E04D21227F0CF9002DE8F2 /* SMButton.m in Sources */,
+				96E446D022EDA389005E8B78 /* SMSettingsViewController.m in Sources */,
 				96E04D41227F28FF002DE8F2 /* SMHomeSettingViewController.m in Sources */,
 				965906C0228B51EA00035CD5 /* UIViewController+Show.m in Sources */,
 				96E04D3B227F1468002DE8F2 /* SMHomeViewController.m in Sources */,

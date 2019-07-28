@@ -11,8 +11,19 @@
 #import "SMHomeViewController.h"
 #import "SMNotificationViewController.h"
 #import "SMAccessoryListViewController.h"
+#import "SMSettingsViewController.h"
+#import "UIView+Extention.h"
+#import "Masonry.h"
 
-@interface AppDelegate ()
+@interface AppDelegate () <UITabBarControllerDelegate>
+
+@property (nonatomic, strong) UINavigationController *nav1_r;
+@property (nonatomic, strong) UINavigationController *nav2_r;
+@property (nonatomic, strong) UINavigationController *nav3_r;
+
+@property (nonatomic, strong) UINavigationController *nav1_l;
+@property (nonatomic, strong) UINavigationController *nav2_l;
+@property (nonatomic, strong) UINavigationController *nav3_l;
 
 @end
 
@@ -24,27 +35,24 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
     
-    UINavigationController *nav1 = [self setUpNavigationController:[[SMHomeViewController alloc] init]
-                                                             title:@"home"
-                                                         imageName:@"tabbar_home"
-                                                 selectedImageName:@"tabbar_home_selected"];
-    
-    UINavigationController *nav2 = [self setUpNavigationController:[[SMNotificationViewController alloc] init]
-                                                             title:@"Notifications"
-                                                         imageName:@"tabbar_message_center"
-                                                 selectedImageName:@"tabbar_message_center_selected"];
-    
-    UINavigationController *nav3 = [self setUpNavigationController:[[SMAccessoryListViewController alloc] init]
-                                                             title:@"My Devices"
-                                                         imageName:@"tabbar_profile"
-                                                 selectedImageName:@"tabbar_profile_selected"];
-
     UITabBarController *tabBarC = [[UITabBarController alloc] init];
-    tabBarC.viewControllers = @[nav1, nav2, nav3];
+    tabBarC.delegate = self;
+    tabBarC.viewControllers = @[self.nav1_r, self.nav2_r, self.nav3_r];
         
     self.window.rootViewController = tabBarC;
-
     [self.window makeKeyAndVisible];
+    
+    tabBarC.view.left = self.window.width - WIDTH_NAV_R;
+    tabBarC.view.width = WIDTH_NAV_R;
+    
+    UIView *line = [[UIView alloc] init];
+    line.backgroundColor = COLOR_LINE;
+    [tabBarC.view addSubview:line];
+    [line mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(@1);
+        make.top.bottom.equalTo(tabBarC.view);
+        make.left.equalTo(tabBarC.view.mas_left);
+    }];
 
     return YES;
 }
@@ -89,5 +97,73 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
+#pragma mark - Getters
+
+- (UINavigationController *)nav1_r {
+    if (!_nav1_r) {
+        _nav1_r = [self setUpNavigationController:[[SMHomeViewController alloc] init]
+                                            title:@"home"
+                                        imageName:@"tabbar_home"
+                                selectedImageName:@"tabbar_home_selected"];
+    }
+    return _nav1_r;
+}
+
+- (UINavigationController *)nav2_r {
+    if (!_nav2_r) {
+        _nav2_r = [self setUpNavigationController:[[SMNotificationViewController alloc] init]
+                                            title:@"Notifications"
+                                        imageName:@"tabbar_message_center"
+                                selectedImageName:@"tabbar_message_center_selected"];
+    }
+    return _nav2_r;
+}
+
+- (UINavigationController *)nav3_r {
+    if (!_nav3_r) {
+        _nav3_r = [self setUpNavigationController:[[SMSettingsViewController alloc] init]
+                                            title:@"Settings"
+                                        imageName:@"tabbar_profile"
+                                selectedImageName:@"tabbar_profile_selected"];
+    }
+    return _nav3_r;
+}
+
+//- (UINavigationController *)nav1_l {
+//
+//}
+//
+//- (UINavigationController *)nav2_l {
+//
+//}
+
+- (UINavigationController *)nav3_l {
+    if (!_nav3_l) {
+        _nav3_l = [self setUpNavigationController:[[SMAccessoryListViewController alloc] init]
+                                            title:@"My Devices"
+                                        imageName:@"tabbar_profile"
+                                selectedImageName:@"tabbar_profile_selected"];
+        [self.window addSubview:_nav3_l.view];
+        _nav3_l.view.width = self.window.width - WIDTH_NAV_R;
+    }
+    return _nav3_l;
+}
+
+#pragma mark - UITabBarControllerDelegate
+
+- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
+    
+    self.nav1_l.view.hidden = YES;
+    self.nav2_l.view.hidden = YES;
+    self.nav3_l.view.hidden = YES;
+    
+    if ([viewController isEqual:self.nav1_r]) {
+        
+    } else if ([viewController isEqual:self.nav2_r]) {
+
+    } else if ([viewController isEqual:self.nav3_r]) {
+        self.nav3_l.view.hidden = NO;
+    }
+}
 
 @end

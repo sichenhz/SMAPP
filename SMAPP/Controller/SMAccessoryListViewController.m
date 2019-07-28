@@ -31,7 +31,7 @@
     self.navigationItem.title = @"My Devices";
     
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-    CGFloat itemWidth = ([UIScreen mainScreen].bounds.size.width - 40) / 3;
+    CGFloat itemWidth = ([UIScreen mainScreen].bounds.size.width - WIDTH_NAV_R - 50) / 4;
     layout.itemSize = CGSizeMake(itemWidth, itemWidth * 1.33);
     layout.minimumInteritemSpacing = 10;
     layout.minimumLineSpacing = 10;
