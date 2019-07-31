@@ -69,6 +69,7 @@
 		96E4471922EDD29E005E8B78 /* SMCameraController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E4470922EDD29D005E8B78 /* SMCameraController.m */; };
 		96E4471A22EDD29E005E8B78 /* SMAlbumsViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E4470A22EDD29D005E8B78 /* SMAlbumsViewCell.m */; };
 		96E4471B22EDD29E005E8B78 /* SMImagePickerController.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 96E4470F22EDD29E005E8B78 /* SMImagePickerController.bundle */; };
+		96E4472722F16D1F005E8B78 /* SMDisableHighlightButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E4472622F16D1F005E8B78 /* SMDisableHighlightButton.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -194,6 +195,8 @@
 		96E4470D22EDD29E005E8B78 /* UIImage+SMHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+SMHelper.h"; sourceTree = "<group>"; };
 		96E4470E22EDD29E005E8B78 /* SMBadgeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMBadgeView.h; sourceTree = "<group>"; };
 		96E4470F22EDD29E005E8B78 /* SMImagePickerController.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SMImagePickerController.bundle; sourceTree = "<group>"; };
+		96E4472522F16D1F005E8B78 /* SMDisableHighlightButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMDisableHighlightButton.h; sourceTree = "<group>"; };
+		96E4472622F16D1F005E8B78 /* SMDisableHighlightButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMDisableHighlightButton.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -335,6 +338,8 @@
 				965906BC228B512E00035CD5 /* SMToastView.m */,
 				965906C1228B524400035CD5 /* SMActivityIndicatorView.h */,
 				965906C2228B524400035CD5 /* SMActivityIndicatorView.m */,
+				96E4472522F16D1F005E8B78 /* SMDisableHighlightButton.h */,
+				96E4472622F16D1F005E8B78 /* SMDisableHighlightButton.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -497,6 +502,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				96E4472722F16D1F005E8B78 /* SMDisableHighlightButton.m in Sources */,
 				9619C439228AE3100025754D /* SMRoomTableViewCell.m in Sources */,
 				96E04D0B227F0AC0002DE8F2 /* ViewController+MASAdditions.m in Sources */,
 				965906C3228B524400035CD5 /* SMActivityIndicatorView.m in Sources */,

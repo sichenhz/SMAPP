@@ -23,12 +23,26 @@
 
 - (void)initSubviews {
     
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button setImage:[UIImage imageNamed:@"location_gray"] forState:UIControlStateNormal];
+    [button setImage:[UIImage imageNamed:@"location_red"] forState:UIControlStateSelected];
+//    [button addTarget:self action:@selector(dragMoving:event: )forControlEvents: UIControlEventTouchDragInside];
+//    [button addTarget:self action:@selector(dragEnded:event: )forControlEvents:UIControlEventTouchUpOutside];
+    [button addTarget:self action:@selector(buttonPressed:) forControlEvents:(UIControlEventTouchUpInside)];
+    
+    [self.contentView addSubview:button];
+    [button mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.top.bottom.equalTo(button.superview);
+        make.width.equalTo(button.mas_height);
+    }];
+    _button = button;
+    
     UILabel *leftLabel = [[UILabel alloc] init];
     leftLabel.font = FONT_BODY;
     leftLabel.textColor = COLOR_TITLE;
     [self.contentView addSubview:leftLabel];
     [leftLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(leftLabel.superview).offset(15);
+        make.left.equalTo(button.mas_right);
         make.top.bottom.equalTo(leftLabel.superview);
     }];
     _leftLabel = leftLabel;
@@ -40,7 +54,14 @@
         make.right.top.bottom.equalTo(rightLabel.superview);
     }];
     _rightLabel = rightLabel;
-    
+}
+
+- (void)buttonPressed:(UIButton *)sender {
+    sender.selected = !sender.isSelected;
+
+    if (self.buttonPressed) {
+        self.buttonPressed(sender);
+    }
 }
 
 - (void)setAvailable:(BOOL)available {

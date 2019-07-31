@@ -96,7 +96,7 @@ HMAccessoryDelegate
     self.navigationItem.title = manager.primaryHome.name;
     manager.primaryHome.delegate = self;
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdatePrimaryHome object:nil userInfo:@{@"home" : manager.primaryHome}];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdatePrimaryHome object:self userInfo:@{@"home" : manager.primaryHome}];
 }
 
 - (void)updateCurrentAccessories {
@@ -413,7 +413,7 @@ HMAccessoryDelegate
             if ([service.accessory isEqual:accessory]) {
                 NSInteger row = [services indexOfObject:service];
                 SMHomeTableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:section]];
-                cell.available = accessory.reachable;
+//                cell.available = accessory.reachable;
                 if ([cell.accessoryView isKindOfClass:[UISwitch class]]) {
                     
                     UISwitch *lockSwitch = ((UISwitch *)cell.accessoryView);
@@ -462,10 +462,18 @@ HMAccessoryDelegate
     HMService *service = item.services[indexPath.row];
     
     cell.leftLabel.text = service.name;
-    cell.available = service.accessory.reachable;
+    cell.button.hidden = YES;
+//    cell.available = service.accessory.reachable;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.accessoryView = nil;
     cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+    
+    if ([service.serviceType isEqualToString:HMServiceTypeLightbulb]) {
+        cell.button.hidden = NO;
+    }
+    cell.buttonPressed = ^(UIButton *sender) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kDidStartLayoutAccessory object:self userInfo:@{@"service" : service, @"status" : @(sender.isSelected)}];
+    };
     
     for (HMCharacteristic *characteristic in service.characteristics) {
         if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState] ||
@@ -485,7 +493,7 @@ HMAccessoryDelegate
             
             break;
         }
-    }    
+    }
     return cell;
 }
 

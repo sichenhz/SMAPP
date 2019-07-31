@@ -12,8 +12,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface SMHomeTableViewCell : UITableViewCell
 
+@property (nonatomic, weak) UIButton *button;
 @property (nonatomic, weak) UILabel *leftLabel;
 @property (nonatomic, weak) UILabel *rightLabel;
+
+@property (nonatomic, copy) void(^buttonPressed)(UIButton *sender);
 
 @property (nonatomic, assign, getter=isAvailable) BOOL available;
 
