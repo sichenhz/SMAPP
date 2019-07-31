@@ -45,7 +45,7 @@ static NSString * const SMAlbumsViewCellReuseIdentifier = @"SMAlbumsViewCellReus
     
     self.tableView.rowHeight = kAlbumThumbnailSize.height + 0.5;
     
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"取消"
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel"
                                                                              style:UIBarButtonItemStylePlain
                                                                             target:self.picker
                                                                             action:@selector(cancel)];

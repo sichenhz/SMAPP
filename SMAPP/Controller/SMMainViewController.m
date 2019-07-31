@@ -13,6 +13,7 @@
 #import "SMAlertView.h"
 #import "SMImagePickerController.h"
 #import "SMImageClipViewController.h"
+#import "SMToastView.h"
 
 @interface SMMainViewController () <SMImagePickerControllerDelegate, SMImageClipViewControllerDelegate>
 
@@ -38,6 +39,12 @@
 }
 
 - (void)rightButtonItemPressed:(id)sender {
+    
+    if (![HMHomeManager sharedManager].primaryHome) {
+        [SMToastView showInView:[UIApplication sharedApplication].keyWindow text:@"Please add a new home." duration:1.5 autoHide:YES];
+        return;
+    }
+    
     SMAlertView *alertView = [SMAlertView alertViewWithTitle:nil message:nil style:SMAlertViewStyleActionSheet];
     
     [alertView addAction:[SMAlertAction actionWithTitle:@"Take Photo" style:SMAlertActionStyleDefault handler:^(SMAlertAction * _Nonnull action) {
@@ -79,6 +86,21 @@
     [self presentViewController:picker animated:YES completion:nil];
 }
 
+- (void)saveImage:(UIImage *)image {
+    NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+    NSString *imageFilePath = [path stringByAppendingPathComponent:[HMHomeManager sharedManager].primaryHome.name];
+    // 1 means uncompression
+    [UIImageJPEGRepresentation(image, 1) writeToFile:imageFilePath atomically:YES];
+}
+
+- (void)loadImage {
+    NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+    NSString *imageFilePath = [path stringByAppendingPathComponent:[HMHomeManager sharedManager].primaryHome.name];
+    if (imageFilePath) {
+        self.imageView.image = [UIImage imageWithData:[NSData dataWithContentsOfFile:imageFilePath]];
+    }
+}
+
 #pragma mark - Getters
 
 - (UIImageView *)imageView {
@@ -86,7 +108,11 @@
         _imageView = [[UIImageView alloc] init];
         [self.view addSubview:_imageView];
         [_imageView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.navigationController.navigationBar.mas_bottom);
+            CGRect statusRect = [[UIApplication sharedApplication] statusBarFrame];
+            CGRect navRect = self.navigationController.navigationBar.frame;
+            CGFloat NavHeight = statusRect.size.height + navRect.size.height;
+
+            make.top.equalTo(self.view).offset(NavHeight);
             make.left.bottom.right.equalTo(self.view);
         }];
     }
@@ -101,32 +127,37 @@
     
     if ([home isEqual:manager.primaryHome]) {
         self.navigationItem.title = home.name;
+        [self loadImage];
     }
 }
 
 #pragma mark - SMImagePickerControllerDelegate
 
+// from album
 - (void)assetsPickerController:(SMImagePickerController *)picker didFinishPickingImage:(UIImage *)image {
     [picker dismissViewControllerAnimated:YES completion:nil];
 
     self.imageView.image = image;
+    [self saveImage:image];
 }
 
+// from album
 - (void)assetsPickerControllerDidCancel:(SMImagePickerController *)picker {
     [picker dismissViewControllerAnimated:YES completion:nil];
-
 }
 
 #pragma mark - SMImageClipViewControllerDelegate
 
+// from camera
 - (void)clipViewControllerDidCancel:(SMImageClipViewController *)picker {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+// from camera
 - (void)clipViewController:(SMImageClipViewController *)picker didFinishClipImage:(UIImage *)image {
     [self dismissViewControllerAnimated:YES completion:^{
-
         self.imageView.image = image;
+        [self saveImage:image];
     }];
 }
 
