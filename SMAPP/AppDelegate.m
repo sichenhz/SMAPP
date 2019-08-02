@@ -18,6 +18,9 @@
 
 @interface AppDelegate () <UITabBarControllerDelegate>
 
+@property (nonatomic, strong) UIViewController *container;
+@property (nonatomic, strong) UITabBarController *tabBarC;
+
 @property (nonatomic, strong) UINavigationController *nav1_r;
 @property (nonatomic, strong) UINavigationController *nav2_r;
 @property (nonatomic, strong) UINavigationController *nav3_r;
@@ -35,27 +38,11 @@
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
-    
-    UITabBarController *tabBarC = [[UITabBarController alloc] init];
-    tabBarC.delegate = self;
-    tabBarC.viewControllers = @[self.nav1_r, self.nav2_r, self.nav3_r];
-        
-    self.window.rootViewController = tabBarC;
+    self.window.rootViewController = self.container;
     [self.window makeKeyAndVisible];
     
-    tabBarC.view.left = self.window.width - WIDTH_NAV_R;
-    tabBarC.view.width = WIDTH_NAV_R;
-    
-    UIView *line = [[UIView alloc] init];
-    line.backgroundColor = COLOR_LINE;
-    [tabBarC.view addSubview:line];
-    [line mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(@1);
-        make.top.bottom.equalTo(tabBarC.view);
-        make.left.equalTo(tabBarC.view.mas_left);
-    }];
-
-    self.nav1_l.view.hidden = NO;
+    [self tabBarC];
+    [self nav1_l];
 
     return YES;
 }
@@ -74,33 +61,37 @@
     return [[UINavigationController alloc] initWithRootViewController:controller];
 }
 
-- (void)applicationWillResignActive:(UIApplication *)application {
-    // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-    // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
-}
-
-
-- (void)applicationDidEnterBackground:(UIApplication *)application {
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-}
-
-
-- (void)applicationWillEnterForeground:(UIApplication *)application {
-    // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
-}
-
-
-- (void)applicationDidBecomeActive:(UIApplication *)application {
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-}
-
-
-- (void)applicationWillTerminate:(UIApplication *)application {
-    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-}
-
 #pragma mark - Getters
+
+- (UIViewController *)container {
+    if (!_container) {
+        _container = [[UIViewController alloc] init];
+    }
+    return _container;
+}
+
+- (UITabBarController *)tabBarC {
+    if (!_tabBarC) {
+        _tabBarC = [[UITabBarController alloc] init];
+        [self.container addChildViewController:_tabBarC];
+        [self.container.view addSubview:_tabBarC.view];
+        _tabBarC.view.left = self.window.width - WIDTH_NAV_R;
+        _tabBarC.view.width = WIDTH_NAV_R;
+
+        UIView *line = [[UIView alloc] init];
+        [_tabBarC.view addSubview:line];
+        [line mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.width.equalTo(@1);
+            make.top.bottom.equalTo(line.superview);
+            make.left.equalTo(line.superview.mas_left);
+        }];
+        line.backgroundColor = COLOR_LINE;
+
+        _tabBarC.delegate = self;
+        _tabBarC.viewControllers = @[self.nav1_r, self.nav2_r, self.nav3_r];
+    }
+    return _tabBarC;
+}
 
 - (UINavigationController *)nav1_r {
     if (!_nav1_r) {
@@ -135,20 +126,28 @@
 - (UINavigationController *)nav1_l {
     if (!_nav1_l) {
         _nav1_l = [[UINavigationController alloc] initWithRootViewController:[[SMMainViewController alloc] init]];
-        [self.window addSubview:_nav1_l.view];
+        [self.container addChildViewController:_nav1_l];
+        [self.container.view addSubview:_nav1_l.view];
         _nav1_l.view.width = self.window.width - WIDTH_NAV_R;
     }
     return _nav1_l;
 }
 
-//- (UINavigationController *)nav2_l {
-//
-//}
+- (UINavigationController *)nav2_l {
+    if (!_nav2_l) {
+        _nav2_l = [[UINavigationController alloc] initWithRootViewController:[[UIViewController alloc] init]];
+        [self.container addChildViewController:_nav2_l];
+        [self.container.view addSubview:_nav2_l.view];
+        _nav2_l.view.width = self.window.width - WIDTH_NAV_R;
+    }
+    return _nav2_l;
+}
 
 - (UINavigationController *)nav3_l {
     if (!_nav3_l) {
         _nav3_l = [[UINavigationController alloc] initWithRootViewController:[[SMAccessoryListViewController alloc] init]];
-        [self.window addSubview:_nav3_l.view];
+        [self.container addChildViewController:_nav3_l];
+        [self.container.view addSubview:_nav3_l.view];
         _nav3_l.view.width = self.window.width - WIDTH_NAV_R;
     }
     return _nav3_l;
@@ -165,7 +164,7 @@
     if ([viewController isEqual:self.nav1_r]) {
         self.nav1_l.view.hidden = NO;
     } else if ([viewController isEqual:self.nav2_r]) {
-
+        self.nav2_l.view.hidden = NO;
     } else if ([viewController isEqual:self.nav3_r]) {
         self.nav3_l.view.hidden = NO;
     }

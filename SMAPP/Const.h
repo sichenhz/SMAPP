@@ -10,6 +10,7 @@
 #define Const_h
 
 // Data persistence
+static NSString *const kShowedFloorPlan = @"kShowedFloorPlan";
 static NSString *const kShowedRoom = @"kShowedRoom";
 static NSString *const kShowedService = @"kShowedService";
 

@@ -52,7 +52,6 @@
     self.navigationItem.title = namager.primaryHome.name;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateHomeName:) name:kDidUpdateHomeName object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateHomeName:) name:kDidUpdatePrimaryHome object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(layoutAccessory:) name:kDidStartLayoutAccessory object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateAccessories:) name:kDidUpdateAccessory object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateAccessories:) name:kDidUpdateCharacteristicValue object:nil];
@@ -127,7 +126,36 @@
     }
 }
 
+- (void)loadServices {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSDictionary *floorPlansMap = [userDefaults objectForKey:kShowedFloorPlan];
+    NSDictionary *servicesMap = [floorPlansMap objectForKey:[HMHomeManager sharedManager].primaryHome.name];
+    
+    for (HMAccessory *accessory in [HMHomeManager sharedManager].primaryHome.accessories) {
+        for (HMService *service in accessory.services) {
+            NSDictionary *coordinateMap = [servicesMap objectForKey:service.uniqueIdentifier.UUIDString];
+            if (coordinateMap) {
+                for (HMCharacteristic *characteristic in service.characteristics) {
+                    if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetLockMechanismState]  ||
+                        [characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState] ||
+                        [characteristic.characteristicType isEqualToString:HMCharacteristicTypeObstructionDetected]) {
+                        
+                        CGFloat centerX = [[coordinateMap objectForKey:@"centerX"] floatValue];
+                        CGFloat centerY = [[coordinateMap objectForKey:@"centerY"] floatValue];
+                        [self createButton:[characteristic.value boolValue] service:service centerX:centerX centerY:centerY];
+                        break;
+                    }
+                }
+            }
+        }
+    }
+}
+
 - (void)createButton:(BOOL)isSelect service:(HMService *)service {
+    [self createButton:isSelect service:service centerX:self.imageView.width / 2 centerY:self.imageView.height / 2];
+}
+
+- (void)createButton:(BOOL)isSelect service:(HMService *)service centerX:(CGFloat)centerX centerY:(CGFloat)centerY {
     SMDisableHighlightButton *button = [SMDisableHighlightButton buttonWithType:UIButtonTypeCustom];
     
     UIPanGestureRecognizer *gesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(move:)];
@@ -137,11 +165,11 @@
     [button setImage:[UIImage imageNamed:@"bulb_off"] forState:UIControlStateNormal];
     [button setImage:[UIImage imageNamed:@"bulb_on"] forState:UIControlStateSelected];
     [button addTarget:self action:@selector(buttonPressed:) forControlEvents:(UIControlEventTouchUpInside)];
-
+    
     [self.imageView addSubview:button];
     [button sizeToFit];
-    button.centerX = self.imageView.width / 2;
-    button.centerY = self.imageView.height / 2;
+    button.centerX = centerX;
+    button.centerY = centerY;
     
     [self.mainServices addObject:[SMMainService serviceWithButton:button service:service]];
 }
@@ -194,6 +222,26 @@
     sender.view.center = CGPointMake(sender.view.center.x + pt.x , sender.view.center.y + pt.y);
     //每次移动完，将移动量置为0，否则下次移动会加上这次移动量
     [sender setTranslation:CGPointMake(0, 0) inView:self.imageView];
+    
+    if (sender.state == UIGestureRecognizerStateEnded) {
+        
+        NSMutableDictionary *servicesMap = [NSMutableDictionary dictionary];
+        for (SMMainService *mainService in self.mainServices) {
+            NSLog(@"x:%.f  y:%.f  id:%@\n", mainService.button.frame.origin.x, mainService.button.frame.origin.y, mainService.service.uniqueIdentifier.UUIDString);
+            
+            NSMutableDictionary *coordinateMap = [NSMutableDictionary dictionary];
+            [coordinateMap setObject:@(mainService.button.centerX) forKey:@"centerX"];
+            [coordinateMap setObject:@(mainService.button.centerY) forKey:@"centerY"];
+            
+            [servicesMap setObject:coordinateMap forKey:mainService.service.uniqueIdentifier.UUIDString];
+        }
+        
+        NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+        NSMutableDictionary *floorPlansMap = [NSMutableDictionary dictionaryWithDictionary:[userDefault objectForKey:kShowedFloorPlan]];
+        [floorPlansMap setObject:servicesMap forKey:[HMHomeManager sharedManager].primaryHome.name];
+
+        [userDefault setObject:floorPlansMap forKey:kShowedFloorPlan];
+    }
 }
 
 #pragma mark - Getters
@@ -223,13 +271,20 @@
 }
 
 #pragma mark - Notification
-
-#warning  所有被选中放进floor plan的设备（以及坐标）需要分别对应不同的home做本地持久化
 - (void)updatePrimaryHome:(NSNotification *)notification {
     for (SMMainService *mainService in self.mainServices) {
         [mainService.button removeFromSuperview];
     }
     [self.mainServices removeAllObjects];
+    
+    HMHome *home = notification.userInfo[@"home"];
+    HMHomeManager *manager = [HMHomeManager sharedManager];
+    
+    if ([home isEqual:manager.primaryHome]) {
+        self.navigationItem.title = home.name;
+        [self loadImage];
+        [self loadServices];
+    }
 }
 
 - (void)updateHomeName:(NSNotification *)notification {
@@ -238,7 +293,6 @@
     
     if ([home isEqual:manager.primaryHome]) {
         self.navigationItem.title = home.name;
-        [self loadImage];
     }
 }
 

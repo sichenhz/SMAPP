@@ -413,7 +413,7 @@ HMAccessoryDelegate
             if ([service.accessory isEqual:accessory]) {
                 NSInteger row = [services indexOfObject:service];
                 SMHomeTableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:section]];
-//                cell.available = accessory.reachable;
+                cell.available = accessory.reachable;
                 if ([cell.accessoryView isKindOfClass:[UISwitch class]]) {
                     
                     UISwitch *lockSwitch = ((UISwitch *)cell.accessoryView);
@@ -463,13 +463,26 @@ HMAccessoryDelegate
     
     cell.leftLabel.text = service.name;
     cell.button.hidden = YES;
-//    cell.available = service.accessory.reachable;
+    cell.button.selected = NO;
+    cell.available = service.accessory.reachable;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.accessoryView = nil;
     cell.selectionStyle = UITableViewCellSelectionStyleDefault;
     
     if ([service.serviceType isEqualToString:HMServiceTypeLightbulb]) {
         cell.button.hidden = NO;
+        
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        NSDictionary *floorPlansMap = [userDefaults objectForKey:kShowedFloorPlan];
+        NSDictionary *servicesMap = [floorPlansMap objectForKey:[HMHomeManager sharedManager].primaryHome.name];
+        for (HMAccessory *accessory in [HMHomeManager sharedManager].primaryHome.accessories) {
+            for (HMService *item in accessory.services) {
+                NSDictionary *coordinateMap = [servicesMap objectForKey:service.uniqueIdentifier.UUIDString];
+                if (coordinateMap && [item.name isEqualToString:service.name]) {
+                    cell.button.selected = YES;
+                }
+            }
+        }
     }
     cell.buttonPressed = ^(UIButton *sender) {
         [[NSNotificationCenter defaultCenter] postNotificationName:kDidStartLayoutAccessory object:self userInfo:@{@"service" : service, @"status" : @(sender.isSelected)}];
