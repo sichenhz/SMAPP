@@ -36,8 +36,9 @@
 
 @end
 
-@interface SMMainViewController () <SMImagePickerControllerDelegate, SMImageClipViewControllerDelegate>
+@interface SMMainViewController () <SMImagePickerControllerDelegate, SMImageClipViewControllerDelegate, UIScrollViewDelegate>
 
+@property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) NSMutableArray *mainServices;
 
@@ -92,7 +93,7 @@
     picker.sourceType = SMImagePickerControllerSourceTypeCamera;
     
     picker.allowsEditing = YES;
-    picker.cropSize = CGSizeMake(750, 750);
+    picker.cropSize = self.scrollView.bounds.size;
     picker.modalPresentationStyle = UIModalPresentationCustom;
     
     [self presentViewController:picker animated:YES completion:nil];
@@ -105,7 +106,7 @@
     picker.sourceType = SMImagePickerControllerSourceTypeSavedPhotosAlbum;
     
     picker.allowsEditing = YES;
-    picker.cropSize = CGSizeMake(750, 750);
+    picker.cropSize = self.scrollView.bounds.size;
     picker.modalPresentationStyle = UIModalPresentationCustom;
 
     [self presentViewController:picker animated:YES completion:nil];
@@ -253,18 +254,35 @@
     return _mainServices;
 }
 
+- (UIScrollView *)scrollView {
+    if (!_scrollView) {
+        _scrollView = [[UIScrollView alloc] init];
+        _scrollView.showsVerticalScrollIndicator = NO;
+        _scrollView.showsHorizontalScrollIndicator = NO;
+        _scrollView.minimumZoomScale = 1;
+        _scrollView.maximumZoomScale = 2;
+        _scrollView.bounces = NO;
+        _scrollView.bouncesZoom = NO;
+        _scrollView.delegate = self;
+        [self.view addSubview:_scrollView];
+        [_scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
+            CGRect statusRect = [[UIApplication sharedApplication] statusBarFrame];
+            CGRect navRect = self.navigationController.navigationBar.frame;
+            CGFloat NavHeight = statusRect.size.height + navRect.size.height;
+            make.top.equalTo(self.view).offset(NavHeight);
+            make.left.bottom.right.equalTo(self.view);
+        }];
+    }
+    return _scrollView;
+}
+
 - (UIImageView *)imageView {
     if (!_imageView) {
         _imageView = [[UIImageView alloc] init];
         _imageView.userInteractionEnabled = YES;
-        [self.view addSubview:_imageView];
+        [self.scrollView addSubview:_imageView];
         [_imageView mas_makeConstraints:^(MASConstraintMaker *make) {
-            CGRect statusRect = [[UIApplication sharedApplication] statusBarFrame];
-            CGRect navRect = self.navigationController.navigationBar.frame;
-            CGFloat NavHeight = statusRect.size.height + navRect.size.height;
-
-            make.top.equalTo(self.view).offset(NavHeight);
-            make.left.bottom.right.equalTo(self.view);
+            make.edges.equalTo(self.scrollView);
         }];
     }
     return _imageView;
@@ -372,6 +390,22 @@
         self.imageView.image = image;
         [self saveImage:image];
     }];
+}
+
+#pragma mark - UIScrollViewDelegate
+
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
+    return self.imageView;
+}
+
+- (void)scrollViewDidZoom:(UIScrollView *)scrollView {
+    CGFloat offsetX = (scrollView.bounds.size.width > scrollView.contentSize.width) ?
+    (scrollView.bounds.size.width - scrollView.contentSize.width) * 0.5 : 0.0;
+    CGFloat offsetY = (scrollView.bounds.size.height > scrollView.contentSize.height) ?
+    (scrollView.bounds.size.height - scrollView.contentSize.height) * 0.5 : 0.0;
+    CGPoint actualCenter = CGPointMake(scrollView.contentSize.width * 0.5 + offsetX,
+                                       scrollView.contentSize.height * 0.5 + offsetY);
+    self.imageView.center = actualCenter;
 }
 
 @end

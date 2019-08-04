@@ -35,7 +35,7 @@ static NSString * const SMAlbumsViewCellReuseIdentifier = @"SMAlbumsViewCellReus
 
 - (instancetype)init {
     if (self = [super initWithStyle:UITableViewStylePlain]) {
-        self.title = @"相册";
+        self.title = @"Album";
     }
     return self;
 }
@@ -108,7 +108,7 @@ static NSString * const SMAlbumsViewCellReuseIdentifier = @"SMAlbumsViewCellReus
     label.textColor = [UIColor darkTextColor];
     label.textAlignment = NSTextAlignmentCenter;
     label.font = [UIFont systemFontOfSize:16.0];
-    label.text = @"请在\"设置\"->\"隐私\"->\"相册\"开启访问权限";
+    label.text = @"Please turn on the access permission at\"Settings\"->\"Privacy\"->\"Photos\"XMAPP";
     self.tableView.tableHeaderView = label;
     self.tableView.tableFooterView = [UIView new];
     self.tableView.bounces = NO;
