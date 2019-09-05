@@ -122,7 +122,7 @@
         [self.mainVC addChildViewController:_settingsVC];
         [self.mainVC.view addSubview:_settingsVC.view];
         
-        self.poped = YES;
+        _settingsVC.view.right = 0;
         _settingsVC.view.width = WIDTH_NAV_L;
         _settingsVC.view.top = [AppDelegate navigationHeight];
         _settingsVC.view.height = self.window.height - _homeVC.view.top;
@@ -173,6 +173,13 @@
     if (!sender.isSelected) {
         [self resetChildVCsWithCurrentVC:self.settingsVC];
         sender.selected = YES;
+    } else {
+        if (self.isPoped) {
+            [self animateWithDismiss];
+        }
+    }
+    if (!self.isPoped) {
+        [self animateWithPop];
     }
 }
 
@@ -180,6 +187,13 @@
     if (!sender.isSelected) {
         [self resetChildVCsWithCurrentVC:self.homeVC];
         sender.selected = YES;
+    } else {
+        if (self.isPoped) {
+            [self animateWithDismiss];
+        }
+    }
+    if (!self.isPoped) {
+        [self animateWithPop];
     }
 }
 
@@ -187,6 +201,13 @@
     if (!sender.isSelected) {
         [self resetChildVCsWithCurrentVC:self.accessoriesVC];
         sender.selected = YES;
+    } else {
+        if (self.isPoped) {
+            [self animateWithDismiss];
+        }
+    }
+    if (!self.isPoped) {
+        [self animateWithPop];
     }
 }
 
