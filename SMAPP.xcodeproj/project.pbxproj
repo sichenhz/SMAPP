@@ -55,6 +55,7 @@
 		96E04D3B227F1468002DE8F2 /* SMHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04D35227F1468002DE8F2 /* SMHomeViewController.m */; };
 		96E04D3E227F28F3002DE8F2 /* SMNotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04D3D227F28F3002DE8F2 /* SMNotificationViewController.m */; };
 		96E04D41227F28FF002DE8F2 /* SMHomeSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04D40227F28FF002DE8F2 /* SMHomeSettingViewController.m */; };
+		96E16AD523211CAD009E72AF /* SMSettingsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E16AD423211CAD009E72AF /* SMSettingsTableViewCell.m */; };
 		96E446D022EDA389005E8B78 /* SMSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E446CF22EDA389005E8B78 /* SMSettingsViewController.m */; };
 		96E446D322EDACE0005E8B78 /* SMMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E446D222EDACE0005E8B78 /* SMMainViewController.m */; };
 		96E4471022EDD29E005E8B78 /* SMImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E446FA22EDD29D005E8B78 /* SMImagePickerController.m */; };
@@ -168,6 +169,8 @@
 		96E04D3D227F28F3002DE8F2 /* SMNotificationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMNotificationViewController.m; sourceTree = "<group>"; };
 		96E04D3F227F28FF002DE8F2 /* SMHomeSettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMHomeSettingViewController.h; sourceTree = "<group>"; };
 		96E04D40227F28FF002DE8F2 /* SMHomeSettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMHomeSettingViewController.m; sourceTree = "<group>"; };
+		96E16AD323211CAD009E72AF /* SMSettingsTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMSettingsTableViewCell.h; sourceTree = "<group>"; };
+		96E16AD423211CAD009E72AF /* SMSettingsTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMSettingsTableViewCell.m; sourceTree = "<group>"; };
 		96E446CE22EDA389005E8B78 /* SMSettingsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMSettingsViewController.h; sourceTree = "<group>"; };
 		96E446CF22EDA389005E8B78 /* SMSettingsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMSettingsViewController.m; sourceTree = "<group>"; };
 		96E446D122EDACE0005E8B78 /* SMMainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMMainViewController.h; sourceTree = "<group>"; };
@@ -324,6 +327,8 @@
 				9619C438228AE3100025754D /* SMRoomTableViewCell.m */,
 				9619C440228B027C0025754D /* SMHomeListTableViewCell.h */,
 				9619C441228B027C0025754D /* SMHomeListTableViewCell.m */,
+				96E16AD323211CAD009E72AF /* SMSettingsTableViewCell.h */,
+				96E16AD423211CAD009E72AF /* SMSettingsTableViewCell.m */,
 				96E04D18227F0CF9002DE8F2 /* SMButton.h */,
 				96E04D1D227F0CF9002DE8F2 /* SMButton.m */,
 				96B47DF52281B9EC00AFAF32 /* SMCollectionViewCell.h */,
@@ -534,6 +539,7 @@
 				96E4471522EDD29E005E8B78 /* UIImage+SMHelper.m in Sources */,
 				965906C0228B51EA00035CD5 /* UIViewController+Show.m in Sources */,
 				96E4471422EDD29E005E8B78 /* SMBadgeView.m in Sources */,
+				96E16AD523211CAD009E72AF /* SMSettingsTableViewCell.m in Sources */,
 				96E04D3B227F1468002DE8F2 /* SMHomeViewController.m in Sources */,
 				965906BD228B512E00035CD5 /* SMToastView.m in Sources */,
 				96AD76B82263165C003A0D2A /* main.m in Sources */,

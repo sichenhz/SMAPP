@@ -17,7 +17,6 @@
 #import "Masonry.h"
 #import "SMAddAccessoryViewController.h"
 #import "SMRoomViewController.h"
-#import "SMHomeListViewController.h"
 #import "UIViewController+Show.h"
 
 @interface SMHomeViewSectionItem : NSObject
@@ -56,9 +55,7 @@ HMAccessoryDelegate
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    HMHomeManager *namager = [HMHomeManager sharedManager];
-    self.navigationItem.title = namager.primaryHome.name;
-    
+    HMHomeManager *namager = [HMHomeManager sharedManager];    
     namager.delegate = self;
 
     [self initNavigationItems];
@@ -77,13 +74,7 @@ HMAccessoryDelegate
     
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD}];
     
-    UIImage *image = [[UIImage imageNamed:@"tab_cate_normal"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    UIBarButtonItem *leftButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(leftButtonItemPressed:)];
-    [leftButtonItem setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD, NSForegroundColorAttributeName : COLOR_ORANGE} forState:(UIControlStateNormal)];
-    [leftButtonItem setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD, NSForegroundColorAttributeName : COLOR_ORANGE} forState:(UIControlStateHighlighted)];
-    self.navigationItem.leftBarButtonItem = leftButtonItem;
-    
-    image = [[UIImage imageNamed:@"add"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    UIImage *image = [[UIImage imageNamed:@"add"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     UIBarButtonItem *rightbuttonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(rightButtonItemPressed:)];
     [rightbuttonItem setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD, NSForegroundColorAttributeName : COLOR_ORANGE} forState:(UIControlStateNormal)];
     [rightbuttonItem setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD, NSForegroundColorAttributeName : COLOR_ORANGE} forState:(UIControlStateHighlighted)];
@@ -193,7 +184,7 @@ HMAccessoryDelegate
     
     if (manager.homes.count > 0) {
         
-        SMAlertView *alertView = [SMAlertView alertViewWithTitle:nil message:nil style:SMAlertViewStyleActionSheet];
+        SMAlertView *alertView = [SMAlertView alertViewWithTitle:nil message:nil style:SMAlertViewStyleAlert];
         
         for (HMHome *home in manager.homes) {
             NSString *homeName = home.name;
@@ -211,11 +202,6 @@ HMAccessoryDelegate
             }]];
         }
         
-        [alertView addAction:[SMAlertAction actionWithTitle:@"Home Settings..." style:SMAlertActionStyleDefault handler:^(SMAlertAction * _Nonnull action) {
-            SMHomeListViewController *HomeListVC = [[SMHomeListViewController alloc] init];
-            [self.navigationController pushViewController:HomeListVC animated:YES];
-        }]];
-
         [alertView addAction:[SMAlertAction actionWithTitle:@"Cancel" style:SMAlertActionStyleCancel handler:nil]];
         [alertView show];
     }

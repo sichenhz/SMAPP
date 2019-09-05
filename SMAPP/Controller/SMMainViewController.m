@@ -17,6 +17,7 @@
 #import "UIViewController+Show.h"
 #import "SMDisableHighlightButton.h"
 #import "UIView+Extention.h"
+#import "SMButton.h"
 
 @interface SMMainService : NSObject
 
@@ -48,9 +49,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-    HMHomeManager *namager = [HMHomeManager sharedManager];
-    self.navigationItem.title = namager.primaryHome.name;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateHomeName:) name:kDidUpdateHomeName object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(layoutAccessory:) name:kDidStartLayoutAccessory object:nil];
@@ -58,10 +56,25 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateAccessories:) name:kDidUpdateCharacteristicValue object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePrimaryHome:) name:kDidUpdatePrimaryHome object:nil];
 
+    UIButton *titleButton = [SMButton buttonWithType:UIButtonTypeCustom];
+    titleButton.titleLabel.textAlignment = NSTextAlignmentLeft;
+    titleButton.titleLabel.font = FONT_H2_BOLD;
+    [titleButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [titleButton setImage:[UIImage imageNamed:@"tab_cate_normal"] forState:UIControlStateNormal];
+    self.navigationItem.titleView = titleButton;
+    HMHomeManager *namager = [HMHomeManager sharedManager];
+    [titleButton setTitle:namager.primaryHome.name forState:UIControlStateNormal];
+    [titleButton sizeToFit];
+    titleButton.width += 15;
+    titleButton.height = self.navigationController.navigationBar.height;
+    _titleButton = titleButton;
+    
     UIBarButtonItem *rightbuttonItem = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:self action:@selector(rightButtonItemPressed:)];
     [rightbuttonItem setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD, NSForegroundColorAttributeName : COLOR_ORANGE} forState:(UIControlStateNormal)];
     [rightbuttonItem setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD, NSForegroundColorAttributeName : COLOR_ORANGE} forState:(UIControlStateHighlighted)];
     self.navigationItem.rightBarButtonItem = rightbuttonItem;
+    
+    [self loadImage];
 }
 
 - (void)rightButtonItemPressed:(id)sender {
@@ -266,11 +279,7 @@
         _scrollView.delegate = self;
         [self.view addSubview:_scrollView];
         [_scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
-            CGRect statusRect = [[UIApplication sharedApplication] statusBarFrame];
-            CGRect navRect = self.navigationController.navigationBar.frame;
-            CGFloat NavHeight = statusRect.size.height + navRect.size.height;
-            make.top.equalTo(self.view).offset(NavHeight);
-            make.left.bottom.right.equalTo(self.view);
+            make.edges.equalTo(self.view);
         }];
     }
     return _scrollView;
@@ -299,7 +308,10 @@
     HMHomeManager *manager = [HMHomeManager sharedManager];
     
     if ([home isEqual:manager.primaryHome]) {
-        self.navigationItem.title = home.name;
+        [self.titleButton setTitle:home.name forState:UIControlStateNormal];
+        [self.titleButton sizeToFit];
+        self.titleButton.width += 15;
+        self.titleButton.height = self.navigationController.navigationBar.height;
         [self loadImage];
         [self loadServices];
     }
@@ -310,7 +322,10 @@
     HMHomeManager *manager = [HMHomeManager sharedManager];
     
     if ([home isEqual:manager.primaryHome]) {
-        self.navigationItem.title = home.name;
+        [self.titleButton setTitle:home.name forState:UIControlStateNormal];
+        [self.titleButton sizeToFit];
+        self.titleButton.width += 15;
+        self.titleButton.height = self.navigationController.navigationBar.height;
     }
 }
 

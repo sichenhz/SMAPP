@@ -113,7 +113,7 @@
         {
             SMTextFieldTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kSMTextFieldTableViewCell];
             if (!cell) {
-                cell = [[SMTextFieldTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kUITableViewCell];
+                cell = [[SMTextFieldTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kSMTextFieldTableViewCell];
                 cell.textField.delegate = self;
                 cell.textField.returnKeyType = UIReturnKeyDone;
             }
@@ -148,7 +148,7 @@
         {
             SMTextViewTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kSMTextViewTableViewCell];
             if (!cell) {
-                cell = [[SMTextViewTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kUITableViewCell];
+                cell = [[SMTextViewTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kSMTextViewTableViewCell];
                 cell.textView.placeholder = @"Add notes for people who are sharing your home.";
             }
             return cell;
@@ -158,7 +158,7 @@
         {
             SMButtonTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kSMButtonTableViewCell];
             if (!cell) {
-                cell = [[SMButtonTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kUITableViewCell];
+                cell = [[SMButtonTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kSMButtonTableViewCell];
                 [cell.button setTitle:@"Remove Home" forState:UIControlStateNormal];
                 __weak typeof(self) weakSelf = self;
                 cell.cellPressed = ^{
