@@ -112,7 +112,7 @@ HMAccessoryDelegate
         accessory.delegate = self;
     }
     
-    BOOL showed = [roomForEntireHome.name isEqualToString:showedRoomMap[homeName]];
+    BOOL showed = [roomForEntireHome.name isEqualToString:showedRoomMap[homeName]] && services.count;
     [self.dataList addObject:[SMHomeViewSectionItem itemWithServices:services room:roomForEntireHome showed:showed]];
     if (showed) {
         self.currentShowedSection = self.dataList.count - 1;
@@ -128,7 +128,7 @@ HMAccessoryDelegate
             }
             accessory.delegate = self;
         }
-        BOOL showed = [room.name isEqualToString:showedRoomMap[homeName]];
+        BOOL showed = [room.name isEqualToString:showedRoomMap[homeName]] && services.count;
         [self.dataList addObject:[SMHomeViewSectionItem itemWithServices:services room:room showed:showed]];
         if (showed) {
             self.currentShowedSection = self.dataList.count - 1;
@@ -344,6 +344,7 @@ HMAccessoryDelegate
     }
 }
 
+// Only invokes when other apps did some changes
 #pragma mark - HMHomeDelegate
 
 - (void)homeDidUpdateName:(HMHome *)home {

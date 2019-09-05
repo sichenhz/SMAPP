@@ -31,7 +31,7 @@
     self.navigationItem.title = @"My Devices";
     
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-    CGFloat itemWidth = ([UIScreen mainScreen].bounds.size.width - WIDTH_NAV_L - 50) / 4;
+    CGFloat itemWidth = (WIDTH_NAV_L - 30) / 2;
     layout.itemSize = CGSizeMake(itemWidth, itemWidth * 1.33);
     layout.minimumInteritemSpacing = 10;
     layout.minimumLineSpacing = 10;
@@ -166,7 +166,7 @@
                                                             if (error) {
                                                                 [self showError:error];
                                                             } else {
-                                                                [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:self userInfo:@{@"accessory" : accessory}];
+                                                                [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:self userInfo:@{@"accessory" : accessory, @"remove" : @"1"}];
                                                             }
                                                         }];
                                                     }]];

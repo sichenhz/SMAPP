@@ -364,13 +364,18 @@
     
     for (SMMainService *mainService in self.mainServices) {
         if ([service isEqual:mainService.service]) {
-            for (HMCharacteristic *characteristic in service.characteristics) {
-                if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetLockMechanismState]  ||
-                    [characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState] ||
-                    [characteristic.characteristicType isEqualToString:HMCharacteristicTypeObstructionDetected]) {
-                    
-                    mainService.button.selected = [characteristic.value boolValue];
-                    break;
+            
+            if ([notification.userInfo[@"remove"] isEqualToString:@"1"]) {
+                [self removeButton:service];
+            } else {
+                for (HMCharacteristic *characteristic in service.characteristics) {
+                    if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetLockMechanismState]  ||
+                        [characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState] ||
+                        [characteristic.characteristicType isEqualToString:HMCharacteristicTypeObstructionDetected]) {
+                        
+                        mainService.button.selected = [characteristic.value boolValue];
+                        break;
+                    }
                 }
             }
         }

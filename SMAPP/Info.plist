@@ -20,8 +20,14 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Need your permission to access the camera.</string>
 	<key>NSHomeKitUsageDescription</key>
 	<string>home</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Need your permission to access the microphone.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Need your permission to access the album.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>GOTHIC.TTF</string>
@@ -49,11 +55,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>NSCameraUsageDescription</key>
-	<string>Need your permission to access the camera.</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Need your permission to access the album.</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Need your permission to access the microphone.</string>
 </dict>
 </plist>

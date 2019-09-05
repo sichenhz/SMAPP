@@ -38,7 +38,7 @@
 
 + (CGFloat)navigationHeight {
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-        return 50.0;
+        return 70.0;
     } else {
         if ([[[UIApplication sharedApplication] delegate] window].safeAreaInsets.bottom > 0.0) {
             return 44.0;

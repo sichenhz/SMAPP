@@ -89,7 +89,8 @@
         if (error) {
             [self showError:error];
         } else {
-            [tableView reloadData];            
+            [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:self userInfo:@{@"accessory" : accessory}];
+            [tableView reloadData];
         }
     }];
 }
