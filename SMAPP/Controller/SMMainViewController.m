@@ -167,6 +167,7 @@
 
 - (void)createButton:(BOOL)isSelect service:(HMService *)service {
     [self createButton:isSelect service:service centerX:self.imageView.width / 2 centerY:self.imageView.height / 2];
+    [self save];
 }
 
 - (void)createButton:(BOOL)isSelect service:(HMService *)service centerX:(CGFloat)centerX centerY:(CGFloat)centerY {
@@ -196,6 +197,7 @@
             break;
         }
     }
+    [self save];
 }
 
 - (void)buttonPressed:(UIButton *)sender {
@@ -238,24 +240,27 @@
     [sender setTranslation:CGPointMake(0, 0) inView:self.imageView];
     
     if (sender.state == UIGestureRecognizerStateEnded) {
-        
-        NSMutableDictionary *servicesMap = [NSMutableDictionary dictionary];
-        for (SMMainService *mainService in self.mainServices) {
-            NSLog(@"x:%.f  y:%.f  id:%@\n", mainService.button.frame.origin.x, mainService.button.frame.origin.y, mainService.service.uniqueIdentifier.UUIDString);
-            
-            NSMutableDictionary *coordinateMap = [NSMutableDictionary dictionary];
-            [coordinateMap setObject:@(mainService.button.centerX) forKey:@"centerX"];
-            [coordinateMap setObject:@(mainService.button.centerY) forKey:@"centerY"];
-            
-            [servicesMap setObject:coordinateMap forKey:mainService.service.uniqueIdentifier.UUIDString];
-        }
-        
-        NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
-        NSMutableDictionary *floorPlansMap = [NSMutableDictionary dictionaryWithDictionary:[userDefault objectForKey:kShowedFloorPlan]];
-        [floorPlansMap setObject:servicesMap forKey:[HMHomeManager sharedManager].primaryHome.name];
-
-        [userDefault setObject:floorPlansMap forKey:kShowedFloorPlan];
+        [self save];
     }
+}
+
+- (void)save {
+    NSMutableDictionary *servicesMap = [NSMutableDictionary dictionary];
+    for (SMMainService *mainService in self.mainServices) {
+        NSLog(@"x:%.f  y:%.f  id:%@\n", mainService.button.frame.origin.x, mainService.button.frame.origin.y, mainService.service.uniqueIdentifier.UUIDString);
+        
+        NSMutableDictionary *coordinateMap = [NSMutableDictionary dictionary];
+        [coordinateMap setObject:@(mainService.button.centerX) forKey:@"centerX"];
+        [coordinateMap setObject:@(mainService.button.centerY) forKey:@"centerY"];
+        
+        [servicesMap setObject:coordinateMap forKey:mainService.service.uniqueIdentifier.UUIDString];
+    }
+    
+    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+    NSMutableDictionary *floorPlansMap = [NSMutableDictionary dictionaryWithDictionary:[userDefault objectForKey:kShowedFloorPlan]];
+    [floorPlansMap setObject:servicesMap forKey:[HMHomeManager sharedManager].primaryHome.name];
+    
+    [userDefault setObject:floorPlansMap forKey:kShowedFloorPlan];
 }
 
 #pragma mark - Getters
