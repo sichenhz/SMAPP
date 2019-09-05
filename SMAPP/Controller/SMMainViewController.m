@@ -135,8 +135,10 @@
 - (void)loadImage {
     NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
     NSString *imageFilePath = [path stringByAppendingPathComponent:[HMHomeManager sharedManager].primaryHome.name];
-    if (imageFilePath) {
-        self.imageView.image = [UIImage imageWithData:[NSData dataWithContentsOfFile:imageFilePath]];
+    self.imageView.image = [UIImage imageWithData:[NSData dataWithContentsOfFile:imageFilePath]];
+
+    if (!self.imageView.image) {
+        [self showText:@"Please import a photo through the button on the top-right"];
     }
 }
 

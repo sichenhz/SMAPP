@@ -27,7 +27,7 @@
 }
 
 - (void)showText:(NSString *)text autoHide:(BOOL)autoHide {
-    [SMToastView showInView:[UIApplication sharedApplication].keyWindow text:text duration:1.5 autoHide:autoHide];
+    [SMToastView showInView:[UIApplication sharedApplication].keyWindow text:text duration:3.0 autoHide:autoHide];
 }
 
 - (void)hideText {
