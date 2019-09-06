@@ -42,6 +42,8 @@
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) NSMutableArray *mainServices;
+@property (nonatomic, weak) UILabel *alertLabel;
+@property (nonatomic, weak) UIImageView *bubbleView;
 
 @end
 
@@ -49,6 +51,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.edgesForExtendedLayout = UIRectEdgeNone;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateHomeName:) name:kDidUpdateHomeName object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(layoutAccessory:) name:kDidStartLayoutAccessory object:nil];
@@ -74,28 +78,58 @@
     [rightbuttonItem setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD, NSForegroundColorAttributeName : COLOR_ORANGE} forState:(UIControlStateHighlighted)];
     self.navigationItem.rightBarButtonItem = rightbuttonItem;
     
-    [self loadImage];
+    [self loadImage:NO];
 }
 
 - (void)rightButtonItemPressed:(id)sender {
     
-    if (![HMHomeManager sharedManager].primaryHome) {
-        [SMToastView showInView:[UIApplication sharedApplication].keyWindow text:@"Please add a new home." duration:1.5 autoHide:YES];
-        return;
-    }
-    
     SMAlertView *alertView = [SMAlertView alertViewWithTitle:nil message:nil style:SMAlertViewStyleActionSheet];
     
+    [alertView addAction:[SMAlertAction actionWithTitle:@"Add Home" style:SMAlertActionStyleDefault handler:^(SMAlertAction * _Nonnull action) {
+        [self addHomeButtonPressed];
+    }]];
+    
     [alertView addAction:[SMAlertAction actionWithTitle:@"Take Photo" style:SMAlertActionStyleDefault handler:^(SMAlertAction * _Nonnull action) {
+        if (![HMHomeManager sharedManager].primaryHome) {
+            [SMToastView showInView:[UIApplication sharedApplication].keyWindow text:@"Please add a new home." duration:3 autoHide:YES];
+            return;
+        }
         [self cameraButtonPressed];
     }]];
     
     [alertView addAction:[SMAlertAction actionWithTitle:@"Select Photo" style:SMAlertActionStyleDefault handler:^(SMAlertAction * _Nonnull action) {
+        if (![HMHomeManager sharedManager].primaryHome) {
+            [SMToastView showInView:[UIApplication sharedApplication].keyWindow text:@"Please add a new home." duration:3 autoHide:YES];
+            return;
+        }
+
         [self albumsButtonPressed];
     }]];
 
     [alertView addAction:[SMAlertAction actionWithTitle:@"Cancel" style:SMAlertActionStyleCancel handler:nil]];
     
+    [alertView show];
+}
+
+- (void)addHomeButtonPressed {
+    HMHomeManager *manager = [HMHomeManager sharedManager];
+    
+    SMAlertView *alertView = [SMAlertView alertViewWithTitle:@"Add Home..." message:@"Please make sure the name is unique." style:SMAlertViewStyleAlert];
+    
+    [alertView addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+        textField.placeholder = @"Ex. Vacation Home";
+    }];
+    
+    [alertView addAction:[SMAlertAction actionWithTitle:@"Cancel" style:SMAlertActionStyleCancel handler:nil]];
+    
+    [alertView addAction:[SMAlertAction actionWithTitle:@"Save" style:SMAlertActionStyleConfirm handler:^(SMAlertAction * _Nonnull action) {
+        NSString *newName = alertView.textFields.firstObject.text;
+        [manager addHomeWithName:newName completionHandler:^(HMHome * _Nullable home, NSError * _Nullable error) {
+            if (error) {
+                [self showError:error];
+            }
+        }];
+    }]];
     [alertView show];
 }
 
@@ -127,25 +161,38 @@
 
 - (void)saveImage:(UIImage *)image {
     NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
-    NSString *imageFilePath = [path stringByAppendingPathComponent:[HMHomeManager sharedManager].primaryHome.name];
+    NSString *imageFilePath = [path stringByAppendingPathComponent:[HMHomeManager sharedManager].primaryHome.uniqueIdentifier.UUIDString];
     // 1 means uncompression
     [UIImageJPEGRepresentation(image, 1) writeToFile:imageFilePath atomically:YES];
+    
+    [self.bubbleView removeFromSuperview];
+    [self.alertLabel removeFromSuperview];
 }
 
-- (void)loadImage {
+- (void)loadImage:(BOOL)didRemovePrimaryHome {
     NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
-    NSString *imageFilePath = [path stringByAppendingPathComponent:[HMHomeManager sharedManager].primaryHome.name];
-    self.imageView.image = [UIImage imageWithData:[NSData dataWithContentsOfFile:imageFilePath]];
-
-    if (!self.imageView.image) {
-        [self showText:@"Please import a photo through the button on the top-right"];
+    NSString *imageFilePath = [path stringByAppendingPathComponent:[HMHomeManager sharedManager].primaryHome.uniqueIdentifier.UUIDString];
+    UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfFile:imageFilePath]];
+    if (!image) {
+        self.imageView.image = [UIImage imageNamed:@"placeholder"];
+        self.bubbleView.image = [UIImage imageNamed:@"bubble"];
+        
+        if ([HMHomeManager sharedManager].primaryHome && !didRemovePrimaryHome) {
+            self.alertLabel.text = @"My master, please import your floorplan through the button on the top-right.";
+        } else {
+            self.alertLabel.text = @"My master, please add a home and import your floorplan through the button on the top-right.";
+        }
+    } else {
+        self.imageView.image = image;
+        [self.bubbleView removeFromSuperview];
+        [self.alertLabel removeFromSuperview];
     }
 }
 
 - (void)loadServices {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSDictionary *floorPlansMap = [userDefaults objectForKey:kShowedFloorPlan];
-    NSDictionary *servicesMap = [floorPlansMap objectForKey:[HMHomeManager sharedManager].primaryHome.name];
+    NSDictionary *servicesMap = [floorPlansMap objectForKey:[HMHomeManager sharedManager].primaryHome.uniqueIdentifier.UUIDString];
     
     for (HMAccessory *accessory in [HMHomeManager sharedManager].primaryHome.accessories) {
         for (HMService *service in accessory.services) {
@@ -260,7 +307,7 @@
     
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
     NSMutableDictionary *floorPlansMap = [NSMutableDictionary dictionaryWithDictionary:[userDefault objectForKey:kShowedFloorPlan]];
-    [floorPlansMap setObject:servicesMap forKey:[HMHomeManager sharedManager].primaryHome.name];
+    [floorPlansMap setObject:servicesMap forKey:[HMHomeManager sharedManager].primaryHome.uniqueIdentifier.UUIDString];
     
     [userDefault setObject:floorPlansMap forKey:kShowedFloorPlan];
 }
@@ -296,12 +343,48 @@
     if (!_imageView) {
         _imageView = [[UIImageView alloc] init];
         _imageView.userInteractionEnabled = YES;
+        _imageView.contentMode = UIViewContentModeScaleToFill;
         [self.scrollView addSubview:_imageView];
         [_imageView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(self.scrollView);
+            make.edges.equalTo(self.view);
         }];
     }
     return _imageView;
+}
+
+- (UILabel *)alertLabel {
+    if (!_alertLabel) {
+        UILabel *label = [[UILabel alloc] init];
+        label.numberOfLines = 0;
+        label.font = [UIFont fontWithName:@"CenturyGothic-Bold" size:28];
+        label.textColor = [UIColor blackColor];
+        [self.view addSubview:label];
+        [label mas_makeConstraints:^(MASConstraintMaker *make) {
+            CGFloat screenW = [UIScreen mainScreen].bounds.size.width;
+            CGFloat screenH = [UIScreen mainScreen].bounds.size.height;
+            make.left.equalTo(self.view).offset(screenW * 0.4);
+            make.top.equalTo(self.view).offset(screenH * 0.22);
+            make.width.equalTo(@500);
+        }];
+        _alertLabel = label;
+    }
+    return _alertLabel;
+}
+
+- (UIImageView *)bubbleView {
+    if (!_bubbleView) {
+        UIImageView *bubbleView = [[UIImageView alloc] init];
+        bubbleView.alpha = 0.5;
+        [self.view addSubview:bubbleView];
+        [bubbleView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.alertLabel).offset(-5);
+            make.left.equalTo(self.alertLabel).offset(-20);
+            make.right.equalTo(self.alertLabel);
+            make.bottom.equalTo(self.alertLabel).offset(8);
+        }];
+        _bubbleView = bubbleView;
+    }
+    return _bubbleView;
 }
 
 #pragma mark - Notification
@@ -312,16 +395,21 @@
     [self.mainServices removeAllObjects];
     
     HMHome *home = notification.userInfo[@"home"];
-    HMHomeManager *manager = [HMHomeManager sharedManager];
+    BOOL didRemovePrimaryHome = [notification.userInfo[@"remove"] boolValue];
     
-    if ([home isEqual:manager.primaryHome]) {
+    if (!didRemovePrimaryHome) {
         [self.titleButton setTitle:home.name forState:UIControlStateNormal];
         [self.titleButton sizeToFit];
         self.titleButton.width += 15;
         self.titleButton.height = self.navigationController.navigationBar.height;
-        [self loadImage];
         [self loadServices];
+    } else {
+        [self.titleButton setTitle:@"" forState:UIControlStateNormal];
+        NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+        NSString *imageFilePath = [path stringByAppendingPathComponent:[HMHomeManager sharedManager].primaryHome.uniqueIdentifier.UUIDString];
+        [[NSFileManager defaultManager] removeItemAtPath:imageFilePath error:nil];
     }
+    [self loadImage:didRemovePrimaryHome];
 }
 
 - (void)updateHomeName:(NSNotification *)notification {

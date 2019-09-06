@@ -63,6 +63,7 @@ HMAccessoryDelegate
     self.tableView.backgroundColor = COLOR_BACKGROUND;
     self.tableView.tableFooterView = [[UIView alloc] init]; // remove the lines
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRemovePrimaryHome:) name:kDidUpdatePrimaryHome object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateHomeName:) name:kDidUpdateHomeName object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCurrentAccessories:) name:kDidUpdateRoomName object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCurrentAccessories:) name:kDidUpdateRoom object:nil];
@@ -98,7 +99,7 @@ HMAccessoryDelegate
     NSDictionary *showedRoomMap = [userDefault objectForKey:kShowedRoom];
     
     HMHomeManager *manager = [HMHomeManager sharedManager];
-    NSString *homeName = manager.primaryHome.name;
+    NSString *homeID = manager.primaryHome.uniqueIdentifier.UUIDString;
     self.dataList = [NSMutableArray array];
     NSMutableArray *services = [NSMutableArray array];
 
@@ -112,7 +113,7 @@ HMAccessoryDelegate
         accessory.delegate = self;
     }
     
-    BOOL showed = [roomForEntireHome.name isEqualToString:showedRoomMap[homeName]] && services.count;
+    BOOL showed = [roomForEntireHome.uniqueIdentifier.UUIDString isEqualToString:showedRoomMap[homeID]] && services.count;
     [self.dataList addObject:[SMHomeViewSectionItem itemWithServices:services room:roomForEntireHome showed:showed]];
     if (showed) {
         self.currentShowedSection = self.dataList.count - 1;
@@ -128,7 +129,7 @@ HMAccessoryDelegate
             }
             accessory.delegate = self;
         }
-        BOOL showed = [room.name isEqualToString:showedRoomMap[homeName]] && services.count;
+        BOOL showed = [room.uniqueIdentifier.UUIDString isEqualToString:showedRoomMap[homeID]] && services.count;
         [self.dataList addObject:[SMHomeViewSectionItem itemWithServices:services room:room showed:showed]];
         if (showed) {
             self.currentShowedSection = self.dataList.count - 1;
@@ -139,6 +140,13 @@ HMAccessoryDelegate
 }
 
 #pragma mark - Notification
+
+- (void)didRemovePrimaryHome:(NSNotification *)notification {
+    if ([notification.object isEqual:self]) {
+        return;
+    }
+    self.navigationItem.title = @"";
+}
 
 - (void)updateHomeName:(NSNotification *)notification {
     HMHome *home = notification.userInfo[@"home"];
@@ -290,12 +298,6 @@ HMAccessoryDelegate
     [self.navigationController pushViewController:addVC animated:YES];
 }
 
-- (void)showNoHomes {
-    SMAlertView *alertView = [SMAlertView alertViewWithTitle:@"No home" message:nil style:SMAlertViewStyleActionSheet];
-    [alertView addAction:[SMAlertAction actionWithTitle:@"OK" style:SMAlertActionStyleCancel handler:nil]];
-    [alertView show];
-}
-
 #pragma mark - HMHomeManagerDelegate
 
 // invokes when app is launched
@@ -303,8 +305,6 @@ HMAccessoryDelegate
     if (manager.primaryHome) {
         [self UpdatePrimaryHome];
         [self updateCurrentAccessories];
-    } else {
-        [self showNoHomes];
     }
 }
 
@@ -324,23 +324,17 @@ HMAccessoryDelegate
 // invokes when other apps did remove a home, such as Home
 // after invoking this function, the system will invokes homeManagerDidUpdatePrimaryHome:
 - (void)homeManager:(HMHomeManager *)manager didRemoveHome:(HMHome *)home {
-    // Do nothing.
+    if (home.isPrimary) {
+        self.navigationItem.title = @"";
+        [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdatePrimaryHome object:self userInfo:@{@"remove" : @"1"}];
+    }
 }
 
-// invokes when home is removed
+// invokes when a new home is assigned to the primary home
 - (void)homeManagerDidUpdatePrimaryHome:(HMHomeManager *)manager {
     if (manager.primaryHome) {
-        // When a primaryHome is deleted, the manager.primaryHome.isPrimary will still be NO, so update here
-        [manager updatePrimaryHome:manager.primaryHome completionHandler:^(NSError * _Nullable error) {
-            if (error) {
-                [self showError:error];
-            } else {
-                [self UpdatePrimaryHome];
-                [self updateCurrentAccessories];
-            }
-        }];
-    } else {
-        [self showNoHomes];
+        [self UpdatePrimaryHome];
+        [self updateCurrentAccessories];
     }
 }
 
@@ -461,11 +455,11 @@ HMAccessoryDelegate
         
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *floorPlansMap = [userDefaults objectForKey:kShowedFloorPlan];
-        NSDictionary *servicesMap = [floorPlansMap objectForKey:[HMHomeManager sharedManager].primaryHome.name];
+        NSDictionary *servicesMap = [floorPlansMap objectForKey:[HMHomeManager sharedManager].primaryHome.uniqueIdentifier.UUIDString];
         for (HMAccessory *accessory in [HMHomeManager sharedManager].primaryHome.accessories) {
             for (HMService *item in accessory.services) {
                 NSDictionary *coordinateMap = [servicesMap objectForKey:service.uniqueIdentifier.UUIDString];
-                if (coordinateMap && [item.name isEqualToString:service.name]) {
+                if (coordinateMap && [item.uniqueIdentifier.UUIDString isEqualToString:service.uniqueIdentifier.UUIDString]) {
                     cell.button.selected = YES;
                 }
             }
@@ -585,7 +579,7 @@ HMAccessoryDelegate
             [tableView reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationAutomatic];
             
             NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
-            NSString *homeName = [HMHomeManager sharedManager].primaryHome.name;
+            NSString *homeID = [HMHomeManager sharedManager].primaryHome.uniqueIdentifier.UUIDString;
             
             if (item.isShowed) {
                 // reload the showed section
@@ -598,14 +592,14 @@ HMAccessoryDelegate
                 }
                 
                 NSMutableDictionary *roomsMap = [NSMutableDictionary dictionaryWithDictionary:[userDefault objectForKey:kShowedRoom]];
-                [roomsMap setObject:item.room.name forKey:homeName];
+                [roomsMap setObject:item.room.uniqueIdentifier.UUIDString forKey:homeID];
                 [userDefault setObject:roomsMap forKey:kShowedRoom];
                 
                 weakSelf.currentShowedSection = section;
             } else {
                 
                 NSMutableDictionary *roomsMap = [NSMutableDictionary dictionaryWithDictionary:[userDefault objectForKey:kShowedRoom]];
-                [roomsMap removeObjectForKey:homeName];
+                [roomsMap removeObjectForKey:homeID];
                 [userDefault setObject:roomsMap forKey:kShowedRoom];
                 
                 weakSelf.currentShowedSection = -1;

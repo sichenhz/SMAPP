@@ -74,6 +74,9 @@
                                                             } else {
                                                                 [self.navigationController popViewControllerAnimated:YES];
                                                                 [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateHome object:self userInfo:@{@"home" : self.home}];
+                                                                if ([self.home isEqual:manager.primaryHome]) {
+                                                                    [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdatePrimaryHome object:self userInfo:@{@"remove" : @"1"}];
+                                                                }
                                                             }
                                                         }];
                                                     }]];

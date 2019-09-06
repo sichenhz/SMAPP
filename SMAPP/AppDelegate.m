@@ -124,7 +124,7 @@
         
         _settingsVC.view.right = 0;
         _settingsVC.view.width = WIDTH_NAV_L;
-        _settingsVC.view.top = [AppDelegate navigationHeight];
+        _settingsVC.view.top = 0;
         _settingsVC.view.height = self.window.height - _homeVC.view.top;
         _settingsVC.view.alpha = kAlpha;
         
@@ -141,7 +141,7 @@
         
         _homeVC.view.right = 0;
         _homeVC.view.width = WIDTH_NAV_L;
-        _homeVC.view.top = [AppDelegate navigationHeight];
+        _homeVC.view.top = 0;
         _homeVC.view.height = self.window.height - _homeVC.view.top;
         _homeVC.view.alpha = kAlpha;
 
@@ -158,7 +158,7 @@
 
         _accessoriesVC.view.right = 0;
         _accessoriesVC.view.width = WIDTH_NAV_L;
-        _accessoriesVC.view.top = [AppDelegate navigationHeight];
+        _accessoriesVC.view.top = 0;
         _accessoriesVC.view.height = self.window.height - _homeVC.view.top;
         _accessoriesVC.view.alpha = kAlpha;
         

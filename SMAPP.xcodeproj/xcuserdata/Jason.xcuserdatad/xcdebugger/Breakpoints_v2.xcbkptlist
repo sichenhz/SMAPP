@@ -40,11 +40,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SMAPP/Controller/SMHomeViewController.m"
-            timestampString = "589386864.4637049"
+            timestampString = "589464082.0023071"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "355"
-            endingLineNumber = "355"
+            startingLineNumber = "349"
+            endingLineNumber = "349"
             landmarkName = "-home:didAddAccessory:"
             landmarkType = "7">
          </BreakpointContent>
@@ -56,11 +56,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SMAPP/Controller/SMHomeViewController.m"
-            timestampString = "589386864.46381"
+            timestampString = "589464082.002741"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "351"
-            endingLineNumber = "351"
+            startingLineNumber = "345"
+            endingLineNumber = "345"
             landmarkName = "-homeDidUpdateName:"
             landmarkType = "7">
          </BreakpointContent>
@@ -72,11 +72,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SMAPP/Controller/SMHomeViewController.m"
-            timestampString = "589386864.463903"
+            timestampString = "589464082.002863"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "359"
-            endingLineNumber = "359"
+            startingLineNumber = "353"
+            endingLineNumber = "353"
             landmarkName = "-home:didRemoveAccessory:"
             landmarkType = "7">
          </BreakpointContent>
@@ -88,11 +88,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SMAPP/Controller/SMHomeViewController.m"
-            timestampString = "589386864.463977"
+            timestampString = "589464082.002968"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "363"
-            endingLineNumber = "363"
+            startingLineNumber = "357"
+            endingLineNumber = "357"
             landmarkName = "-home:didUpdateRoom:forAccessory:"
             landmarkType = "7">
          </BreakpointContent>
@@ -104,11 +104,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SMAPP/Controller/SMHomeViewController.m"
-            timestampString = "589386864.464047"
+            timestampString = "589464082.003071"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "367"
-            endingLineNumber = "367"
+            startingLineNumber = "361"
+            endingLineNumber = "361"
             landmarkName = "-home:didAddRoom:"
             landmarkType = "7">
          </BreakpointContent>
@@ -120,11 +120,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SMAPP/Controller/SMHomeViewController.m"
-            timestampString = "589386864.464119"
+            timestampString = "589464082.00317"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "372"
-            endingLineNumber = "372"
+            startingLineNumber = "366"
+            endingLineNumber = "366"
             landmarkName = "-home:didRemoveRoom:"
             landmarkType = "7">
          </BreakpointContent>
@@ -136,12 +136,76 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SMAPP/Controller/SMHomeViewController.m"
-            timestampString = "589386864.4641891"
+            timestampString = "589464082.003268"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "377"
-            endingLineNumber = "377"
+            startingLineNumber = "371"
+            endingLineNumber = "371"
             landmarkName = "-home:didUpdateNameForRoom:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SMAPP/Controller/SMHomeViewController.m"
+            timestampString = "589464082.003365"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "335"
+            endingLineNumber = "335"
+            landmarkName = "-homeManagerDidUpdatePrimaryHome:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SMAPP/Controller/SMHomeViewController.m"
+            timestampString = "589464082.0034519"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "313"
+            endingLineNumber = "313"
+            landmarkName = "-homeManager:didAddHome:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SMAPP/Controller/SMHomeViewController.m"
+            timestampString = "589464082.003534"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "305"
+            endingLineNumber = "305"
+            landmarkName = "-homeManagerDidUpdateHomes:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SMAPP/Controller/SMHomeViewController.m"
+            timestampString = "589464082.0036139"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "327"
+            endingLineNumber = "327"
+            landmarkName = "-homeManager:didRemoveHome:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
