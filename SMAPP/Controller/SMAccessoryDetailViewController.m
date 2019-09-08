@@ -157,7 +157,6 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kUITableViewCell];
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:kUITableViewCell];
-        cell.backgroundColor = COLOR_BACKGROUND;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.textLabel.font = FONT_BODY;
         cell.textLabel.textColor = COLOR_TITLE;
