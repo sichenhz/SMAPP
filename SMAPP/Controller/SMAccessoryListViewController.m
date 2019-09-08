@@ -14,7 +14,6 @@
 #import "SMAccessoryDetailViewController.h"
 #import "SMAlertView.h"
 #import "UIViewController+Show.h"
-#import "SMServiceViewController.h"
 
 @interface SMAccessoryListViewController () <UICollectionViewDelegate, UICollectionViewDataSource>
 
@@ -143,8 +142,8 @@
             cell.cellType == SMCollectionViewCellTypeSwitch) {
             [weakSelf changeLockState:sender];
         } else {
-            SMServiceViewController *viewController = [[SMServiceViewController alloc] init];
-            viewController.service = service;
+            SMAccessoryDetailViewController *viewController = [[SMAccessoryDetailViewController alloc] init];
+            viewController.accessory = service.accessory;
             [weakSelf.navigationController pushViewController:viewController animated:YES];
         }
     };

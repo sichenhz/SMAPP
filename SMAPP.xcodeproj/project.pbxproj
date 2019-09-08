@@ -50,7 +50,6 @@
 		96E04D25227F1400002DE8F2 /* UIView+Extention.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04D23227F1400002DE8F2 /* UIView+Extention.m */; };
 		96E04D29227F1431002DE8F2 /* HMHomeManager+Share.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04D28227F1431002DE8F2 /* HMHomeManager+Share.m */; };
 		96E04D37227F1468002DE8F2 /* SMAddAccessoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04D2F227F1468002DE8F2 /* SMAddAccessoryViewController.m */; };
-		96E04D39227F1468002DE8F2 /* SMServiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04D31227F1468002DE8F2 /* SMServiceViewController.m */; };
 		96E04D3A227F1468002DE8F2 /* SMAccessoryDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04D32227F1468002DE8F2 /* SMAccessoryDetailViewController.m */; };
 		96E04D3B227F1468002DE8F2 /* SMHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04D35227F1468002DE8F2 /* SMHomeViewController.m */; };
 		96E04D3E227F28F3002DE8F2 /* SMNotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 96E04D3D227F28F3002DE8F2 /* SMNotificationViewController.m */; };
@@ -158,10 +157,8 @@
 		96E04D27227F1431002DE8F2 /* HMHomeManager+Share.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "HMHomeManager+Share.h"; path = "SMAPP/Category/HMHomeManager+Share.h"; sourceTree = SOURCE_ROOT; };
 		96E04D28227F1431002DE8F2 /* HMHomeManager+Share.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "HMHomeManager+Share.m"; path = "SMAPP/Category/HMHomeManager+Share.m"; sourceTree = SOURCE_ROOT; };
 		96E04D2A227F1468002DE8F2 /* SMAddAccessoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMAddAccessoryViewController.h; sourceTree = "<group>"; };
-		96E04D2B227F1468002DE8F2 /* SMServiceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMServiceViewController.h; sourceTree = "<group>"; };
 		96E04D2E227F1468002DE8F2 /* SMAccessoryDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMAccessoryDetailViewController.h; sourceTree = "<group>"; };
 		96E04D2F227F1468002DE8F2 /* SMAddAccessoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMAddAccessoryViewController.m; sourceTree = "<group>"; };
-		96E04D31227F1468002DE8F2 /* SMServiceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMServiceViewController.m; sourceTree = "<group>"; };
 		96E04D32227F1468002DE8F2 /* SMAccessoryDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMAccessoryDetailViewController.m; sourceTree = "<group>"; };
 		96E04D33227F1468002DE8F2 /* SMHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMHomeViewController.h; sourceTree = "<group>"; };
 		96E04D35227F1468002DE8F2 /* SMHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMHomeViewController.m; sourceTree = "<group>"; };
@@ -381,8 +378,6 @@
 				96E04D2F227F1468002DE8F2 /* SMAddAccessoryViewController.m */,
 				96E04D2E227F1468002DE8F2 /* SMAccessoryDetailViewController.h */,
 				96E04D32227F1468002DE8F2 /* SMAccessoryDetailViewController.m */,
-				96E04D2B227F1468002DE8F2 /* SMServiceViewController.h */,
-				96E04D31227F1468002DE8F2 /* SMServiceViewController.m */,
 				9619C43D228AFF080025754D /* SMHomeListViewController.h */,
 				9619C43E228AFF080025754D /* SMHomeListViewController.m */,
 				96E04D3F227F28FF002DE8F2 /* SMHomeSettingViewController.h */,
@@ -551,7 +546,6 @@
 				9619C445228B10800025754D /* SMTextFieldTableViewCell.m in Sources */,
 				96E4471A22EDD29E005E8B78 /* SMAlbumsViewCell.m in Sources */,
 				96E446D322EDACE0005E8B78 /* SMMainViewController.m in Sources */,
-				96E04D39227F1468002DE8F2 /* SMServiceViewController.m in Sources */,
 				9619C43C228AFE4F0025754D /* SMAccessoryListViewController.m in Sources */,
 				965906BA228B47B400035CD5 /* SMRoomSettingViewController.m in Sources */,
 				9619C43F228AFF090025754D /* SMHomeListViewController.m in Sources */,

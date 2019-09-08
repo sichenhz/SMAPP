@@ -14,8 +14,8 @@
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
-        self.backgroundColor = [UIColor whiteColor];
         self.accessoryType = UITableViewCellAccessoryNone;
+        self.backgroundColor = COLOR_BACKGROUND;
         [self initSubviews];
     }
     return self;

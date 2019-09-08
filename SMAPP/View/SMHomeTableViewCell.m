@@ -15,7 +15,7 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         self.clipsToBounds = YES;
-        self.backgroundColor = COLOR_BACKGROUND_DARK;
+        self.backgroundColor = COLOR_BACKGROUND;
         [self initSubviews];
     }
     return self;
