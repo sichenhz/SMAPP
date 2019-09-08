@@ -73,44 +73,44 @@
         } else {
             [self.iconButton setImage:[UIImage imageNamed:@"bulb_off"] forState:UIControlStateNormal];
         }
-    } else if ([serviceType isEqualToString:HMServiceTypeSwitch] ||
-               [serviceType isEqualToString:HMServiceTypeThermostat] ||
-               [serviceType isEqualToString:HMServiceTypeGarageDoorOpener] ||
-               [serviceType isEqualToString:HMServiceTypeAccessoryInformation] ||
-               [serviceType isEqualToString:HMServiceTypeFan] ||
-               [serviceType isEqualToString:HMServiceTypeOutlet] ||
-               [serviceType isEqualToString:HMServiceTypeLockMechanism] ||
-               [serviceType isEqualToString:HMServiceTypeLockManagement] ||
-               [serviceType isEqualToString:HMServiceTypeBattery] ||
-               [serviceType isEqualToString:HMServiceTypeDoor] ||
-               [serviceType isEqualToString:HMServiceTypeDoor] ||
-               [serviceType isEqualToString:HMServiceTypeDoorbell] ||
-               [serviceType isEqualToString:HMServiceTypeSecuritySystem] ||
-               [serviceType isEqualToString:HMServiceTypeStatefulProgrammableSwitch] ||
-               [serviceType isEqualToString:HMServiceTypeStatelessProgrammableSwitch] ||
-               [serviceType isEqualToString:HMServiceTypeWindow] ||
-               [serviceType isEqualToString:HMServiceTypeWindowCovering] ||
-               [serviceType isEqualToString:HMServiceTypeCameraRTPStreamManagement] ||
-               [serviceType isEqualToString:HMServiceTypeCameraControl] ||
-               [serviceType isEqualToString:HMServiceTypeMicrophone] ||
-               [serviceType isEqualToString:HMServiceTypeSpeaker] ||
-               [serviceType isEqualToString:HMServiceTypeAirPurifier] ||
-               [serviceType isEqualToString:HMServiceTypeVentilationFan] ||
-               [serviceType isEqualToString:HMServiceTypeFilterMaintenance] ||
-               [serviceType isEqualToString:HMServiceTypeHeaterCooler] ||
-               [serviceType isEqualToString:HMServiceTypeHumidifierDehumidifier] ||
-               [serviceType isEqualToString:HMServiceTypeSlats] ||
-               [serviceType isEqualToString:HMServiceTypeSlats] ||
-               [serviceType isEqualToString:HMServiceTypeLabel] ||
-               [serviceType isEqualToString:HMServiceTypeIrrigationSystem] ||
-               [serviceType isEqualToString:HMServiceTypeValve] ||
-               [serviceType isEqualToString:HMServiceTypeFaucet]) {
-        self.cellType = SMCollectionViewCellTypeSwitch;
-        if (self.iconButton.isSelected) {
-            [self.iconButton setImage:[UIImage imageNamed:@"placeholder_on"] forState:UIControlStateSelected];
-        } else {
-            [self.iconButton setImage:[UIImage imageNamed:@"placeholder_off"] forState:UIControlStateNormal];
-        }
+//    } else if ([serviceType isEqualToString:HMServiceTypeSwitch] ||
+//               [serviceType isEqualToString:HMServiceTypeThermostat] ||
+//               [serviceType isEqualToString:HMServiceTypeGarageDoorOpener] ||
+//               [serviceType isEqualToString:HMServiceTypeAccessoryInformation] ||
+//               [serviceType isEqualToString:HMServiceTypeFan] ||
+//               [serviceType isEqualToString:HMServiceTypeOutlet] ||
+//               [serviceType isEqualToString:HMServiceTypeLockMechanism] ||
+//               [serviceType isEqualToString:HMServiceTypeLockManagement] ||
+//               [serviceType isEqualToString:HMServiceTypeBattery] ||
+//               [serviceType isEqualToString:HMServiceTypeDoor] ||
+//               [serviceType isEqualToString:HMServiceTypeDoor] ||
+//               [serviceType isEqualToString:HMServiceTypeDoorbell] ||
+//               [serviceType isEqualToString:HMServiceTypeSecuritySystem] ||
+//               [serviceType isEqualToString:HMServiceTypeStatefulProgrammableSwitch] ||
+//               [serviceType isEqualToString:HMServiceTypeStatelessProgrammableSwitch] ||
+//               [serviceType isEqualToString:HMServiceTypeWindow] ||
+//               [serviceType isEqualToString:HMServiceTypeWindowCovering] ||
+//               [serviceType isEqualToString:HMServiceTypeCameraRTPStreamManagement] ||
+//               [serviceType isEqualToString:HMServiceTypeCameraControl] ||
+//               [serviceType isEqualToString:HMServiceTypeMicrophone] ||
+//               [serviceType isEqualToString:HMServiceTypeSpeaker] ||
+//               [serviceType isEqualToString:HMServiceTypeAirPurifier] ||
+//               [serviceType isEqualToString:HMServiceTypeVentilationFan] ||
+//               [serviceType isEqualToString:HMServiceTypeFilterMaintenance] ||
+//               [serviceType isEqualToString:HMServiceTypeHeaterCooler] ||
+//               [serviceType isEqualToString:HMServiceTypeHumidifierDehumidifier] ||
+//               [serviceType isEqualToString:HMServiceTypeSlats] ||
+//               [serviceType isEqualToString:HMServiceTypeSlats] ||
+//               [serviceType isEqualToString:HMServiceTypeLabel] ||
+//               [serviceType isEqualToString:HMServiceTypeIrrigationSystem] ||
+//               [serviceType isEqualToString:HMServiceTypeValve] ||
+//               [serviceType isEqualToString:HMServiceTypeFaucet]) {
+//        self.cellType = SMCollectionViewCellTypeSwitch;
+//        if (self.iconButton.isSelected) {
+//            [self.iconButton setImage:[UIImage imageNamed:@"placeholder_on"] forState:UIControlStateSelected];
+//        } else {
+//            [self.iconButton setImage:[UIImage imageNamed:@"placeholder_off"] forState:UIControlStateNormal];
+//        }
     } else if ([serviceType isEqualToString:HMServiceTypeCarbonDioxideSensor] ||
                [serviceType isEqualToString:HMServiceTypeCarbonMonoxideSensor] ||
                [serviceType isEqualToString:HMServiceTypeAirQualitySensor] ||
@@ -124,6 +124,13 @@
                [serviceType isEqualToString:HMServiceTypeTemperatureSensor]) {
         self.cellType = SMCollectionViewCellTypeSensor;
         [self.iconButton setImage:[UIImage imageNamed:@"sensor"] forState:UIControlStateNormal];
+    } else {
+        self.cellType = SMCollectionViewCellTypeSwitch;
+        if (self.iconButton.isSelected) {
+            [self.iconButton setImage:[UIImage imageNamed:@"placeholder_on"] forState:UIControlStateSelected];
+        } else {
+            [self.iconButton setImage:[UIImage imageNamed:@"placeholder_off"] forState:UIControlStateNormal];
+        }
     }
 }
 

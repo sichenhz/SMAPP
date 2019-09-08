@@ -226,8 +226,13 @@
     [button addGestureRecognizer:gesture];
     
     button.selected = isSelect;
-    [button setImage:[UIImage imageNamed:@"bulb_off"] forState:UIControlStateNormal];
-    [button setImage:[UIImage imageNamed:@"bulb_on"] forState:UIControlStateSelected];
+    if ([service.serviceType isEqualToString:HMServiceTypeLightbulb]) {
+        [button setImage:[UIImage imageNamed:@"bulb_off"] forState:UIControlStateNormal];
+        [button setImage:[UIImage imageNamed:@"bulb_on"] forState:UIControlStateSelected];
+    } else {
+        [button setImage:[UIImage imageNamed:@"placeholder_off"] forState:UIControlStateNormal];
+        [button setImage:[UIImage imageNamed:@"placeholder_on"] forState:UIControlStateSelected];
+    }
     [button addTarget:self action:@selector(buttonPressed:) forControlEvents:(UIControlEventTouchUpInside)];
     
     [self.imageView addSubview:button];

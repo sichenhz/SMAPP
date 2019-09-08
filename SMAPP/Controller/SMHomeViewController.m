@@ -450,7 +450,17 @@ HMAccessoryDelegate
     cell.lockSwitch.hidden = YES;
     [cell.lockSwitch addTarget:self action:@selector(changeLockState:) forControlEvents:UIControlEventValueChanged];
 
-    if ([service.serviceType isEqualToString:HMServiceTypeLightbulb]) {
+    if (![service.serviceType isEqualToString:HMServiceTypeCarbonDioxideSensor] &&
+        ![service.serviceType isEqualToString:HMServiceTypeCarbonMonoxideSensor] &&
+        ![service.serviceType isEqualToString:HMServiceTypeAirQualitySensor] &&
+        ![service.serviceType isEqualToString:HMServiceTypeContactSensor] &&
+        ![service.serviceType isEqualToString:HMServiceTypeHumiditySensor] &&
+        ![service.serviceType isEqualToString:HMServiceTypeLeakSensor] &&
+        ![service.serviceType isEqualToString:HMServiceTypeLightSensor] &&
+        ![service.serviceType isEqualToString:HMServiceTypeMotionSensor] &&
+        ![service.serviceType isEqualToString:HMServiceTypeOccupancySensor] &&
+        ![service.serviceType isEqualToString:HMServiceTypeSmokeSensor] &&
+        ![service.serviceType isEqualToString:HMServiceTypeTemperatureSensor]) {
         cell.button.hidden = NO;
         
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
