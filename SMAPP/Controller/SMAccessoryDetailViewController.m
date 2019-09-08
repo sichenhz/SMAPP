@@ -207,6 +207,7 @@
         cell.detailTextLabel.text = self.accessory.room.name;
         cell.detailTextLabel.textColor = COLOR_ORANGE;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.accessoryView = nil;
     }
  
     return cell;
