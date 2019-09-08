@@ -7,7 +7,7 @@
 //
 
 #import "SMHomeViewController.h"
-#import "SMServiceViewController.h"
+#import "SMAccessoryDetailViewController.h"
 #import "SMHomeTableViewCell.h"
 #import "SMTableViewHeaderView.h"
 #import "HMHomeManager+Share.h"
@@ -447,9 +447,9 @@ HMAccessoryDelegate
     cell.button.selected = NO;
     cell.available = service.accessory.reachable;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    cell.accessoryView = nil;
-    cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-    
+    cell.lockSwitch.hidden = YES;
+    [cell.lockSwitch addTarget:self action:@selector(changeLockState:) forControlEvents:UIControlEventValueChanged];
+
     if ([service.serviceType isEqualToString:HMServiceTypeLightbulb]) {
         cell.button.hidden = NO;
         
@@ -474,17 +474,9 @@ HMAccessoryDelegate
             [characteristic.characteristicType isEqualToString:HMCharacteristicTypeObstructionDetected] ||
             [characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetLockMechanismState]) {
 
-            UISwitch *lockSwitch = [[UISwitch alloc] init];
-            lockSwitch.backgroundColor = HEXCOLOR(0xE5E9F2);
-            lockSwitch.layer.cornerRadius = 16;
-            lockSwitch.enabled = service.accessory.isReachable;
-            lockSwitch.on = [characteristic.value boolValue];
-            [lockSwitch addTarget:self action:@selector(changeLockState:) forControlEvents:UIControlEventValueChanged];
-            
-            cell.accessoryType = UITableViewCellAccessoryNone;
-            cell.accessoryView = lockSwitch;
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            
+            cell.lockSwitch.hidden = NO;
+            cell.lockSwitch.enabled = service.accessory.isReachable;
+            cell.lockSwitch.on = [characteristic.value boolValue];
             break;
         }
     }
@@ -528,17 +520,13 @@ HMAccessoryDelegate
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    SMHomeTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    if (cell.selectionStyle == UITableViewCellSelectionStyleDefault) {
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
-        
-        SMServiceViewController *viewController = [[SMServiceViewController alloc] init];
-        SMHomeViewSectionItem *item = self.dataList[indexPath.section];
-        HMService *service = item.services[indexPath.row];
-        viewController.service = service;
-        [self.navigationController pushViewController:viewController animated:YES];
-    }
+    SMAccessoryDetailViewController *viewController = [[SMAccessoryDetailViewController alloc] init];
+    SMHomeViewSectionItem *item = self.dataList[indexPath.section];
+    HMService *service = item.services[indexPath.row];
+    viewController.accessory = service.accessory;
+    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {

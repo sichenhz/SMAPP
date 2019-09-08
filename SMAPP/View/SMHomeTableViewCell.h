@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SMHomeTableViewCell : UITableViewCell
 
 @property (nonatomic, weak) UIButton *button;
+@property (nonatomic, weak) UISwitch *lockSwitch;
 @property (nonatomic, weak) UILabel *leftLabel;
 @property (nonatomic, weak) UILabel *rightLabel;
 

@@ -52,6 +52,17 @@
         make.right.top.bottom.equalTo(rightLabel.superview);
     }];
     _rightLabel = rightLabel;
+    
+    UISwitch *lockSwitch = [[UISwitch alloc] init];
+    lockSwitch.backgroundColor = HEXCOLOR(0xE5E9F2);
+    lockSwitch.layer.cornerRadius = 16;
+    [self.contentView addSubview:lockSwitch];
+    [lockSwitch mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(lockSwitch.superview);
+        make.centerY.equalTo(lockSwitch.superview);
+    }];
+    _lockSwitch = lockSwitch;
+
 }
 
 - (void)buttonPressed:(UIButton *)sender {
@@ -66,10 +77,10 @@
     _available = available;
     
     if (available) {
-        self.rightLabel.text = @"Available";
+//        self.rightLabel.text = @"Available";
         self.rightLabel.textColor = HEXCOLOR(0x2E6C49);
     } else {
-        self.rightLabel.text = @"Not Available";
+//        self.rightLabel.text = @"Not Available";
         self.rightLabel.textColor = HEXCOLOR(0xFF0000);
     }
 }
