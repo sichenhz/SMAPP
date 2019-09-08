@@ -18,6 +18,7 @@
 #import "SMDisableHighlightButton.h"
 #import "UIView+Extention.h"
 #import "SMButton.h"
+#import "SMService.h"
 
 @interface SMMainService : NSObject
 
@@ -198,16 +199,25 @@
         for (HMService *service in accessory.services) {
             NSDictionary *coordinateMap = [servicesMap objectForKey:service.uniqueIdentifier.UUIDString];
             if (coordinateMap) {
-                for (HMCharacteristic *characteristic in service.characteristics) {
-                    if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetLockMechanismState]  ||
-                        [characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState] ||
-                        [characteristic.characteristicType isEqualToString:HMCharacteristicTypeObstructionDetected]) {
-                        
-                        CGFloat centerX = [[coordinateMap objectForKey:@"centerX"] floatValue];
-                        CGFloat centerY = [[coordinateMap objectForKey:@"centerY"] floatValue];
-                        [self createButton:[characteristic.value boolValue] service:service centerX:centerX centerY:centerY];
-                        break;
+                
+                CGFloat centerX = [[coordinateMap objectForKey:@"centerX"] floatValue];
+                CGFloat centerY = [[coordinateMap objectForKey:@"centerY"] floatValue];
+                SMServiceType type = [SMService typeWithTypeString:service.serviceType];
+                
+                if (type == SMServiceTypeBulb ||
+                    type == SMServiceTypeSwitch) {
+                    for (HMCharacteristic *characteristic in service.characteristics) {
+                        if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetLockMechanismState]  ||
+                            [characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState] ||
+                            [characteristic.characteristicType isEqualToString:HMCharacteristicTypeObstructionDetected]) {
+                            
+                            [self createButton:[characteristic.value boolValue] service:service centerX:centerX centerY:centerY];
+                            break;
+                        }
                     }
+                } else if (type == SMServiceTypeSensor) {
+#warning TODO
+                    [self createButton:NO service:service centerX:centerX centerY:centerY];
                 }
             }
         }
@@ -226,12 +236,17 @@
     [button addGestureRecognizer:gesture];
     
     button.selected = isSelect;
-    if ([service.serviceType isEqualToString:HMServiceTypeLightbulb]) {
+    
+    SMServiceType type = [SMService typeWithTypeString:service.serviceType];
+    
+    if (type == SMServiceTypeBulb) {
         [button setImage:[UIImage imageNamed:@"bulb_off"] forState:UIControlStateNormal];
         [button setImage:[UIImage imageNamed:@"bulb_on"] forState:UIControlStateSelected];
-    } else {
+    } else if (type == SMServiceTypeSwitch) {
         [button setImage:[UIImage imageNamed:@"placeholder_off"] forState:UIControlStateNormal];
         [button setImage:[UIImage imageNamed:@"placeholder_on"] forState:UIControlStateSelected];
+    } else if (type == SMServiceTypeSensor) {
+        [button setImage:[UIImage imageNamed:@"sensor"] forState:UIControlStateNormal];
     }
     [button addTarget:self action:@selector(buttonPressed:) forControlEvents:(UIControlEventTouchUpInside)];
     
@@ -432,16 +447,23 @@
 - (void)layoutAccessory:(NSNotification *)notification {
     BOOL isSelect = [notification.userInfo[@"status"] boolValue];
     HMService *service = notification.userInfo[@"service"];
-
+    
     if (isSelect) {
-        for (HMCharacteristic *characteristic in service.characteristics) {
-            if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetLockMechanismState]  ||
-                [characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState] ||
-                [characteristic.characteristicType isEqualToString:HMCharacteristicTypeObstructionDetected]) {
-                
-                [self createButton:[characteristic.value boolValue] service:service];
-                break;
+        SMServiceType type = [SMService typeWithTypeString:service.serviceType];
+        if (type == SMServiceTypeBulb ||
+            type == SMServiceTypeSwitch) {
+            for (HMCharacteristic *characteristic in service.characteristics) {
+                if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetLockMechanismState]  ||
+                    [characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState] ||
+                    [characteristic.characteristicType isEqualToString:HMCharacteristicTypeObstructionDetected]) {
+                    
+                    [self createButton:[characteristic.value boolValue] service:service];
+                    break;
+                }
             }
+        } else if (type == SMServiceTypeSensor) {
+#warning TODO
+            [self createButton:NO service:service];
         }
     } else {
         [self removeButton:service];

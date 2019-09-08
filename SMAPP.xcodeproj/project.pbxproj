@@ -17,6 +17,7 @@
 		9619C448228B108E0025754D /* SMTextViewTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9619C447228B108E0025754D /* SMTextViewTableViewCell.m */; };
 		9619C44B228B13E60025754D /* UITextView+Placeholder.m in Sources */ = {isa = PBXBuildFile; fileRef = 9619C44A228B13E60025754D /* UITextView+Placeholder.m */; };
 		9619C44E228B15280025754D /* SMButtonTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9619C44D228B15280025754D /* SMButtonTableViewCell.m */; };
+		96336C79232500D70051ABCA /* SMService.m in Sources */ = {isa = PBXBuildFile; fileRef = 96336C78232500D70051ABCA /* SMService.m */; };
 		965906B7228B476000035CD5 /* SMRoomListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 965906B6228B476000035CD5 /* SMRoomListViewController.m */; };
 		965906BA228B47B400035CD5 /* SMRoomSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 965906B9228B47B400035CD5 /* SMRoomSettingViewController.m */; };
 		965906BD228B512E00035CD5 /* SMToastView.m in Sources */ = {isa = PBXBuildFile; fileRef = 965906BC228B512E00035CD5 /* SMToastView.m */; };
@@ -93,6 +94,8 @@
 		9619C44A228B13E60025754D /* UITextView+Placeholder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UITextView+Placeholder.m"; sourceTree = "<group>"; };
 		9619C44C228B15280025754D /* SMButtonTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMButtonTableViewCell.h; sourceTree = "<group>"; };
 		9619C44D228B15280025754D /* SMButtonTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMButtonTableViewCell.m; sourceTree = "<group>"; };
+		96336C77232500D70051ABCA /* SMService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMService.h; sourceTree = "<group>"; };
+		96336C78232500D70051ABCA /* SMService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMService.m; sourceTree = "<group>"; };
 		965906B5228B476000035CD5 /* SMRoomListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMRoomListViewController.h; sourceTree = "<group>"; };
 		965906B6228B476000035CD5 /* SMRoomListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMRoomListViewController.m; sourceTree = "<group>"; };
 		965906B8228B47B400035CD5 /* SMRoomSettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMRoomSettingViewController.h; sourceTree = "<group>"; };
@@ -238,6 +241,8 @@
 				96AD772E22671304003A0D2A /* Fonts */,
 				96AD76A822631659003A0D2A /* AppDelegate.h */,
 				96AD76A922631659003A0D2A /* AppDelegate.m */,
+				96336C77232500D70051ABCA /* SMService.h */,
+				96336C78232500D70051ABCA /* SMService.m */,
 				96AD771622657316003A0D2A /* Const.h */,
 				96AD76B72263165C003A0D2A /* main.m */,
 				96AD76B12263165C003A0D2A /* Assets.xcassets */,
@@ -537,6 +542,7 @@
 				96E16AD523211CAD009E72AF /* SMSettingsTableViewCell.m in Sources */,
 				96E04D3B227F1468002DE8F2 /* SMHomeViewController.m in Sources */,
 				965906BD228B512E00035CD5 /* SMToastView.m in Sources */,
+				96336C79232500D70051ABCA /* SMService.m in Sources */,
 				96AD76B82263165C003A0D2A /* main.m in Sources */,
 				96E04D20227F0CF9002DE8F2 /* SMAlertView.m in Sources */,
 				9619C448228B108E0025754D /* SMTextViewTableViewCell.m in Sources */,

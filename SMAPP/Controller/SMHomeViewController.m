@@ -443,38 +443,24 @@ HMAccessoryDelegate
     HMService *service = item.services[indexPath.row];
     
     cell.leftLabel.text = service.name;
-    cell.button.hidden = YES;
     cell.button.selected = NO;
     cell.available = service.accessory.reachable;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.lockSwitch.hidden = YES;
     [cell.lockSwitch addTarget:self action:@selector(changeLockState:) forControlEvents:UIControlEventValueChanged];
 
-    if (![service.serviceType isEqualToString:HMServiceTypeCarbonDioxideSensor] &&
-        ![service.serviceType isEqualToString:HMServiceTypeCarbonMonoxideSensor] &&
-        ![service.serviceType isEqualToString:HMServiceTypeAirQualitySensor] &&
-        ![service.serviceType isEqualToString:HMServiceTypeContactSensor] &&
-        ![service.serviceType isEqualToString:HMServiceTypeHumiditySensor] &&
-        ![service.serviceType isEqualToString:HMServiceTypeLeakSensor] &&
-        ![service.serviceType isEqualToString:HMServiceTypeLightSensor] &&
-        ![service.serviceType isEqualToString:HMServiceTypeMotionSensor] &&
-        ![service.serviceType isEqualToString:HMServiceTypeOccupancySensor] &&
-        ![service.serviceType isEqualToString:HMServiceTypeSmokeSensor] &&
-        ![service.serviceType isEqualToString:HMServiceTypeTemperatureSensor]) {
-        cell.button.hidden = NO;
-        
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        NSDictionary *floorPlansMap = [userDefaults objectForKey:kShowedFloorPlan];
-        NSDictionary *servicesMap = [floorPlansMap objectForKey:[HMHomeManager sharedManager].primaryHome.uniqueIdentifier.UUIDString];
-        for (HMAccessory *accessory in [HMHomeManager sharedManager].primaryHome.accessories) {
-            for (HMService *item in accessory.services) {
-                NSDictionary *coordinateMap = [servicesMap objectForKey:service.uniqueIdentifier.UUIDString];
-                if (coordinateMap && [item.uniqueIdentifier.UUIDString isEqualToString:service.uniqueIdentifier.UUIDString]) {
-                    cell.button.selected = YES;
-                }
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSDictionary *floorPlansMap = [userDefaults objectForKey:kShowedFloorPlan];
+    NSDictionary *servicesMap = [floorPlansMap objectForKey:[HMHomeManager sharedManager].primaryHome.uniqueIdentifier.UUIDString];
+    for (HMAccessory *accessory in [HMHomeManager sharedManager].primaryHome.accessories) {
+        for (HMService *item in accessory.services) {
+            NSDictionary *coordinateMap = [servicesMap objectForKey:service.uniqueIdentifier.UUIDString];
+            if (coordinateMap && [item.uniqueIdentifier.UUIDString isEqualToString:service.uniqueIdentifier.UUIDString]) {
+                cell.button.selected = YES;
             }
         }
     }
+    
     cell.buttonPressed = ^(UIButton *sender) {
         [[NSNotificationCenter defaultCenter] postNotificationName:kDidStartLayoutAccessory object:self userInfo:@{@"service" : service, @"status" : @(sender.isSelected)}];
     };
