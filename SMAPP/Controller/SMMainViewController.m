@@ -183,6 +183,7 @@
     
     picker.allowsEditing = YES;
     picker.cropSize = self.scrollView.bounds.size;
+    picker.allowWhiteEdges = YES;
     picker.modalPresentationStyle = UIModalPresentationCustom;
 
     [self presentViewController:picker animated:YES completion:nil];
