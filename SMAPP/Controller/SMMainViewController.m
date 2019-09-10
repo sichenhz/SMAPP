@@ -91,6 +91,10 @@
         [self addHomeButtonPressed];
     }]];
     
+    [alertView addAction:[SMAlertAction actionWithTitle:@"Add Room" style:SMAlertActionStyleDefault handler:^(SMAlertAction * _Nonnull action) {
+        [self addRoomButtonPressed];
+    }]];
+    
     [alertView addAction:[SMAlertAction actionWithTitle:@"Take Photo" style:SMAlertActionStyleDefault handler:^(SMAlertAction * _Nonnull action) {
         if (![HMHomeManager sharedManager].primaryHome) {
             [SMToastView showInView:[UIApplication sharedApplication].keyWindow text:@"Please add a new home." duration:3 autoHide:YES];
@@ -129,6 +133,29 @@
         [manager addHomeWithName:newName completionHandler:^(HMHome * _Nullable home, NSError * _Nullable error) {
             if (error) {
                 [self showError:error];
+            }
+        }];
+    }]];
+    [alertView show];
+}
+
+- (void)addRoomButtonPressed {
+    SMAlertView *alertView = [SMAlertView alertViewWithTitle:@"Add Room..." message:@"Please make sure the name is unique." style:SMAlertViewStyleAlert];
+    
+    [alertView addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+        textField.placeholder = @"Ex. Kitchen, Living Room";
+    }];
+    
+    [alertView addAction:[SMAlertAction actionWithTitle:@"Cancel" style:SMAlertActionStyleCancel handler:nil]];
+    
+    [alertView addAction:[SMAlertAction actionWithTitle:@"Save" style:SMAlertActionStyleConfirm handler:^(SMAlertAction * _Nonnull action) {
+        NSString *newName = alertView.textFields.firstObject.text;
+        __weak typeof(self) weakSelf = self;
+        [[HMHomeManager sharedManager].primaryHome addRoomWithName:newName completionHandler:^(HMRoom * _Nullable room, NSError * _Nullable error) {
+            if (error) {
+                [weakSelf showError:error];
+            } else {
+                [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateRoom object:self userInfo:@{@"room" : room}];
             }
         }];
     }]];

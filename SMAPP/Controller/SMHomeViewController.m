@@ -216,23 +216,25 @@ HMAccessoryDelegate
 }
 
 - (void)rightButtonItemPressed:(id)sender {
-    SMAlertView *alertView = [SMAlertView alertViewWithTitle:nil message:nil style:SMAlertViewStyleActionSheet];
+//    SMAlertView *alertView = [SMAlertView alertViewWithTitle:nil message:nil style:SMAlertViewStyleActionSheet];
     
-    [alertView addAction:[SMAlertAction actionWithTitle:@"Add Home" style:SMAlertActionStyleDefault handler:^(SMAlertAction * _Nonnull action) {
-        [self addHome];
-    }]];
-    
-    [alertView addAction:[SMAlertAction actionWithTitle:@"Add Room" style:SMAlertActionStyleDefault handler:^(SMAlertAction * _Nonnull action) {
-        [self addRoom];
-    }]];
+//    [alertView addAction:[SMAlertAction actionWithTitle:@"Add Home" style:SMAlertActionStyleDefault handler:^(SMAlertAction * _Nonnull action) {
+//        [self addHome];
+//    }]];
+//
+//    [alertView addAction:[SMAlertAction actionWithTitle:@"Add Room" style:SMAlertActionStyleDefault handler:^(SMAlertAction * _Nonnull action) {
+//        [self addRoom];
+//    }]];
 
-    [alertView addAction:[SMAlertAction actionWithTitle:@"Add Device" style:SMAlertActionStyleDefault handler:^(SMAlertAction * _Nonnull action) {
-        [self addDevice];
-    }]];
+//    [alertView addAction:[SMAlertAction actionWithTitle:@"Add Device" style:SMAlertActionStyleDefault handler:^(SMAlertAction * _Nonnull action) {
+//        [self addDevice];
+//    }]];
+//
+//    [alertView addAction:[SMAlertAction actionWithTitle:@"Cancel" style:SMAlertActionStyleCancel handler:nil]];
+//
+//    [alertView show];
     
-    [alertView addAction:[SMAlertAction actionWithTitle:@"Cancel" style:SMAlertActionStyleCancel handler:nil]];
-    
-    [alertView show];
+    [self addDevice];
 }
 
 - (void)addHome {
