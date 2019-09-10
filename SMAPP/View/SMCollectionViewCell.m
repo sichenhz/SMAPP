@@ -72,9 +72,9 @@
     if (type == SMServiceTypeBulb) {
         self.cellType = SMCollectionViewCellTypeBulb;
         if (self.iconButton.isSelected) {
-            [self.iconButton setImage:[UIImage imageNamed:@"bulb_on"] forState:UIControlStateSelected];
+            [self.iconButton setImage:[UIImage imageNamed:@"bulb_on_l"] forState:UIControlStateSelected];
         } else {
-            [self.iconButton setImage:[UIImage imageNamed:@"bulb_off"] forState:UIControlStateNormal];
+            [self.iconButton setImage:[UIImage imageNamed:@"bulb_off_l"] forState:UIControlStateNormal];
         }
     } else if (type == SMServiceTypeSwitch) {
         self.cellType = SMCollectionViewCellTypeSwitch;

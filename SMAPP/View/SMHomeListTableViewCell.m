@@ -32,7 +32,7 @@
     }];
     _leftLabel = leftLabel;
     
-    UIImage *selectedImage = [UIImage imageNamed:@"choosed"];
+    UIImage *selectedImage = [UIImage imageNamed:@"selected"];
     UIImageView *selectedImageView = [[UIImageView alloc] initWithImage:selectedImage];
     [self.contentView addSubview:selectedImageView];
     [selectedImageView mas_makeConstraints:^(MASConstraintMaker *make) {

@@ -23,8 +23,8 @@
 - (void)initSubviews {
     
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [button setImage:[UIImage imageNamed:@"location_gray"] forState:UIControlStateNormal];
-    [button setImage:[UIImage imageNamed:@"location_red"] forState:UIControlStateSelected];
+    [button setImage:[UIImage imageNamed:@"location"] forState:UIControlStateNormal];
+    [button setImage:[UIImage imageNamed:@"location_selected"] forState:UIControlStateSelected];
     [button addTarget:self action:@selector(buttonPressed:) forControlEvents:(UIControlEventTouchUpInside)];
     
     [self.contentView addSubview:button];

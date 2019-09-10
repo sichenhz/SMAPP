@@ -381,7 +381,7 @@
     } else {
         button = [SMButton buttonWithType:UIButtonTypeCustom];
         [button setBackgroundImage:[self cornerRadiusBackgroundImage] forState:UIControlStateHighlighted];
-        UIImage *image = [UIImage imageNamed:@"choosed"];
+        UIImage *image = [UIImage imageNamed:@"selected"];
         if (action.isSelected) {
             [button setImage:image forState:UIControlStateNormal];
         }

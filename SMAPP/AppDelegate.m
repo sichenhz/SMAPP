@@ -14,6 +14,7 @@
 #import "SMAccessoryListViewController.h"
 #import "SMSettingsViewController.h"
 #import "UIView+Extention.h"
+#import "SMDisableHighlightButton.h"
 #import "Masonry.h"
 
 #define kTimeInterval 0.2
@@ -81,25 +82,25 @@
         [_mainVC.titleButton addTarget:self.homeVC.childViewControllers.firstObject action:@selector(leftButtonItemPressed:) forControlEvents:UIControlEventTouchUpInside];
         
         // buttons
-        UIButton *button1 = [[UIButton alloc] init];
-        [button1 setBackgroundImage:[UIImage imageNamed:@"tabbar_profile"] forState:UIControlStateNormal];
-        [button1 setBackgroundImage:[UIImage imageNamed:@"tabbar_profile_selected"] forState:UIControlStateSelected];
+        UIButton *button1 = [[SMDisableHighlightButton alloc] init];
+        [button1 setBackgroundImage:[UIImage imageNamed:@"menu"] forState:UIControlStateNormal];
+        [button1 setBackgroundImage:[UIImage imageNamed:@"menu_selected"] forState:UIControlStateSelected];
         CGRect frame = button1.frame;
         frame.size = button1.currentBackgroundImage.size;
         button1.frame = frame;
         [button1 addTarget:self action:@selector(button1Pressed:) forControlEvents:UIControlEventTouchUpInside];
 
-        UIButton *button2 = [[UIButton alloc] init];
-        [button2 setBackgroundImage:[UIImage imageNamed:@"tabbar_home"] forState:UIControlStateNormal];
-        [button2 setBackgroundImage:[UIImage imageNamed:@"tabbar_home_selected"] forState:UIControlStateSelected];
+        UIButton *button2 = [[SMDisableHighlightButton alloc] init];
+        [button2 setBackgroundImage:[UIImage imageNamed:@"bulb_off"] forState:UIControlStateNormal];
+        [button2 setBackgroundImage:[UIImage imageNamed:@"bulb_on"] forState:UIControlStateSelected];
         frame = button2.frame;
         frame.size = button2.currentBackgroundImage.size;
         button2.frame = frame;
         [button2 addTarget:self action:@selector(button2Pressed:) forControlEvents:UIControlEventTouchUpInside];
         
-        UIButton *button3 = [[UIButton alloc] init];
-        [button3 setBackgroundImage:[UIImage imageNamed:@"tabbar_discover"] forState:UIControlStateNormal];
-        [button3 setBackgroundImage:[UIImage imageNamed:@"tabbar_discover_selected"] forState:UIControlStateSelected];
+        UIButton *button3 = [[SMDisableHighlightButton alloc] init];
+        [button3 setBackgroundImage:[UIImage imageNamed:@"favourite"] forState:UIControlStateNormal];
+        [button3 setBackgroundImage:[UIImage imageNamed:@"favourite_selected"] forState:UIControlStateSelected];
         frame = button3.frame;
         frame.size = button3.currentBackgroundImage.size;
         button3.frame = frame;

@@ -74,7 +74,8 @@
     titleButton.height = self.navigationController.navigationBar.height;
     _titleButton = titleButton;
     
-    UIBarButtonItem *rightbuttonItem = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:self action:@selector(rightButtonItemPressed:)];
+    UIImage *image = [[UIImage imageNamed:@"add_selected"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    UIBarButtonItem *rightbuttonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(rightButtonItemPressed:)];
     [rightbuttonItem setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD, NSForegroundColorAttributeName : COLOR_ORANGE} forState:(UIControlStateNormal)];
     [rightbuttonItem setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD, NSForegroundColorAttributeName : COLOR_ORANGE} forState:(UIControlStateHighlighted)];
     self.navigationItem.rightBarButtonItem = rightbuttonItem;
@@ -240,8 +241,8 @@
     SMServiceType type = [SMService typeWithTypeString:service.serviceType];
     
     if (type == SMServiceTypeBulb) {
-        [button setImage:[UIImage imageNamed:@"bulb_off"] forState:UIControlStateNormal];
-        [button setImage:[UIImage imageNamed:@"bulb_on"] forState:UIControlStateSelected];
+        [button setImage:[UIImage imageNamed:@"bulb_off_l"] forState:UIControlStateNormal];
+        [button setImage:[UIImage imageNamed:@"bulb_on_l"] forState:UIControlStateSelected];
     } else if (type == SMServiceTypeSwitch) {
         [button setImage:[UIImage imageNamed:@"placeholder_off"] forState:UIControlStateNormal];
         [button setImage:[UIImage imageNamed:@"placeholder_on"] forState:UIControlStateSelected];

@@ -144,7 +144,7 @@
             SMButtonTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kSMButtonTableViewCell];
             if (!cell) {
                 cell = [[SMButtonTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kUITableViewCell];
-                [cell.button setTitle:@"Remove Home" forState:UIControlStateNormal];
+                [cell.button setTitle:@"Remove Room" forState:UIControlStateNormal];
                 __weak typeof(self) weakSelf = self;
                 cell.cellPressed = ^{
                     [weakSelf removeRoom];

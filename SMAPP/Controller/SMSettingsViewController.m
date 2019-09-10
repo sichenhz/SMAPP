@@ -10,6 +10,7 @@
 #import "SMSettingsTableViewCell.h"
 #import "HMHomeManager+Share.h"
 #import "SMHomeListViewController.h"
+#import "SMRoomListViewController.h"
 #import "const.h"
 
 @interface SMSettingsViewController ()
@@ -41,27 +42,27 @@
     }
     switch (indexPath.row) {
         case 0:
-            cell.iconView.image = [UIImage imageNamed:@"set"];
+            cell.iconView.image = [UIImage imageNamed:@"home"];
             cell.leftLabel.text = @"Home settings";
             break;
         case 1:
-            cell.iconView.image = [UIImage imageNamed:@"set"];
+            cell.iconView.image = [UIImage imageNamed:@"floor"];
             cell.leftLabel.text = @"Floor settings";
             break;
         case 2:
-            cell.iconView.image = [UIImage imageNamed:@"set"];
+            cell.iconView.image = [UIImage imageNamed:@"room"];
             cell.leftLabel.text = @"Room Settings";
             break;
         case 3:
-            cell.iconView.image = [UIImage imageNamed:@"set"];
+            cell.iconView.image = [UIImage imageNamed:@"settings"];
             cell.leftLabel.text = @"Settings";
             break;
         case 4:
-            cell.iconView.image = [UIImage imageNamed:@"set"];
+            cell.iconView.image = [UIImage imageNamed:@"help"];
             cell.leftLabel.text = @"Help";
             break;
         case 5:
-            cell.iconView.image = [UIImage imageNamed:@"set"];
+            cell.iconView.image = [UIImage imageNamed:@"about"];
             cell.leftLabel.text = @"About";
             break;
     }
@@ -85,7 +86,8 @@
             break;
         case 2:
         {
-            //
+            SMRoomListViewController *roomListVC = [[SMRoomListViewController alloc] initWithHome:[HMHomeManager sharedManager].primaryHome];
+            [self.navigationController pushViewController:roomListVC animated:YES];
         }
             break;
         case 3:
