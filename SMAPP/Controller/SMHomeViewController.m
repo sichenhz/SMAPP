@@ -171,11 +171,10 @@ HMAccessoryDelegate
         for (HMService *item in services) {
             if ([item isEqual:service]) {
                 NSInteger row = [services indexOfObject:item];
-                UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:section]];
+                SMHomeTableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:section]];
                 
                 dispatch_async(dispatch_get_main_queue(), ^(void){
-                    UISwitch *lockSwitch = (UISwitch *)cell.accessoryView;
-                    lockSwitch.on = [characteristic.value boolValue];
+                    cell.lockSwitch.on = [characteristic.value boolValue];
                 });
                 
                 break;
@@ -397,16 +396,15 @@ HMAccessoryDelegate
                 NSInteger row = [services indexOfObject:service];
                 SMHomeTableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:section]];
                 cell.available = accessory.reachable;
-                if ([cell.accessoryView isKindOfClass:[UISwitch class]]) {
+                if (!cell.lockSwitch.isHidden) {
                     
-                    UISwitch *lockSwitch = ((UISwitch *)cell.accessoryView);
-                    lockSwitch.enabled = cell.isAvailable;
+                    cell.lockSwitch.enabled = cell.isAvailable;
                     
                     for (HMCharacteristic *characteristic in service.characteristics) {
                         if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState] ||
                             [characteristic.characteristicType isEqualToString:HMCharacteristicTypeObstructionDetected] ||
                             [characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetLockMechanismState]) {
-                            lockSwitch.on = [characteristic.value boolValue];
+                            cell.lockSwitch.on = [characteristic.value boolValue];
                         }
                         break;
                     }
