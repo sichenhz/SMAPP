@@ -1,8 +1,8 @@
 //
-//  SMNotificationViewController.h
+//  SMCalendarViewController.h
 //  SMAPP
 //
-//  Created by Sichen on 6/5/19.
+//  Created by Jason on 18/9/19.
 //  Copyright © 2019 RXP. All rights reserved.
 //
 
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface SMNotificationViewController : UIViewController
+@interface SMCalendarViewController : UIViewController
 
 @end
 

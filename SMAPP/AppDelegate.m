@@ -10,7 +10,7 @@
 #import "Const.h"
 #import "SMMainViewController.h"
 #import "SMHomeViewController.h"
-#import "SMNotificationViewController.h"
+#import "SMCalendarViewController.h"
 #import "SMAccessoryListViewController.h"
 #import "SMSettingsViewController.h"
 #import "UIView+Extention.h"
@@ -30,24 +30,13 @@
 @property (nonatomic, strong) UINavigationController *homeVC;
 @property (nonatomic, strong) UINavigationController *accessoriesVC;
 @property (nonatomic, strong) UINavigationController *settingsVC;
+@property (nonatomic, strong) UINavigationController *calendarVC;
 
 @property (nonatomic, strong) NSMutableArray *childVCs;
 
 @end
 
 @implementation AppDelegate
-
-+ (CGFloat)navigationHeight {
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-        return 70.0;
-    } else {
-        if ([[[UIApplication sharedApplication] delegate] window].safeAreaInsets.bottom > 0.0) {
-            return 44.0;
-        } else {
-            return 32.0;
-        }
-    }
-}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
@@ -82,33 +71,22 @@
         [_mainVC.titleButton addTarget:self.homeVC.childViewControllers.firstObject action:@selector(leftButtonItemPressed:) forControlEvents:UIControlEventTouchUpInside];
         
         // buttons
-        UIButton *button1 = [[SMDisableHighlightButton alloc] init];
-        [button1 setBackgroundImage:[UIImage imageNamed:@"menu"] forState:UIControlStateNormal];
-        [button1 setBackgroundImage:[UIImage imageNamed:@"menu_selected"] forState:UIControlStateSelected];
-        CGRect frame = button1.frame;
-        frame.size = button1.currentBackgroundImage.size;
-        button1.frame = frame;
+        UIButton *button1 = [self careateButtonWithImageName:@"menu" selectedImageName:@"menu_selected"];
         [button1 addTarget:self action:@selector(button1Pressed:) forControlEvents:UIControlEventTouchUpInside];
 
-        UIButton *button2 = [[SMDisableHighlightButton alloc] init];
-        [button2 setBackgroundImage:[UIImage imageNamed:@"bulb_off"] forState:UIControlStateNormal];
-        [button2 setBackgroundImage:[UIImage imageNamed:@"bulb_on"] forState:UIControlStateSelected];
-        frame = button2.frame;
-        frame.size = button2.currentBackgroundImage.size;
-        button2.frame = frame;
+        UIButton *button2 = [self careateButtonWithImageName:@"bulb_off" selectedImageName:@"bulb_on"];
         [button2 addTarget:self action:@selector(button2Pressed:) forControlEvents:UIControlEventTouchUpInside];
         
-        UIButton *button3 = [[SMDisableHighlightButton alloc] init];
-        [button3 setBackgroundImage:[UIImage imageNamed:@"favourite"] forState:UIControlStateNormal];
-        [button3 setBackgroundImage:[UIImage imageNamed:@"favourite_selected"] forState:UIControlStateSelected];
-        frame = button3.frame;
-        frame.size = button3.currentBackgroundImage.size;
-        button3.frame = frame;
+        UIButton *button3 = [self careateButtonWithImageName:@"favourite" selectedImageName:@"favourite_selected"];
         [button3 addTarget:self action:@selector(button3Pressed:) forControlEvents:UIControlEventTouchUpInside];
         
+        UIButton *button4 = [self careateButtonWithImageName:@"calendar" selectedImageName:@"calendar_selected"];
+        [button4 addTarget:self action:@selector(button4Pressed:) forControlEvents:UIControlEventTouchUpInside];
+
         _mainVC.navigationItem.leftBarButtonItems = @[[[UIBarButtonItem alloc] initWithCustomView:button1],
                                                       [[UIBarButtonItem alloc] initWithCustomView:button2],
-                                                      [[UIBarButtonItem alloc] initWithCustomView:button3]];
+                                                      [[UIBarButtonItem alloc] initWithCustomView:button3],
+                                                      [[UIBarButtonItem alloc] initWithCustomView:button4]];
         
         button1.selected = YES;
         self.currentVC = self.settingsVC;
@@ -119,15 +97,7 @@
 
 - (UINavigationController *)settingsVC {
     if (!_settingsVC) {
-        _settingsVC = [[UINavigationController alloc] initWithRootViewController:[[SMSettingsViewController alloc] init]];
-        [self.mainVC addChildViewController:_settingsVC];
-        [self.mainVC.view addSubview:_settingsVC.view];
-        
-        _settingsVC.view.right = 0;
-        _settingsVC.view.width = WIDTH_NAV_L;
-        _settingsVC.view.top = 0;
-        _settingsVC.view.height = self.window.height - _homeVC.view.top;
-        _settingsVC.view.alpha = kAlpha;
+        _settingsVC = [self createNavigationControllerWithClassName:NSStringFromClass((SMSettingsViewController.self))];
         
         [self.childVCs addObject:_settingsVC];
     }
@@ -136,15 +106,7 @@
 
 - (UINavigationController *)homeVC {
     if (!_homeVC) {
-        _homeVC = [[UINavigationController alloc] initWithRootViewController:[[SMHomeViewController alloc] init]];
-        [self.mainVC addChildViewController:_homeVC];
-        [self.mainVC.view addSubview:_homeVC.view];
-        
-        _homeVC.view.right = 0;
-        _homeVC.view.width = WIDTH_NAV_L;
-        _homeVC.view.top = 0;
-        _homeVC.view.height = self.window.height - _homeVC.view.top;
-        _homeVC.view.alpha = kAlpha;
+        _homeVC = [self createNavigationControllerWithClassName:NSStringFromClass((SMHomeViewController.self))];
 
         [self.childVCs addObject:_homeVC];
     }
@@ -153,19 +115,61 @@
 
 - (UINavigationController *)accessoriesVC {
     if (!_accessoriesVC) {
-        _accessoriesVC = [[UINavigationController alloc] initWithRootViewController:[[SMAccessoryListViewController alloc] init]];
-        [self.mainVC addChildViewController:_accessoriesVC];
-        [self.mainVC.view addSubview:_accessoriesVC.view];
-
-        _accessoriesVC.view.right = 0;
-        _accessoriesVC.view.width = WIDTH_NAV_L;
-        _accessoriesVC.view.top = 0;
-        _accessoriesVC.view.height = self.window.height - _homeVC.view.top;
-        _accessoriesVC.view.alpha = kAlpha;
+        _accessoriesVC = [self createNavigationControllerWithClassName:NSStringFromClass(SMAccessoryListViewController.self)];
         
         [self.childVCs addObject:_accessoriesVC];
     }
     return _accessoriesVC;
+}
+
+- (UINavigationController *)calendarVC {
+    if (!_calendarVC) {
+        _calendarVC = [self createNavigationControllerWithClassName:NSStringFromClass(SMCalendarViewController.self)];
+
+        [self.childVCs addObject:_calendarVC];
+    }
+    return _calendarVC;
+}
+
+#pragma mark - Privacy
+
+- (SMDisableHighlightButton *)careateButtonWithImageName:(NSString *)imageName selectedImageName:(NSString *)selectedImageName {
+    SMDisableHighlightButton *button = [[SMDisableHighlightButton alloc] init];
+    [button setBackgroundImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
+    [button setBackgroundImage:[UIImage imageNamed:selectedImageName] forState:UIControlStateSelected];
+    CGRect frame = button.frame;
+    frame = button.frame;
+    frame.size = button.currentBackgroundImage.size;
+    button.frame = frame;
+    
+    return button;
+}
+
+- (UINavigationController *)createNavigationControllerWithClassName:(NSString *)className {
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:[[NSClassFromString(className) alloc] init]];
+    [self.mainVC addChildViewController:navigationController];
+    [self.mainVC addChildViewController:navigationController];
+    [self.mainVC.view addSubview:navigationController.view];
+    
+    navigationController.view.right = 0;
+    navigationController.view.width = WIDTH_NAV_L;
+    navigationController.view.top = 0;
+    navigationController.view.height = self.window.height - _calendarVC.view.top;
+    navigationController.view.alpha = kAlpha;
+    
+    return navigationController;
+}
+
++ (CGFloat)navigationHeight {
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        return 70.0;
+    } else {
+        if ([[[UIApplication sharedApplication] delegate] window].safeAreaInsets.bottom > 0.0) {
+            return 44.0;
+        } else {
+            return 32.0;
+        }
+    }
 }
 
 #pragma mark - Actions
@@ -201,6 +205,20 @@
 - (void)button3Pressed:(UIButton *)sender {
     if (!sender.isSelected) {
         [self resetChildVCsWithCurrentVC:self.accessoriesVC];
+        sender.selected = YES;
+    } else {
+        if (self.isPoped) {
+            [self animateWithDismiss];
+        }
+    }
+    if (!self.isPoped) {
+        [self animateWithPop];
+    }
+}
+
+- (void)button4Pressed:(UIButton *)sender {
+    if (!sender.isSelected) {
+        [self resetChildVCsWithCurrentVC:self.calendarVC];
         sender.selected = YES;
     } else {
         if (self.isPoped) {
