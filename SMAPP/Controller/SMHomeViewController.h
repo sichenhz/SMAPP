@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface SMHomeViewController : UITableViewController
 
-- (void)leftButtonItemPressed:(id)sender;
+- (void)switchHome:(id)sender;
 
 @end
 

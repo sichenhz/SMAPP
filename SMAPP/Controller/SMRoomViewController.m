@@ -11,8 +11,9 @@
 #import "SMRoomTableViewCell.h"
 #import "SMTableViewHeaderView.h"
 #import "SMAlertView.h"
-#import "SMRoomListViewController.h"
 #import "UIViewController+Show.h"
+#import "UIView+Extention.h"
+#import "SMButton.h"
 
 @interface SMRoomViewSectionItem : NSObject
 
@@ -70,16 +71,18 @@
     
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD}];
     
-    UIImage *image = [[UIImage imageNamed:@"tab_cate_normal"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    UIBarButtonItem *leftButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(leftButtonItemPressed:)];
-    [leftButtonItem setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD, NSForegroundColorAttributeName : COLOR_ORANGE} forState:(UIControlStateNormal)];
-    [leftButtonItem setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD, NSForegroundColorAttributeName : COLOR_ORANGE} forState:(UIControlStateHighlighted)];
-    
-    image = [[UIImage imageNamed:@"add_selected"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    UIBarButtonItem *rightbuttonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(rightButtonItemPressed:)];
-    [rightbuttonItem setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD, NSForegroundColorAttributeName : COLOR_ORANGE} forState:(UIControlStateNormal)];
-    [rightbuttonItem setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD, NSForegroundColorAttributeName : COLOR_ORANGE} forState:(UIControlStateHighlighted)];
-    self.navigationItem.rightBarButtonItems = @[rightbuttonItem, leftButtonItem];
+    UIButton *titleButton = [SMButton buttonWithType:UIButtonTypeCustom];
+    titleButton.titleLabel.textAlignment = NSTextAlignmentLeft;
+    titleButton.titleLabel.font = FONT_H2_BOLD;
+    [titleButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [titleButton setImage:[[UIImage imageNamed:@"arrow-drop-down"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forState:UIControlStateNormal];
+    self.navigationItem.titleView = titleButton;
+    HMHomeManager *namager = [HMHomeManager sharedManager];
+    [titleButton setTitle:namager.primaryHome.name forState:UIControlStateNormal];
+    [titleButton sizeToFit];
+    titleButton.width += 15;
+    titleButton.height = self.navigationController.navigationBar.height;
+    [titleButton addTarget:self action:@selector(titleButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void)updateRoomName:(NSNotification *)notification {
@@ -156,12 +159,12 @@
 
 #pragma mark - Action
 
-- (void)leftButtonItemPressed:(id)sender {
+- (void)titleButtonPressed:(id)sender {
     HMHomeManager *manager = [HMHomeManager sharedManager];
     
     if (manager.primaryHome.rooms.count > 0) {
         
-        SMAlertView *alertView = [SMAlertView alertViewWithTitle:nil message:nil style:SMAlertViewStyleActionSheet];
+        SMAlertView *alertView = [SMAlertView alertViewWithTitle:nil message:nil style:SMAlertViewStyleAlert];
         
         HMRoom *roomForEntireHome = manager.primaryHome.roomForEntireHome;
         NSString *roomName = roomForEntireHome.name;
@@ -183,41 +186,10 @@
                 [weakSelf updateCurrentAccessories];
             }]];
         }
-        
-        [alertView addAction:[SMAlertAction actionWithTitle:@"Room Settings..." style:SMAlertActionStyleDefault handler:^(SMAlertAction * _Nonnull action) {
-            SMRoomListViewController *roomListVC = [[SMRoomListViewController alloc] initWithHome:manager.primaryHome];
-            [self.navigationController pushViewController:roomListVC animated:YES];
-        }]];
-        
+                
         [alertView addAction:[SMAlertAction actionWithTitle:@"Cancel" style:SMAlertActionStyleCancel handler:nil]];
         [alertView show];
     }
-}
-
-- (void)rightButtonItemPressed:(id)sender {
-    HMHomeManager *manager = [HMHomeManager sharedManager];
-    
-    SMAlertView *alertView = [SMAlertView alertViewWithTitle:@"Add Room..." message:@"Please make sure the name is unique." style:SMAlertViewStyleAlert];
-    
-    [alertView addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-        textField.placeholder = @"Ex. Kitchen, Living Room";
-    }];
-    
-    [alertView addAction:[SMAlertAction actionWithTitle:@"Cancel" style:SMAlertActionStyleCancel handler:nil]];
-    
-    [alertView addAction:[SMAlertAction actionWithTitle:@"Save" style:SMAlertActionStyleConfirm handler:^(SMAlertAction * _Nonnull action) {
-        NSString *newName = alertView.textFields.firstObject.text;
-        [manager.primaryHome addRoomWithName:newName completionHandler:^(HMRoom * _Nullable room, NSError * _Nullable error) {
-            if (error) {
-                [self showError:error];
-            } else {
-                self.room = room;
-                self.navigationItem.title = room.name;
-                [self updateCurrentAccessories];
-            }
-        }];
-    }]];
-    [alertView show];
 }
 
 - (void)changeLockState:(id)sender {

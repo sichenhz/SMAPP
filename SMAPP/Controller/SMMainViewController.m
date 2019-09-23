@@ -65,7 +65,7 @@
     titleButton.titleLabel.textAlignment = NSTextAlignmentLeft;
     titleButton.titleLabel.font = FONT_H2_BOLD;
     [titleButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [titleButton setImage:[UIImage imageNamed:@"arrow-drop-down"] forState:UIControlStateNormal];
+    [titleButton setImage:[[UIImage imageNamed:@"arrow-drop-down"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forState:UIControlStateNormal];
     self.navigationItem.titleView = titleButton;
     HMHomeManager *namager = [HMHomeManager sharedManager];
     [titleButton setTitle:namager.primaryHome.name forState:UIControlStateNormal];

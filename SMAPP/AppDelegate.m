@@ -68,7 +68,7 @@
         gesture.delegate = self;
         [_mainVC.view addGestureRecognizer:gesture];
         
-        [_mainVC.titleButton addTarget:self.homeVC.childViewControllers.firstObject action:@selector(leftButtonItemPressed:) forControlEvents:UIControlEventTouchUpInside];
+        [_mainVC.titleButton addTarget:self.homeVC.childViewControllers.firstObject action:@selector(switchHome:) forControlEvents:UIControlEventTouchUpInside];
         
         // buttons
         UIButton *button1 = [self careateButtonWithImageName:@"menu" selectedImageName:@"menu_selected"];

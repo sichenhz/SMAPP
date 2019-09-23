@@ -185,11 +185,11 @@ HMAccessoryDelegate
 
 #pragma mark - Actions
 
-- (void)leftButtonItemPressed:(id)sender {
+- (void)switchHome:(id)sender {
     
     HMHomeManager *manager = [HMHomeManager sharedManager];
     
-    if (manager.homes.count > 0) {
+    if (manager.homes.count > 1) {
         
         SMAlertView *alertView = [SMAlertView alertViewWithTitle:nil message:nil style:SMAlertViewStyleAlert];
         
