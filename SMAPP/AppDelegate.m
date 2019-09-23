@@ -27,9 +27,9 @@
 @property (nonatomic, strong) UIViewController *currentVC;
 @property (nonatomic, assign, getter=isPoped) BOOL poped;
 
+@property (nonatomic, strong) UINavigationController *menuVC;
 @property (nonatomic, strong) UINavigationController *homeVC;
-@property (nonatomic, strong) UINavigationController *accessoriesVC;
-@property (nonatomic, strong) UINavigationController *settingsVC;
+@property (nonatomic, strong) UINavigationController *favioritesVC;
 @property (nonatomic, strong) UINavigationController *calendarVC;
 
 @property (nonatomic, strong) NSMutableArray *childVCs;
@@ -43,10 +43,6 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
     self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:self.mainVC];
-    
-    [self homeVC];
-    [self settingsVC];
-    
     [self.window makeKeyAndVisible];
     
     return YES;
@@ -89,19 +85,19 @@
                                                       [[UIBarButtonItem alloc] initWithCustomView:button4]];
         
         button1.selected = YES;
-        self.currentVC = self.settingsVC;
+        self.currentVC = self.menuVC;
     }
     
     return _mainVC;
 }
 
-- (UINavigationController *)settingsVC {
-    if (!_settingsVC) {
-        _settingsVC = [self createNavigationControllerWithClassName:NSStringFromClass((SMSettingsViewController.self))];
+- (UINavigationController *)menuVC {
+    if (!_menuVC) {
+        _menuVC = [self createNavigationControllerWithClassName:NSStringFromClass((SMSettingsViewController.self))];
         
-        [self.childVCs addObject:_settingsVC];
+        [self.childVCs addObject:_menuVC];
     }
-    return _settingsVC;
+    return _menuVC;
 }
 
 - (UINavigationController *)homeVC {
@@ -113,13 +109,13 @@
     return _homeVC;
 }
 
-- (UINavigationController *)accessoriesVC {
-    if (!_accessoriesVC) {
-        _accessoriesVC = [self createNavigationControllerWithClassName:NSStringFromClass(SMAccessoryListViewController.self)];
+- (UINavigationController *)favioritesVC {
+    if (!_favioritesVC) {
+        _favioritesVC = [self createNavigationControllerWithClassName:NSStringFromClass(SMAccessoryListViewController.self)];
         
-        [self.childVCs addObject:_accessoriesVC];
+        [self.childVCs addObject:_favioritesVC];
     }
-    return _accessoriesVC;
+    return _favioritesVC;
 }
 
 - (UINavigationController *)calendarVC {
@@ -148,21 +144,20 @@
 - (UINavigationController *)createNavigationControllerWithClassName:(NSString *)className {
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:[[NSClassFromString(className) alloc] init]];
     [self.mainVC addChildViewController:navigationController];
-    [self.mainVC addChildViewController:navigationController];
     [self.mainVC.view addSubview:navigationController.view];
     
     navigationController.view.right = 0;
     navigationController.view.width = WIDTH_NAV_L;
-    navigationController.view.top = 0;
-    navigationController.view.height = self.window.height - [AppDelegate navigationHeight];
+    navigationController.view.top = [AppDelegate navigationHeight];
+    navigationController.view.height = self.window.height - [AppDelegate navigationHeight];;
     navigationController.view.alpha = kAlpha;
-    
+
     return navigationController;
 }
 
 + (CGFloat)navigationHeight {
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-        return 70.0;
+        return 74.0;
     } else {
         if ([[[UIApplication sharedApplication] delegate] window].safeAreaInsets.bottom > 0.0) {
             return 44.0;
@@ -176,7 +171,7 @@
 
 - (void)button1Pressed:(UIButton *)sender {
     if (!sender.isSelected) {
-        [self resetChildVCsWithCurrentVC:self.settingsVC];
+        [self resetChildVCsWithCurrentVC:self.menuVC];
         sender.selected = YES;
     } else {
         if (self.isPoped) {
@@ -204,7 +199,7 @@
 
 - (void)button3Pressed:(UIButton *)sender {
     if (!sender.isSelected) {
-        [self resetChildVCsWithCurrentVC:self.accessoriesVC];
+        [self resetChildVCsWithCurrentVC:self.favioritesVC];
         sender.selected = YES;
     } else {
         if (self.isPoped) {

@@ -20,7 +20,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.navigationItem.title = @"Home settings";
+    self.navigationItem.title = @"Home Settings";
     
     [self initNavigationItems];
     

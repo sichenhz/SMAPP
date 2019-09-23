@@ -29,7 +29,7 @@
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 6;
+    return 5;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -43,25 +43,21 @@
     switch (indexPath.row) {
         case 0:
             cell.iconView.image = [UIImage imageNamed:@"home"];
-            cell.leftLabel.text = @"Home settings";
+            cell.leftLabel.text = @"Home Settings";
             break;
         case 1:
-            cell.iconView.image = [UIImage imageNamed:@"floor"];
-            cell.leftLabel.text = @"Floor settings";
-            break;
-        case 2:
             cell.iconView.image = [UIImage imageNamed:@"room"];
             cell.leftLabel.text = @"Room Settings";
             break;
-        case 3:
+        case 2:
             cell.iconView.image = [UIImage imageNamed:@"settings"];
             cell.leftLabel.text = @"Settings";
             break;
-        case 4:
+        case 3:
             cell.iconView.image = [UIImage imageNamed:@"help"];
             cell.leftLabel.text = @"Help";
             break;
-        case 5:
+        case 4:
             cell.iconView.image = [UIImage imageNamed:@"about"];
             cell.leftLabel.text = @"About";
             break;
@@ -81,13 +77,13 @@
             break;
         case 1:
         {
-            //
+            SMRoomListViewController *roomListVC = [[SMRoomListViewController alloc] initWithHome:[HMHomeManager sharedManager].primaryHome];
+            [self.navigationController pushViewController:roomListVC animated:YES];
         }
             break;
         case 2:
         {
-            SMRoomListViewController *roomListVC = [[SMRoomListViewController alloc] initWithHome:[HMHomeManager sharedManager].primaryHome];
-            [self.navigationController pushViewController:roomListVC animated:YES];
+            //
         }
             break;
         case 3:
@@ -96,11 +92,6 @@
         }
             break;
         case 4:
-        {
-            //
-        }
-            break;
-        case 5:
         {
             //
         }
