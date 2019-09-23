@@ -38,6 +38,7 @@
 @property (nonatomic, strong) HMRoom *room;
 @property (nonatomic, assign) NSInteger currentShowedSection;
 @property (nonatomic, strong) NSMutableArray *dataList;
+@property (nonatomic, weak) UIButton *titleButton;
 
 @end
 
@@ -53,8 +54,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.navigationItem.title = self.room.name;
-
     [self initNavigationItems];
         
     self.tableView.backgroundColor = COLOR_BACKGROUND;
@@ -77,19 +76,24 @@
     [titleButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [titleButton setImage:[[UIImage imageNamed:@"arrow-drop-down"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forState:UIControlStateNormal];
     self.navigationItem.titleView = titleButton;
-    HMHomeManager *namager = [HMHomeManager sharedManager];
-    [titleButton setTitle:namager.primaryHome.name forState:UIControlStateNormal];
-    [titleButton sizeToFit];
-    titleButton.width += 15;
     titleButton.height = self.navigationController.navigationBar.height;
     [titleButton addTarget:self action:@selector(titleButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    _titleButton = titleButton;
+    
+    [self updateTitleButtonWithTitle:self.room.name];
+}
+
+- (void)updateTitleButtonWithTitle:(NSString *)title {
+    [self.titleButton setTitle:title forState:UIControlStateNormal];
+    [self.titleButton sizeToFit];
+    self.titleButton.width += 15;
 }
 
 - (void)updateRoomName:(NSNotification *)notification {
     HMRoom *room = notification.userInfo[@"room"];
     
     if ([room isEqual:self.room]) {
-        self.navigationItem.title = room.name;
+        [self updateTitleButtonWithTitle:room.name];
     }
 }
 
@@ -169,20 +173,20 @@
         HMRoom *roomForEntireHome = manager.primaryHome.roomForEntireHome;
         NSString *roomName = roomForEntireHome.name;
         __weak typeof(self) weakSelf = self;
-        BOOL isSelected = [roomName isEqualToString:self.navigationItem.title];
+        BOOL isSelected = [roomName isEqualToString:self.titleButton.titleLabel.text];
         [alertView addAction:[SMAlertAction actionWithTitle:roomName style:SMAlertActionStyleDefault selected:isSelected handler:^(SMAlertAction * _Nonnull action) {
             weakSelf.room = roomForEntireHome;
-            weakSelf.navigationItem.title = roomForEntireHome.name;
+            [weakSelf updateTitleButtonWithTitle:roomForEntireHome.name];
             [weakSelf updateCurrentAccessories];
         }]];
         
         for (HMRoom *room in manager.primaryHome.rooms) {
             NSString *roomName = room.name;
             __weak typeof(self) weakSelf = self;
-            BOOL isSelected = [roomName isEqualToString:self.navigationItem.title];
+            BOOL isSelected = [roomName isEqualToString:self.titleButton.titleLabel.text];
             [alertView addAction:[SMAlertAction actionWithTitle:roomName style:SMAlertActionStyleDefault selected:isSelected handler:^(SMAlertAction * _Nonnull action) {
                 weakSelf.room = room;
-                weakSelf.navigationItem.title = room.name;
+                [weakSelf updateTitleButtonWithTitle:room.name];
                 [weakSelf updateCurrentAccessories];
             }]];
         }
