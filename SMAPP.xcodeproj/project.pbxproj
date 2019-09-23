@@ -696,14 +696,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = SMAPP/SMAPP.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = D4U287AVP3;
+				DEVELOPMENT_TEAM = 6MZW7C8429;
 				INFOPLIST_FILE = SMAPP/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = rxpservices.com.SMAPP.nelson;
+				PRODUCT_BUNDLE_IDENTIFIER = rxpservices.com.SMAPP;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -715,14 +715,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = SMAPP/SMAPP.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = D4U287AVP3;
+				DEVELOPMENT_TEAM = 6MZW7C8429;
 				INFOPLIST_FILE = SMAPP/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = rxpservices.com.SMAPP.nelson;
+				PRODUCT_BUNDLE_IDENTIFIER = rxpservices.com.SMAPP;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

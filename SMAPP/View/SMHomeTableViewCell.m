@@ -57,7 +57,7 @@
     lockSwitch.layer.cornerRadius = 16;
     [self.contentView addSubview:lockSwitch];
     [lockSwitch mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(lockSwitch.superview);
+        make.right.equalTo(lockSwitch.superview).offset(-10);
         make.centerY.equalTo(lockSwitch.superview);
     }];
     _lockSwitch = lockSwitch;

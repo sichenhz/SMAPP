@@ -6,6 +6,7 @@
 //  Copyright © 2019 RXP. All rights reserved.
 //
 
+#import <UIKit/UIKit.h>
 @import Photos;
 
 @protocol SMImagePickerControllerDelegate;

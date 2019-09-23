@@ -9,6 +9,7 @@
 #import "SMTableViewHeaderView.h"
 #import "Const.h"
 #import "Masonry.h"
+#import "UIView+Extention.h"
 
 @implementation SMTableViewHeaderView
 
@@ -21,29 +22,30 @@
 }
 
 - (void)initSubviews {
-        
-    UIButton *titleButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    titleButton.titleLabel.font = FONT_BODY_BOLD;
-    [titleButton setTitleColor:COLOR_TITLE forState:UIControlStateNormal];
-    [self.contentView addSubview:titleButton];
-    [titleButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(titleButton.superview).offset(15);
-        make.top.bottom.equalTo(titleButton.superview);
-    }];
-    [titleButton addTarget:self action:@selector(titleButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-    _titleButton = titleButton;
-    
+
     UIButton *arrowButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    arrowButton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 15);
+    arrowButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
     [self.contentView addSubview:arrowButton];
     [arrowButton setImage:[UIImage imageNamed:@"arrow"] forState:UIControlStateNormal];
     [arrowButton setImage:[UIImage imageNamed:@"arrow-drop-down"] forState:UIControlStateSelected];
     [arrowButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.top.bottom.equalTo(arrowButton.superview);
-        make.width.equalTo(@44);
+        make.edges.equalTo(arrowButton.superview);
     }];
     [arrowButton addTarget:self action:@selector(arrowButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     _arrowButton = arrowButton;
     
+    UIButton *titleButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    titleButton.titleEdgeInsets = UIEdgeInsetsMake(0, 15, 0, 15);
+    titleButton.titleLabel.font = FONT_BODY_BOLD;
+    [titleButton setTitleColor:COLOR_TITLE forState:UIControlStateNormal];
+    [self.contentView addSubview:titleButton];
+    [titleButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.top.bottom.equalTo(titleButton.superview);
+    }];
+    [titleButton addTarget:self action:@selector(titleButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    _titleButton = titleButton;
+
     UIView *bottomLine = [[UIView alloc] init];
     bottomLine.backgroundColor = COLOR_LINE;
     [self.contentView addSubview:bottomLine];
@@ -63,6 +65,15 @@
     if (self.arrowButtonPressed) {
         self.arrowButtonPressed(sender);
     }
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    
+    CGFloat width = [self.titleButton sizeThatFits:CGSizeMake(MAXFLOAT, self.height)].width;
+    [self.titleButton mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(@(width + self.titleButton.titleEdgeInsets.left + self.titleButton.titleEdgeInsets.right));
+    }];
 }
 
 @end
