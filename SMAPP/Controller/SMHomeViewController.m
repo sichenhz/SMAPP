@@ -55,6 +55,8 @@ HMAccessoryDelegate
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    self.navigationItem.title = @"My Devices";
+    
     HMHomeManager *namager = [HMHomeManager sharedManager];    
     namager.delegate = self;
 
@@ -63,8 +65,6 @@ HMAccessoryDelegate
     self.tableView.backgroundColor = COLOR_BACKGROUND;
     self.tableView.tableFooterView = [[UIView alloc] init]; // remove the lines
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRemovePrimaryHome:) name:kDidUpdatePrimaryHome object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateHomeName:) name:kDidUpdateHomeName object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCurrentAccessories:) name:kDidUpdateRoomName object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCurrentAccessories:) name:kDidUpdateRoom object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCurrentAccessories:) name:kDidUpdateAccessory object:nil];    
@@ -85,7 +85,6 @@ HMAccessoryDelegate
 - (void)UpdatePrimaryHome {
     HMHomeManager *manager = [HMHomeManager sharedManager];
 
-    self.navigationItem.title = manager.primaryHome.name;
     manager.primaryHome.delegate = self;
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdatePrimaryHome object:self userInfo:@{@"home" : manager.primaryHome}];
@@ -140,22 +139,6 @@ HMAccessoryDelegate
 }
 
 #pragma mark - Notification
-
-- (void)didRemovePrimaryHome:(NSNotification *)notification {
-    if ([notification.object isEqual:self]) {
-        return;
-    }
-    self.navigationItem.title = @"";
-}
-
-- (void)updateHomeName:(NSNotification *)notification {
-    HMHome *home = notification.userInfo[@"home"];
-    HMHomeManager *manager = [HMHomeManager sharedManager];
-    
-    if ([home isEqual:manager.primaryHome]) {
-        self.navigationItem.title = home.name;
-    }
-}
 
 - (void)updateCurrentAccessories:(NSNotification *)notification {
     [self updateCurrentAccessories];
@@ -326,7 +309,6 @@ HMAccessoryDelegate
 // after invoking this function, the system will invokes homeManagerDidUpdatePrimaryHome:
 - (void)homeManager:(HMHomeManager *)manager didRemoveHome:(HMHome *)home {
     if (home.isPrimary) {
-        self.navigationItem.title = @"";
         [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdatePrimaryHome object:self userInfo:@{@"remove" : @"1"}];
     }
 }

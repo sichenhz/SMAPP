@@ -22,7 +22,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.navigationItem.title = @"Settings";
+    self.navigationItem.title = @"Menu";
     self.tableView.tableFooterView = [[UIView alloc] init];
 }
 
