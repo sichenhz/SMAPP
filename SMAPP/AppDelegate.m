@@ -154,7 +154,7 @@
     navigationController.view.right = 0;
     navigationController.view.width = WIDTH_NAV_L;
     navigationController.view.top = 0;
-    navigationController.view.height = self.window.height - _calendarVC.view.top;
+    navigationController.view.height = self.window.height - [AppDelegate navigationHeight];
     navigationController.view.alpha = kAlpha;
     
     return navigationController;
