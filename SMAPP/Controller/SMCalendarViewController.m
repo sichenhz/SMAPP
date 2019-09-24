@@ -29,7 +29,7 @@
     [self.view addSubview:label];
     [label mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.view);
-        make.centerY.equalTo(self.view).offset(-50);
+        make.centerY.equalTo(self.view);
     }];
     label.text = @"Under Construction";
 }

@@ -171,18 +171,19 @@
         } else {
             cell.textLabel.text = @"";
         }
-        
         cell.detailTextLabel.text = characteristic.localizedDescription;
-        
+        cell.detailTextLabel.textColor = COLOR_TITLE;
+        cell.accessoryType = UITableViewCellAccessoryNone;
+
         if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState] ||
             [characteristic.characteristicType isEqualToString:HMCharacteristicTypeObstructionDetected] ||
             [characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetLockMechanismState]) {
             
             BOOL lockState = [characteristic.value boolValue];
-            
             UISwitch *lockSwitch = [[UISwitch alloc] init];
             lockSwitch.on = lockState;
             [lockSwitch addTarget:self action:@selector(changeLockState:) forControlEvents:UIControlEventValueChanged];
+            
             cell.accessoryView = lockSwitch;
         } else if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypeSaturation] ||
                    [characteristic.characteristicType isEqualToString:HMCharacteristicTypeBrightness] ||
@@ -192,6 +193,7 @@
                    [characteristic.characteristicType isEqualToString:HMCharacteristicTypeCoolingThreshold] ||
                    [characteristic.characteristicType isEqualToString:HMCharacteristicTypeHeatingThreshold] ||
                    [characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetPosition]) {
+            
             UISlider *slider = [[UISlider alloc] init];
             slider.bounds = CGRectMake(0, 0, 125, slider.bounds.size.height);
             slider.maximumValue = [characteristic.metadata.maximumValue floatValue];
@@ -201,6 +203,9 @@
             [slider addTarget:self action:@selector(changeSliderValue:) forControlEvents:UIControlEventValueChanged];
             
             cell.accessoryView = slider;
+        } else {
+            
+            cell.accessoryView = nil;
         }
     } else {
         cell.textLabel.text = @"Room";
