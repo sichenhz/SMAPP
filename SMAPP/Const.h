@@ -38,7 +38,7 @@ static NSString *const kSMTextViewTableViewCell = @"kSMTextViewTableViewCell";
 static NSString *const kSMCollectionViewCell = @"kSMCollectionViewCell";
 
 //#define WIDTH_NAV_R 340
-#define WIDTH_NAV_L ([UIScreen mainScreen].bounds.size.width - [UIScreen mainScreen].bounds.size.height)
+#define WIDTH_NAV_L fabs([UIScreen mainScreen].bounds.size.width - [UIScreen mainScreen].bounds.size.height)
 
 // Color
 #define RandomColor [UIColor colorWithRed:(arc4random_uniform(256)/255.0) green:(arc4random_uniform(256)/255.0) blue:(arc4random_uniform(256)/255.0) alpha:1]

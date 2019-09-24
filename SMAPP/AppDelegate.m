@@ -48,6 +48,10 @@
     return YES;
 }
 
+- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(nullable UIWindow *)window {
+    return UIInterfaceOrientationMaskLandscape;
+}
+
 #pragma mark - Getters
 
 - (NSMutableArray *)childVCs {
