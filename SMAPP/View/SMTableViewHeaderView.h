@@ -14,9 +14,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, weak, readonly) UIButton *titleButton;
 @property (nonatomic, weak, readonly) UIButton *arrowButton;
+@property (nonatomic, weak, readonly) UIButton *switchButton;
 
 @property (nonatomic, copy) void(^titleButtonPressed)(void);
 @property (nonatomic, copy) void(^arrowButtonPressed)(UIButton *button);
+@property (nonatomic, copy) void(^switchButtonPressed)(UIButton *button);
 
 @end
 

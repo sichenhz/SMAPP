@@ -103,15 +103,15 @@
 
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
     NSDictionary *showedServiceMap = [userDefault objectForKey:kShowedService];
-    NSString *homeName = [HMHomeManager sharedManager].primaryHome.name;
-    NSString *roomName = self.room.name;
+    NSString *homeID = [HMHomeManager sharedManager].primaryHome.uniqueIdentifier.UUIDString;
+    NSString *roomID = self.room.uniqueIdentifier.UUIDString;
     
     self.dataList = [NSMutableArray array];
     
     for (HMAccessory *accessory in self.room.accessories) {
         for (HMService *service in accessory.services) {
             if (service.isUserInteractive) {
-                BOOL showed = [service.name isEqualToString:showedServiceMap[homeName][roomName]];
+                BOOL showed = [service.name isEqualToString:showedServiceMap[homeID][roomID]];
                 [self.dataList addObject:[SMRoomViewSectionItem itemWithService:service showed:showed]];
                 if (showed) {
                     self.currentShowedSection = self.dataList.count - 1;
@@ -355,8 +355,8 @@
             [tableView reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationAutomatic];
             
             NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
-            NSString *homeName = [HMHomeManager sharedManager].primaryHome.name;
-            NSString *roomName = weakSelf.room.name;
+            NSString *homeID = [HMHomeManager sharedManager].primaryHome.uniqueIdentifier.UUIDString;
+            NSString *roomID = weakSelf.room.uniqueIdentifier.UUIDString;
             
             if (item.isShowed) {
                 // reload the showed section
@@ -369,18 +369,18 @@
                 }
                 
                 NSMutableDictionary *homesMap = [NSMutableDictionary dictionaryWithDictionary:[userDefault objectForKey:kShowedService]];
-                NSMutableDictionary *roomsMap = [NSMutableDictionary dictionaryWithDictionary:[homesMap objectForKey:homeName]];
-                [roomsMap setObject:item.service.name forKey:roomName];
-                [homesMap setObject:roomsMap forKey:homeName];
+                NSMutableDictionary *roomsMap = [NSMutableDictionary dictionaryWithDictionary:[homesMap objectForKey:homeID]];
+                [roomsMap setObject:item.service.name forKey:roomID];
+                [homesMap setObject:roomsMap forKey:homeID];
                 [userDefault setObject:homesMap forKey:kShowedService];
                 
                 weakSelf.currentShowedSection = section;
             } else {
                 
                 NSMutableDictionary *homesMap = [NSMutableDictionary dictionaryWithDictionary:[userDefault objectForKey:kShowedService]];
-                NSMutableDictionary *roomsMap = [NSMutableDictionary dictionaryWithDictionary:[homesMap objectForKey:homeName]];
-                [roomsMap removeObjectForKey:roomName];
-                [homesMap setObject:roomsMap forKey:homeName];
+                NSMutableDictionary *roomsMap = [NSMutableDictionary dictionaryWithDictionary:[homesMap objectForKey:homeID]];
+                [roomsMap removeObjectForKey:roomID];
+                [homesMap setObject:roomsMap forKey:homeID];
                 [userDefault setObject:homesMap forKey:kShowedService];
                 
                 weakSelf.currentShowedSection = -1;

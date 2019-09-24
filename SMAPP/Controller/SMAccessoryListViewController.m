@@ -68,8 +68,16 @@
     
     for (HMAccessory *accessory in manager.primaryHome.accessories) {
         for (HMService *service in accessory.services) {
-            if (service.isUserInteractive) {
-                [self.dataList addObject:service];
+            NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+            NSString *homeID = [HMHomeManager sharedManager].primaryHome.uniqueIdentifier.UUIDString;
+            NSMutableDictionary *favoritesMap = [NSMutableDictionary dictionaryWithDictionary:[userDefault objectForKey:kFavoriteService]];
+            NSArray *favorites = [favoritesMap objectForKey:homeID];
+
+            for (NSString *serviceID in favorites) {
+                if ([serviceID isEqualToString:service.uniqueIdentifier.UUIDString]) {
+                    [self.dataList addObject:service];
+                    break;
+                }
             }
         }
     }

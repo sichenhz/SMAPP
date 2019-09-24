@@ -13,6 +13,7 @@
 static NSString *const kShowedFloorPlan = @"kShowedFloorPlan";
 static NSString *const kShowedRoom = @"kShowedRoom";
 static NSString *const kShowedService = @"kShowedService";
+static NSString *const kFavoriteService = @"kFavoriteService";
 
 // Notification
 static NSString *const kDidUpdatePrimaryHome = @"kDidUpdatePrimaryHome";

@@ -213,6 +213,8 @@
     return cell;
 }
 
+#pragma mark - UITableViewDelegate
+
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     SMTableViewHeaderView *header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:kSMTableViewHeaderView];
     if (!header) {
@@ -221,14 +223,63 @@
     }
     
     if (section < self.accessory.services.count) {
+        // title
         HMService *service = self.accessory.services[section];
         [header.titleButton setTitle:service.name forState:UIControlStateNormal];
+
+        // favorite
+        header.switchButton.hidden = YES;
+        for (HMCharacteristic *characteristic in service.characteristics) {
+            if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState] ||
+                [characteristic.characteristicType isEqualToString:HMCharacteristicTypeObstructionDetected] ||
+                [characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetLockMechanismState]) {
+                header.switchButton.hidden = NO;
+                
+                NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+                NSString *homeID = [HMHomeManager sharedManager].primaryHome.uniqueIdentifier.UUIDString;
+                NSMutableDictionary *favoritesMap = [NSMutableDictionary dictionaryWithDictionary:[userDefault objectForKey:kFavoriteService]];
+                NSArray *favorites = [favoritesMap objectForKey:homeID];
+
+                header.switchButton.selected = NO;
+                for (NSString *serviceID in favorites) {
+                    if ([serviceID isEqualToString:service.uniqueIdentifier.UUIDString]) {
+                        header.switchButton.selected = YES;
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+
+        header.switchButtonPressed = ^(UIButton *sender) {
+            sender.selected = !sender.isSelected;
+            
+            NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+            NSString *homeID = [HMHomeManager sharedManager].primaryHome.uniqueIdentifier.UUIDString;
+            NSMutableDictionary *favoritesMap = [NSMutableDictionary dictionaryWithDictionary:[userDefault objectForKey:kFavoriteService]];
+            NSMutableArray *favorites = [NSMutableArray arrayWithArray:[favoritesMap objectForKey:homeID]];
+
+            // 标记喜欢
+            if (sender.isSelected) {
+                [favorites addObject:service.uniqueIdentifier.UUIDString];
+            } else {
+                for (NSString *serviceID in favorites) {
+                    if ([serviceID isEqualToString:service.uniqueIdentifier.UUIDString]) {
+                        [favorites removeObject:serviceID];
+                        break;
+                    }
+                }
+            }
+            [favoritesMap setObject:favorites forKey:homeID];
+            [userDefault setObject:favoritesMap forKey:kFavoriteService];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:self userInfo:@{@"accessory" : service.accessory}];
+        };
+
     }
     
     return header;
 }
-
-#pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     

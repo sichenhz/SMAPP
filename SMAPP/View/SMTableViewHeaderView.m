@@ -35,6 +35,19 @@
     [arrowButton addTarget:self action:@selector(arrowButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     _arrowButton = arrowButton;
     
+    UIButton *switchButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    switchButton.hidden = YES;
+    switchButton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 15);
+    switchButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+    [self.contentView addSubview:switchButton];
+    [switchButton setImage:[UIImage imageNamed:@"favourite"] forState:UIControlStateNormal];
+    [switchButton setImage:[UIImage imageNamed:@"favourite_selected"] forState:UIControlStateSelected];
+    [switchButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(switchButton.superview);
+    }];
+    [switchButton addTarget:self action:@selector(switchButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    _switchButton = switchButton;
+    
     UIButton *titleButton = [UIButton buttonWithType:UIButtonTypeCustom];
     titleButton.titleEdgeInsets = UIEdgeInsetsMake(0, 15, 0, 15);
     titleButton.titleLabel.font = FONT_BODY_BOLD;
@@ -55,15 +68,21 @@
     }];
 }
 
-- (void)titleButtonPressed:(UIButton *)sender {
-    if (self.titleButtonPressed) {
-        self.titleButtonPressed();
+- (void)switchButtonPressed:(UIButton *)sender {
+    if (self.switchButtonPressed) {
+        self.switchButtonPressed(sender);
     }
 }
 
 - (void)arrowButtonPressed:(UIButton *)sender {
     if (self.arrowButtonPressed) {
         self.arrowButtonPressed(sender);
+    }
+}
+
+- (void)titleButtonPressed:(UIButton *)sender {
+    if (self.titleButtonPressed) {
+        self.titleButtonPressed();
     }
 }
 
