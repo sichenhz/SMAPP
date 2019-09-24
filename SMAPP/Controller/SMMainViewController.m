@@ -20,6 +20,7 @@
 #import "SMButton.h"
 #import "SMService.h"
 #import "SMNoFloorPlanView.h"
+#import "SMHomeViewController.h"
 
 @interface SMMainService : NSObject
 
@@ -134,6 +135,13 @@
         [manager addHomeWithName:newName completionHandler:^(HMHome * _Nullable home, NSError * _Nullable error) {
             if (error) {
                 [self showError:error];
+            } else {
+                for (UINavigationController *nav in self.childViewControllers) {
+                    SMHomeViewController *homeVC = nav.childViewControllers.firstObject;
+                    if ([homeVC isKindOfClass:SMHomeViewController.self]) {
+                        [homeVC updatePrimaryHome:home];
+                    }
+                }
             }
         }];
     }]];

@@ -10,7 +10,6 @@
 #import "SMAccessoryDetailViewController.h"
 #import "SMHomeTableViewCell.h"
 #import "SMTableViewHeaderView.h"
-#import "HMHomeManager+Share.h"
 #import "Const.h"
 #import "UIView+Extention.h"
 #import "SMAlertView.h"
@@ -173,17 +172,8 @@ HMAccessoryDelegate
         
         for (HMHome *home in manager.homes) {
             NSString *homeName = home.name;
-            __weak typeof(self) weakSelf = self;
             [alertView addAction:[SMAlertAction actionWithTitle:homeName style:SMAlertActionStyleDefault selected:home.isPrimary handler:^(SMAlertAction * _Nonnull action) {
-                [manager updatePrimaryHome:home completionHandler:^(NSError * _Nullable error) {
-                    if (error) {
-                        [self showError:error];
-                    } else {
-                        NSLog(@"Primary home updated.");
-                        [weakSelf UpdatePrimaryHome];
-                        [weakSelf updateCurrentAccessories];
-                    }
-                }];
+                [self updatePrimaryHome:home];
             }]];
         }
         
@@ -192,25 +182,23 @@ HMAccessoryDelegate
     }
 }
 
-- (void)rightButtonItemPressed:(id)sender {
-//    SMAlertView *alertView = [SMAlertView alertViewWithTitle:nil message:nil style:SMAlertViewStyleActionSheet];
+- (void)updatePrimaryHome:(HMHome *)home {
     
-//    [alertView addAction:[SMAlertAction actionWithTitle:@"Add Home" style:SMAlertActionStyleDefault handler:^(SMAlertAction * _Nonnull action) {
-//        [self addHome];
-//    }]];
-//
-//    [alertView addAction:[SMAlertAction actionWithTitle:@"Add Room" style:SMAlertActionStyleDefault handler:^(SMAlertAction * _Nonnull action) {
-//        [self addRoom];
-//    }]];
+    HMHomeManager *manager = [HMHomeManager sharedManager];
+    
+    __weak typeof(self) weakSelf = self;
+    [manager updatePrimaryHome:home completionHandler:^(NSError * _Nullable error) {
+        if (error) {
+            [self showError:error];
+        } else {
+            NSLog(@"Primary home updated.");
+            [weakSelf UpdatePrimaryHome];
+            [weakSelf updateCurrentAccessories];
+        }
+    }];
+}
 
-//    [alertView addAction:[SMAlertAction actionWithTitle:@"Add Device" style:SMAlertActionStyleDefault handler:^(SMAlertAction * _Nonnull action) {
-//        [self addDevice];
-//    }]];
-//
-//    [alertView addAction:[SMAlertAction actionWithTitle:@"Cancel" style:SMAlertActionStyleCancel handler:nil]];
-//
-//    [alertView show];
-    
+- (void)rightButtonItemPressed:(id)sender {    
     [self addDevice];
 }
 

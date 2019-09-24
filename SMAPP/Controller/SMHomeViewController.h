@@ -7,12 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "HMHomeManager+Share.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface SMHomeViewController : UITableViewController
 
 - (void)switchHome:(id)sender;
+- (void)updatePrimaryHome:(HMHome *)home;
 
 @end
 
