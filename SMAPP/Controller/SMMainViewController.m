@@ -399,7 +399,7 @@
     [button addTarget:self action:@selector(buttonPressed:) forControlEvents:(UIControlEventTouchUpInside)];
     
     [self.imageView addSubview:button];
-    [button sizeToFit];
+    button.size = CGSizeMake(55.0, 55.0);
     button.centerX = centerX;
     button.centerY = centerY;
     
