@@ -79,10 +79,7 @@
 
      // must initialize them before initialization of its subcontrollers' views
     [self imageView];
-    [self guideView];
-    
-    // load image in case there is no primary home
-    [self loadImage:NO];
+    [self guideView];    
 }
 
 - (void)rightButtonItemPressed:(id)sender {

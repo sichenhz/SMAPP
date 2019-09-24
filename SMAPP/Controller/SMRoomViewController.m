@@ -333,6 +333,7 @@
     SMTableViewHeaderView *header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:kSMTableViewHeaderView];
     if (!header) {
         header = [[SMTableViewHeaderView alloc] initWithReuseIdentifier:kSMTableViewHeaderView];
+        header.titleButton.userInteractionEnabled = NO;
     }
 
     SMRoomViewSectionItem *item = self.dataList[section];

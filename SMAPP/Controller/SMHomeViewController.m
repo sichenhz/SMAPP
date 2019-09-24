@@ -17,6 +17,7 @@
 #import "SMAddAccessoryViewController.h"
 #import "SMRoomViewController.h"
 #import "UIViewController+Show.h"
+#import "SMMainViewController.h"
 
 @interface SMHomeViewSectionItem : NSObject
 
@@ -272,6 +273,11 @@ HMAccessoryDelegate
     if (manager.primaryHome) {
         [self UpdatePrimaryHome];
         [self updateCurrentAccessories];
+    } else {
+        // load guideView when is no primary home
+        UINavigationController *nav = (UINavigationController *)self.parentViewController;
+        SMMainViewController *mainVC = (SMMainViewController *)nav.parentViewController;
+        [mainVC loadImage:YES];
     }
 }
 
@@ -503,6 +509,7 @@ HMAccessoryDelegate
     SMTableViewHeaderView *header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:kSMTableViewHeaderView];
     if (!header) {
         header = [[SMTableViewHeaderView alloc] initWithReuseIdentifier:kSMTableViewHeaderView];
+        [header.titleButton setTitleColor:COLOR_ORANGE forState:UIControlStateNormal];
     }
     
     SMHomeViewSectionItem *item = self.dataList[section];
