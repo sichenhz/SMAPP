@@ -21,6 +21,9 @@
 #import "SMService.h"
 #import "SMNoFloorPlanView.h"
 #import "SMHomeViewController.h"
+#import "SMCalendarViewController.h"
+#import "SMAccessoryListViewController.h"
+#import "SMSettingsViewController.h"
 
 @interface SMMainService : NSObject
 
@@ -40,12 +43,22 @@
 
 @end
 
-@interface SMMainViewController () <SMImagePickerControllerDelegate, SMImageClipViewControllerDelegate, UIScrollViewDelegate>
+@interface SMMainViewController () <SMImagePickerControllerDelegate, SMImageClipViewControllerDelegate, UIScrollViewDelegate, UIGestureRecognizerDelegate>
 
+@property (nonatomic, strong) SMButton *titleButton;
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) NSMutableArray *mainServices;
 @property (nonatomic, weak) SMNoFloorPlanView *guideView;
+
+@property (nonatomic, strong) NSMutableArray *childVCs;
+@property (nonatomic, strong) UINavigationController *menuVC;
+@property (nonatomic, strong) UINavigationController *homeVC;
+@property (nonatomic, strong) UINavigationController *favioritesVC;
+@property (nonatomic, strong) UINavigationController *calendarVC;
+
+@property (nonatomic, strong) UIViewController *currentVC;
+@property (nonatomic, assign, getter=isPoped) BOOL poped;
 
 @end
 
@@ -54,33 +67,382 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
         
+    // ensure that imageView is added before subcontrollers
+    [self imageView];
+    self.currentVC = [self menuVC];
+    [self homeVC];
+    [self favioritesVC];
+    [self calendarVC];
+
+    // notifications
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateHomeName:) name:kDidUpdateHomeName object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(layoutAccessory:) name:kDidStartLayoutAccessory object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateAccessories:) name:kDidUpdateAccessory object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateAccessories:) name:kDidUpdateCharacteristicValue object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePrimaryHome:) name:kDidUpdatePrimaryHome object:nil];
-
-    UIButton *titleButton = [SMButton buttonWithType:UIButtonTypeCustom];
-    titleButton.titleLabel.textAlignment = NSTextAlignmentLeft;
-    titleButton.titleLabel.font = FONT_H2_BOLD;
-    [titleButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [titleButton setImage:[[UIImage imageNamed:@"arrow-drop-down"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forState:UIControlStateNormal];
-    self.navigationItem.titleView = titleButton;
-    HMHomeManager *namager = [HMHomeManager sharedManager];
-    [titleButton setTitle:namager.primaryHome.name forState:UIControlStateNormal];
-    [titleButton sizeToFit];
-    titleButton.width += 15;
-    titleButton.height = self.navigationController.navigationBar.height;
-    _titleButton = titleButton;
     
+    // gesture
+    UIPanGestureRecognizer *gesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panMenu:)];
+    gesture.delegate = self;
+    [self.view addGestureRecognizer:gesture];
+
+    // title button
+    self.navigationItem.titleView = self.titleButton;
+
+    // right buttons
     UIImage *image = [[UIImage imageNamed:@"add"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     UIBarButtonItem *rightbuttonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(rightButtonItemPressed:)];
     self.navigationItem.rightBarButtonItem = rightbuttonItem;
+     
+    // left buttons
+    UIButton *button1 = [self careateButtonWithImageName:@"menu" selectedImageName:@"menu_selected"];
+    button1.selected = YES;
+    [button1 addTarget:self action:@selector(button1Pressed:) forControlEvents:UIControlEventTouchUpInside];
 
-     // must initialize them before initialization of its subcontrollers' views
-    [self imageView];
-    [self guideView];    
+    UIButton *button2 = [self careateButtonWithImageName:@"bulb_off" selectedImageName:@"bulb_on"];
+    [button2 addTarget:self action:@selector(button2Pressed:) forControlEvents:UIControlEventTouchUpInside];
+     
+    UIButton *button3 = [self careateButtonWithImageName:@"favourite" selectedImageName:@"favourite_selected"];
+    [button3 addTarget:self action:@selector(button3Pressed:) forControlEvents:UIControlEventTouchUpInside];
+     
+    UIButton *button4 = [self careateButtonWithImageName:@"calendar" selectedImageName:@"calendar_selected"];
+    [button4 addTarget:self action:@selector(button4Pressed:) forControlEvents:UIControlEventTouchUpInside];
+
+    self.navigationItem.leftBarButtonItems = @[[[UIBarButtonItem alloc] initWithCustomView:button1],
+                                                   [[UIBarButtonItem alloc] initWithCustomView:button2],
+                                                   [[UIBarButtonItem alloc] initWithCustomView:button3],
+                                                   [[UIBarButtonItem alloc] initWithCustomView:button4]];
 }
+
+#pragma mark - Getters
+
+- (NSMutableArray *)childVCs {
+    if (!_childVCs) {
+        _childVCs = [NSMutableArray array];
+    }
+    return _childVCs;
+}
+
+- (UINavigationController *)menuVC {
+    if (!_menuVC) {
+        _menuVC = [self createNavigationControllerWithClassName:NSStringFromClass((SMSettingsViewController.self))];
+        
+        [self.childVCs addObject:_menuVC];
+    }
+    return _menuVC;
+}
+
+- (UINavigationController *)homeVC {
+    if (!_homeVC) {
+        _homeVC = [self createNavigationControllerWithClassName:NSStringFromClass((SMHomeViewController.self))];
+
+        [self.childVCs addObject:_homeVC];
+    }
+    return _homeVC;
+}
+
+- (UINavigationController *)favioritesVC {
+    if (!_favioritesVC) {
+        _favioritesVC = [self createNavigationControllerWithClassName:NSStringFromClass(SMAccessoryListViewController.self)];
+        
+        [self.childVCs addObject:_favioritesVC];
+    }
+    return _favioritesVC;
+}
+
+- (UINavigationController *)calendarVC {
+    if (!_calendarVC) {
+        _calendarVC = [self createNavigationControllerWithClassName:NSStringFromClass(SMCalendarViewController.self)];
+
+        [self.childVCs addObject:_calendarVC];
+    }
+    return _calendarVC;
+}
+
+- (SMButton *)titleButton {
+    if (!_titleButton) {
+        _titleButton = [SMButton buttonWithType:UIButtonTypeCustom];
+        [_titleButton addTarget:self.homeVC.childViewControllers.firstObject action:@selector(switchHome:) forControlEvents:UIControlEventTouchUpInside];
+        _titleButton.titleLabel.textAlignment = NSTextAlignmentLeft;
+        _titleButton.titleLabel.font = FONT_H2_BOLD;
+        [_titleButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [_titleButton setImage:[[UIImage imageNamed:@"arrow-drop-down"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forState:UIControlStateNormal];
+        HMHomeManager *namager = [HMHomeManager sharedManager];
+        [_titleButton setTitle:namager.primaryHome.name forState:UIControlStateNormal];
+        [_titleButton sizeToFit];
+        _titleButton.width += 15;
+        _titleButton.height = self.navigationController.navigationBar.height;
+    }
+    return _titleButton;
+}
+
+- (UIScrollView *)scrollView {
+    if (!_scrollView) {
+        _scrollView = [[UIScrollView alloc] init];
+        _scrollView.showsVerticalScrollIndicator = NO;
+        _scrollView.showsHorizontalScrollIndicator = NO;
+        _scrollView.minimumZoomScale = 1;
+        _scrollView.maximumZoomScale = 2;
+        _scrollView.bounces = NO;
+        _scrollView.bouncesZoom = NO;
+        _scrollView.delegate = self;
+        [self.view addSubview:_scrollView];
+        [_scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self.view);
+        }];
+    }
+    return _scrollView;
+}
+
+- (UIImageView *)imageView {
+    if (!_imageView) {
+        _imageView = [[UIImageView alloc] init];
+        _imageView.userInteractionEnabled = YES;
+        _imageView.contentMode = UIViewContentModeScaleToFill;
+        [self.scrollView addSubview:_imageView];
+        [_imageView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self.view);
+        }];
+    }
+    return _imageView;
+}
+
+- (SMNoFloorPlanView *)guideView {
+    if (!_guideView) {
+        SMNoFloorPlanView *guideView = [[SMNoFloorPlanView alloc] init];
+        [guideView.homeButton addTarget:self action:@selector(addHomeButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+        [guideView.albumsButton addTarget:self action:@selector(albumsButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+        [guideView.cameraButton addTarget:self action:@selector(cameraButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+        [self.scrollView addSubview:guideView];
+        [guideView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self.view);
+        }];
+        _guideView = guideView;
+    }
+    return _guideView;
+}
+
+- (NSMutableArray *)mainServices {
+    if (!_mainServices) {
+        _mainServices = [NSMutableArray array];
+    }
+    return _mainServices;
+}
+
+#pragma mark - Public
+
+- (void)loadFloorPlan:(BOOL)didRemoveTheLastHome {
+    NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+    NSString *imageFilePath = [path stringByAppendingPathComponent:[HMHomeManager sharedManager].primaryHome.uniqueIdentifier.UUIDString];
+    UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfFile:imageFilePath]];
+    self.imageView.image = image;
+    if (image) {
+        [self.guideView removeFromSuperview];
+    } else {
+        if (didRemoveTheLastHome) {
+            self.guideView.label.text = @"Plase Add your home!";
+            self.guideView.homeButton.hidden = NO;
+            self.guideView.albumsButton.hidden = YES;
+            self.guideView.cameraButton.hidden = YES;
+        } else {
+            self.guideView.label.text = @"Please add your floor plan!";
+            self.guideView.homeButton.hidden = YES;
+            self.guideView.albumsButton.hidden = NO;
+            self.guideView.cameraButton.hidden = NO;
+        }
+    }
+}
+
+#pragma mark - Privacy
+
+- (SMDisableHighlightButton *)careateButtonWithImageName:(NSString *)imageName selectedImageName:(NSString *)selectedImageName {
+    SMDisableHighlightButton *button = [[SMDisableHighlightButton alloc] init];
+    [button setBackgroundImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
+    [button setBackgroundImage:[UIImage imageNamed:selectedImageName] forState:UIControlStateSelected];
+    CGRect frame = button.frame;
+    frame = button.frame;
+    frame.size = button.currentBackgroundImage.size;
+    button.frame = frame;
+    
+    return button;
+}
+
+- (UINavigationController *)createNavigationControllerWithClassName:(NSString *)className {
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:[[NSClassFromString(className) alloc] init]];
+    [self addChildViewController:navigationController];
+    [self.view addSubview:navigationController.view];
+    
+    navigationController.view.right = 0;
+    navigationController.view.width = WIDTH_NAV_L;
+    navigationController.view.top = [self.class navigationHeight];
+    navigationController.view.height = HEIGHT_NAV_L - [self.class navigationHeight];;
+    navigationController.view.alpha = kAlpha;
+
+    UIView *line = [[UIView alloc] init];
+    line.backgroundColor = COLOR_BACKGROUND_DARK;
+    [navigationController.view addSubview:line];
+    [line mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.right.bottom.equalTo(line.superview);
+        make.width.equalTo(@1);
+    }];
+    
+    return navigationController;
+}
+
+- (void)resetChildVCsWithCurrentVC:(UIViewController *)currentVC {
+    [self.navigationItem.leftBarButtonItems enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        UIButton *button = ((UIBarButtonItem *)obj).customView;
+        button.selected = NO;
+    }];
+    [self.childVCs enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        ((UIViewController *)obj).view.hidden = YES;
+    }];
+    
+    if (self.isPoped) {
+        currentVC.view.left = 0;
+    } else {
+        currentVC.view.right = 0;
+    }
+    currentVC.view.hidden = NO;
+    self.currentVC = currentVC;
+}
+
+- (void)animateWithPop {
+    [UIView animateWithDuration:kTimeInterval animations:^{
+        self.currentVC.view.frame = CGRectMake(0, self.currentVC.view.frame.origin.y, self.currentVC.view.frame.size.width, self.currentVC.view.frame.size.height);
+    } completion:^(BOOL finished) {
+        self.poped = YES;
+    }];
+}
+
+- (void)animateWithDismiss {
+    [UIView animateWithDuration:kTimeInterval animations:^{
+        self.currentVC.view.frame = CGRectMake(-self.currentVC.view.frame.size.width, self.currentVC.view.frame.origin.y, self.currentVC.view.frame.size.width, self.currentVC.view.frame.size.height);
+    } completion:^(BOOL finished) {
+        self.poped = NO;
+    }];
+}
+
+- (void)saveImage:(UIImage *)image {
+    NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+    NSString *imageFilePath = [path stringByAppendingPathComponent:[HMHomeManager sharedManager].primaryHome.uniqueIdentifier.UUIDString];
+    // 1 means uncompression
+    [UIImageJPEGRepresentation(image, 1) writeToFile:imageFilePath atomically:YES];
+    
+    [self.guideView removeFromSuperview];
+}
+
+- (void)loadServices {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSDictionary *floorPlansMap = [userDefaults objectForKey:kShowedFloorPlan];
+    NSDictionary *servicesMap = [floorPlansMap objectForKey:[HMHomeManager sharedManager].primaryHome.uniqueIdentifier.UUIDString];
+    
+    for (HMAccessory *accessory in [HMHomeManager sharedManager].primaryHome.accessories) {
+        for (HMService *service in accessory.services) {
+            NSDictionary *coordinateMap = [servicesMap objectForKey:service.uniqueIdentifier.UUIDString];
+            if (coordinateMap) {
+                
+                CGFloat centerX = [[coordinateMap objectForKey:@"centerX"] floatValue];
+                CGFloat centerY = [[coordinateMap objectForKey:@"centerY"] floatValue];
+                SMServiceType type = [SMService typeWithTypeString:service.serviceType];
+                
+                if (type == SMServiceTypeBulb ||
+                    type == SMServiceTypeSwitch) {
+                    for (HMCharacteristic *characteristic in service.characteristics) {
+                        if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetLockMechanismState]  ||
+                            [characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState] ||
+                            [characteristic.characteristicType isEqualToString:HMCharacteristicTypeObstructionDetected]) {
+                            
+                            [self createButton:[characteristic.value boolValue] service:service centerX:centerX centerY:centerY];
+                            break;
+                        }
+                    }
+                } else if (type == SMServiceTypeSensor) {
+#warning TODO
+                    [self createButton:NO service:service centerX:centerX centerY:centerY];
+                }
+            }
+        }
+    }
+}
+
+- (void)createButton:(BOOL)isSelect service:(HMService *)service {
+    [self createButton:isSelect service:service centerX:self.imageView.width / 2 centerY:self.imageView.height / 2];
+    [self saveCoordinates];
+}
+
+- (void)createButton:(BOOL)isSelect service:(HMService *)service centerX:(CGFloat)centerX centerY:(CGFloat)centerY {
+    SMDisableHighlightButton *button = [SMDisableHighlightButton buttonWithType:UIButtonTypeCustom];
+    
+    UIPanGestureRecognizer *gesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(move:)];
+    [button addGestureRecognizer:gesture];
+    
+    button.selected = isSelect;
+    
+    SMServiceType type = [SMService typeWithTypeString:service.serviceType];
+    
+    if (type == SMServiceTypeBulb) {
+        [button setImage:[UIImage imageNamed:@"bulb_off_l"] forState:UIControlStateNormal];
+        [button setImage:[UIImage imageNamed:@"bulb_on_l"] forState:UIControlStateSelected];
+    } else if (type == SMServiceTypeSwitch) {
+        [button setImage:[UIImage imageNamed:@"placeholder_off"] forState:UIControlStateNormal];
+        [button setImage:[UIImage imageNamed:@"placeholder_on"] forState:UIControlStateSelected];
+    } else if (type == SMServiceTypeSensor) {
+        [button setImage:[UIImage imageNamed:@"sensor"] forState:UIControlStateNormal];
+    }
+    [button addTarget:self action:@selector(buttonPressed:) forControlEvents:(UIControlEventTouchUpInside)];
+    
+    [self.imageView addSubview:button];
+    [button sizeToFit];
+    button.centerX = centerX;
+    button.centerY = centerY;
+    
+    [self.mainServices addObject:[SMMainService serviceWithButton:button service:service]];
+}
+
+- (void)removeButton:(HMService *)service {
+    for (SMMainService *mainService in self.mainServices) {
+        if ([mainService.service isEqual:service]) {
+            [mainService.button removeFromSuperview];
+            [self.mainServices removeObject:mainService];
+            break;
+        }
+    }
+    [self saveCoordinates];
+}
+
+- (void)saveCoordinates {
+    NSMutableDictionary *servicesMap = [NSMutableDictionary dictionary];
+    for (SMMainService *mainService in self.mainServices) {
+        NSLog(@"x:%.f  y:%.f  id:%@\n", mainService.button.frame.origin.x, mainService.button.frame.origin.y, mainService.service.uniqueIdentifier.UUIDString);
+        
+        NSMutableDictionary *coordinateMap = [NSMutableDictionary dictionary];
+        [coordinateMap setObject:@(mainService.button.centerX) forKey:@"centerX"];
+        [coordinateMap setObject:@(mainService.button.centerY) forKey:@"centerY"];
+        
+        [servicesMap setObject:coordinateMap forKey:mainService.service.uniqueIdentifier.UUIDString];
+    }
+    
+    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+    NSMutableDictionary *floorPlansMap = [NSMutableDictionary dictionaryWithDictionary:[userDefault objectForKey:kShowedFloorPlan]];
+    [floorPlansMap setObject:servicesMap forKey:[HMHomeManager sharedManager].primaryHome.uniqueIdentifier.UUIDString];
+    
+    [userDefault setObject:floorPlansMap forKey:kShowedFloorPlan];
+}
+
++ (CGFloat)navigationHeight {
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        return 74.0;
+    } else {
+        if ([[[UIApplication sharedApplication] delegate] window].safeAreaInsets.bottom > 0.0) {
+            return 44.0;
+        } else {
+            return 32.0;
+        }
+    }
+}
+
+#pragma mark - Actions
 
 - (void)rightButtonItemPressed:(id)sender {
     
@@ -195,114 +557,60 @@
     [self presentViewController:picker animated:YES completion:nil];
 }
 
-- (void)saveImage:(UIImage *)image {
-    NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
-    NSString *imageFilePath = [path stringByAppendingPathComponent:[HMHomeManager sharedManager].primaryHome.uniqueIdentifier.UUIDString];
-    // 1 means uncompression
-    [UIImageJPEGRepresentation(image, 1) writeToFile:imageFilePath atomically:YES];
-    
-    [self.guideView removeFromSuperview];
-}
-
-- (void)loadImage:(BOOL)didRemovePrimaryHome {
-    NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
-    NSString *imageFilePath = [path stringByAppendingPathComponent:[HMHomeManager sharedManager].primaryHome.uniqueIdentifier.UUIDString];
-    UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfFile:imageFilePath]];
-    self.imageView.image = image;
-    if (!image) {
-        if ([HMHomeManager sharedManager].primaryHome && !didRemovePrimaryHome) {
-            self.guideView.label.text = @"Please add your floor plan!";
-            self.guideView.homeButton.hidden = YES;
-            self.guideView.albumsButton.hidden = NO;
-            self.guideView.cameraButton.hidden = NO;
-        } else {
-            self.guideView.label.text = @"Plase Add your home!";
-            self.guideView.homeButton.hidden = NO;
-            self.guideView.albumsButton.hidden = YES;
-            self.guideView.cameraButton.hidden = YES;
-        }
+- (void)button1Pressed:(UIButton *)sender {
+    if (!sender.isSelected) {
+        [self resetChildVCsWithCurrentVC:self.menuVC];
+        sender.selected = YES;
     } else {
-        [self.guideView removeFromSuperview];
-    }
-}
-
-- (void)loadServices {
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSDictionary *floorPlansMap = [userDefaults objectForKey:kShowedFloorPlan];
-    NSDictionary *servicesMap = [floorPlansMap objectForKey:[HMHomeManager sharedManager].primaryHome.uniqueIdentifier.UUIDString];
-    
-    for (HMAccessory *accessory in [HMHomeManager sharedManager].primaryHome.accessories) {
-        for (HMService *service in accessory.services) {
-            NSDictionary *coordinateMap = [servicesMap objectForKey:service.uniqueIdentifier.UUIDString];
-            if (coordinateMap) {
-                
-                CGFloat centerX = [[coordinateMap objectForKey:@"centerX"] floatValue];
-                CGFloat centerY = [[coordinateMap objectForKey:@"centerY"] floatValue];
-                SMServiceType type = [SMService typeWithTypeString:service.serviceType];
-                
-                if (type == SMServiceTypeBulb ||
-                    type == SMServiceTypeSwitch) {
-                    for (HMCharacteristic *characteristic in service.characteristics) {
-                        if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetLockMechanismState]  ||
-                            [characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState] ||
-                            [characteristic.characteristicType isEqualToString:HMCharacteristicTypeObstructionDetected]) {
-                            
-                            [self createButton:[characteristic.value boolValue] service:service centerX:centerX centerY:centerY];
-                            break;
-                        }
-                    }
-                } else if (type == SMServiceTypeSensor) {
-#warning TODO
-                    [self createButton:NO service:service centerX:centerX centerY:centerY];
-                }
-            }
+        if (self.isPoped) {
+            [self animateWithDismiss];
         }
     }
-}
-
-- (void)createButton:(BOOL)isSelect service:(HMService *)service {
-    [self createButton:isSelect service:service centerX:self.imageView.width / 2 centerY:self.imageView.height / 2];
-    [self save];
-}
-
-- (void)createButton:(BOOL)isSelect service:(HMService *)service centerX:(CGFloat)centerX centerY:(CGFloat)centerY {
-    SMDisableHighlightButton *button = [SMDisableHighlightButton buttonWithType:UIButtonTypeCustom];
-    
-    UIPanGestureRecognizer *gesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(move:)];
-    [button addGestureRecognizer:gesture];
-    
-    button.selected = isSelect;
-    
-    SMServiceType type = [SMService typeWithTypeString:service.serviceType];
-    
-    if (type == SMServiceTypeBulb) {
-        [button setImage:[UIImage imageNamed:@"bulb_off_l"] forState:UIControlStateNormal];
-        [button setImage:[UIImage imageNamed:@"bulb_on_l"] forState:UIControlStateSelected];
-    } else if (type == SMServiceTypeSwitch) {
-        [button setImage:[UIImage imageNamed:@"placeholder_off"] forState:UIControlStateNormal];
-        [button setImage:[UIImage imageNamed:@"placeholder_on"] forState:UIControlStateSelected];
-    } else if (type == SMServiceTypeSensor) {
-        [button setImage:[UIImage imageNamed:@"sensor"] forState:UIControlStateNormal];
+    if (!self.isPoped) {
+        [self animateWithPop];
     }
-    [button addTarget:self action:@selector(buttonPressed:) forControlEvents:(UIControlEventTouchUpInside)];
-    
-    [self.imageView addSubview:button];
-    [button sizeToFit];
-    button.centerX = centerX;
-    button.centerY = centerY;
-    
-    [self.mainServices addObject:[SMMainService serviceWithButton:button service:service]];
 }
 
-- (void)removeButton:(HMService *)service {
-    for (SMMainService *mainService in self.mainServices) {
-        if ([mainService.service isEqual:service]) {
-            [mainService.button removeFromSuperview];
-            [self.mainServices removeObject:mainService];
-            break;
+- (void)button2Pressed:(UIButton *)sender {
+    if (!sender.isSelected) {
+        [self resetChildVCsWithCurrentVC:self.homeVC];
+        sender.selected = YES;
+    } else {
+        if (self.isPoped) {
+            [self animateWithDismiss];
         }
     }
-    [self save];
+    if (!self.isPoped) {
+        [self animateWithPop];
+    }
+}
+
+- (void)button3Pressed:(UIButton *)sender {
+    if (!sender.isSelected) {
+        [self resetChildVCsWithCurrentVC:self.favioritesVC];
+        sender.selected = YES;
+    } else {
+        if (self.isPoped) {
+            [self animateWithDismiss];
+        }
+    }
+    if (!self.isPoped) {
+        [self animateWithPop];
+    }
+}
+
+- (void)button4Pressed:(UIButton *)sender {
+    if (!sender.isSelected) {
+        [self resetChildVCsWithCurrentVC:self.calendarVC];
+        sender.selected = YES;
+    } else {
+        if (self.isPoped) {
+            [self animateWithDismiss];
+        }
+    }
+    if (!self.isPoped) {
+        [self animateWithPop];
+    }
 }
 
 - (void)buttonPressed:(UIButton *)sender {
@@ -338,6 +646,38 @@
     }
 }
 
+- (void)panMenu:(UIPanGestureRecognizer *)pan {
+    CGPoint p = [pan translationInView:self.currentVC.view];
+    CGPoint v = [pan velocityInView:self.currentVC.view];
+    
+    CGFloat y = self.currentVC.view.frame.origin.y;
+    CGFloat w = self.currentVC.view.frame.size.width;
+    CGFloat h = self.currentVC.view.frame.size.height;
+    
+    if (self.currentVC.view.frame.origin.x + p.x > 0) {
+        self.currentVC.view.frame = CGRectMake(0, y, w, h);
+    } else if (CGRectGetMaxX(self.currentVC.view.frame) + p.x < 0) {
+        self.currentVC.view.frame = CGRectMake(-w, y, w, h);
+    } else {
+        self.currentVC.view.frame = CGRectMake(self.currentVC.view.frame.origin.x + p.x, y, w, h);
+    }
+    [pan setTranslation:CGPointMake(0, 0) inView:self.currentVC.view];
+    
+    if (pan.state == UIGestureRecognizerStateEnded) {
+        if (v.x > kVelocity) { // 向右快速滑动
+            [self animateWithPop];
+        } else if (v.x < -kVelocity) { // 向左快速滑动
+            [self animateWithDismiss];
+        } else { // 正常拖拽结束
+            if (self.currentVC.view.frame.origin.x >= (-w) / 2) {
+                [self animateWithPop];
+            } else {
+                [self animateWithDismiss];
+            }
+        }
+    }
+}
+
 - (void)move:(UIPanGestureRecognizer *)sender {
     CGPoint pt = [sender translationInView:self.imageView];
     sender.view.center = CGPointMake(sender.view.center.x + pt.x , sender.view.center.y + pt.y);
@@ -345,82 +685,19 @@
     [sender setTranslation:CGPointMake(0, 0) inView:self.imageView];
     
     if (sender.state == UIGestureRecognizerStateEnded) {
-        [self save];
+        [self saveCoordinates];
     }
 }
 
-- (void)save {
-    NSMutableDictionary *servicesMap = [NSMutableDictionary dictionary];
-    for (SMMainService *mainService in self.mainServices) {
-        NSLog(@"x:%.f  y:%.f  id:%@\n", mainService.button.frame.origin.x, mainService.button.frame.origin.y, mainService.service.uniqueIdentifier.UUIDString);
-        
-        NSMutableDictionary *coordinateMap = [NSMutableDictionary dictionary];
-        [coordinateMap setObject:@(mainService.button.centerX) forKey:@"centerX"];
-        [coordinateMap setObject:@(mainService.button.centerY) forKey:@"centerY"];
-        
-        [servicesMap setObject:coordinateMap forKey:mainService.service.uniqueIdentifier.UUIDString];
+#pragma mark - UIGestureRecognizerDelegate
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+
+    if ([NSStringFromClass([touch.view class]) isEqualToString:@"UISlider"]) {
+        return NO;
     }
     
-    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
-    NSMutableDictionary *floorPlansMap = [NSMutableDictionary dictionaryWithDictionary:[userDefault objectForKey:kShowedFloorPlan]];
-    [floorPlansMap setObject:servicesMap forKey:[HMHomeManager sharedManager].primaryHome.uniqueIdentifier.UUIDString];
-    
-    [userDefault setObject:floorPlansMap forKey:kShowedFloorPlan];
-}
-
-#pragma mark - Getters
-
-- (NSMutableArray *)mainServices {
-    if (!_mainServices) {
-        _mainServices = [NSMutableArray array];
-    }
-    return _mainServices;
-}
-
-- (UIScrollView *)scrollView {
-    if (!_scrollView) {
-        _scrollView = [[UIScrollView alloc] init];
-        _scrollView.showsVerticalScrollIndicator = NO;
-        _scrollView.showsHorizontalScrollIndicator = NO;
-        _scrollView.minimumZoomScale = 1;
-        _scrollView.maximumZoomScale = 2;
-        _scrollView.bounces = NO;
-        _scrollView.bouncesZoom = NO;
-        _scrollView.delegate = self;
-        [self.view addSubview:_scrollView];
-        [_scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(self.view);
-        }];
-    }
-    return _scrollView;
-}
-
-- (UIImageView *)imageView {
-    if (!_imageView) {
-        _imageView = [[UIImageView alloc] init];
-        _imageView.userInteractionEnabled = YES;
-        _imageView.contentMode = UIViewContentModeScaleToFill;
-        [self.scrollView addSubview:_imageView];
-        [_imageView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(self.view);
-        }];
-    }
-    return _imageView;
-}
-
-- (SMNoFloorPlanView *)guideView {
-    if (!_guideView) {
-        SMNoFloorPlanView *guideView = [[SMNoFloorPlanView alloc] init];
-        [guideView.homeButton addTarget:self action:@selector(addHomeButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-        [guideView.albumsButton addTarget:self action:@selector(albumsButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-        [guideView.cameraButton addTarget:self action:@selector(cameraButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-        [self.scrollView addSubview:guideView];
-        [guideView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(self.view);
-        }];
-        _guideView = guideView;
-    }
-    return _guideView;
+    return YES;
 }
 
 #pragma mark - Notification
@@ -432,21 +709,22 @@
     [self.mainServices removeAllObjects];
     
     HMHome *home = notification.userInfo[@"home"];
-    BOOL didRemovePrimaryHome = [notification.userInfo[@"remove"] boolValue];
+    BOOL didRemoveTheLastHome = [notification.userInfo[@"didRemoveTheLastHome"] boolValue];
     
-    if (!didRemovePrimaryHome) {
-        [self.titleButton setTitle:home.name forState:UIControlStateNormal];
-        [self.titleButton sizeToFit];
-        self.titleButton.width += 15;
-        self.titleButton.height = self.navigationController.navigationBar.height;
-        [self loadServices];
-    } else {
+    if (didRemoveTheLastHome) {
         [self.titleButton setTitle:@"" forState:UIControlStateNormal];
         NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
         NSString *imageFilePath = [path stringByAppendingPathComponent:[HMHomeManager sharedManager].primaryHome.uniqueIdentifier.UUIDString];
         [[NSFileManager defaultManager] removeItemAtPath:imageFilePath error:nil];
+    } else {
+        [self.titleButton setTitle:home.name forState:UIControlStateNormal];
+        self.titleButton.height = self.navigationController.navigationBar.height;
+        [self loadServices];
     }
-    [self loadImage:didRemovePrimaryHome];
+    [self.titleButton sizeToFit];
+    self.titleButton.width += 15;
+    
+    [self loadFloorPlan:didRemoveTheLastHome];
 }
 
 - (void)updateHomeName:(NSNotification *)notification {

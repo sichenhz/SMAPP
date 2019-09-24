@@ -39,6 +39,7 @@ static NSString *const kSMCollectionViewCell = @"kSMCollectionViewCell";
 
 //#define WIDTH_NAV_R 340
 #define WIDTH_NAV_L fabs([UIScreen mainScreen].bounds.size.width - [UIScreen mainScreen].bounds.size.height)
+#define HEIGHT_NAV_L MIN([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)
 
 // Color
 #define RandomColor [UIColor colorWithRed:(arc4random_uniform(256)/255.0) green:(arc4random_uniform(256)/255.0) blue:(arc4random_uniform(256)/255.0) alpha:1]
@@ -67,5 +68,9 @@ static NSString *const kSMCollectionViewCell = @"kSMCollectionViewCell";
 //#define FONT_BODY             [UIFont fontWithName:@"Nunito-Regular" size:12]
 //#define FONT_BODY_BOLD        [UIFont fontWithName:@"Nunito-Bold" size:12]
 //#define FONT_ITALIC           [UIFont fontWithName:@"Nunito-Italic" size:12]
+
+#define kTimeInterval 0.2
+#define kVelocity 500.0
+#define kAlpha 0.85
 
 #endif /* Const_h */

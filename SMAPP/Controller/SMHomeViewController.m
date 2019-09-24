@@ -277,7 +277,7 @@ HMAccessoryDelegate
         // load guideView when is no primary home
         UINavigationController *nav = (UINavigationController *)self.parentViewController;
         SMMainViewController *mainVC = (SMMainViewController *)nav.parentViewController;
-        [mainVC loadImage:YES];
+        [mainVC loadFloorPlan:YES];
     }
 }
 
@@ -297,8 +297,8 @@ HMAccessoryDelegate
 // invokes when other apps did remove a home, such as Home
 // after invoking this function, the system will invokes homeManagerDidUpdatePrimaryHome:
 - (void)homeManager:(HMHomeManager *)manager didRemoveHome:(HMHome *)home {
-    if (home.isPrimary) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdatePrimaryHome object:self userInfo:@{@"remove" : @"1"}];
+    if (manager.homes.count == 0) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdatePrimaryHome object:self userInfo:@{@"didRemoveTheLastHome" : @"1"}];
     }
 }
 

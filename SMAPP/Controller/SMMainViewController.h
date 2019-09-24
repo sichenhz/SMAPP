@@ -12,9 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface SMMainViewController : UIViewController
 
-@property (nonatomic, weak) UIButton *titleButton;
-
-- (void)loadImage:(BOOL)didRemovePrimaryHome;
+- (void)loadFloorPlan:(BOOL)didRemoveTheLastHome;
 
 @end
 
