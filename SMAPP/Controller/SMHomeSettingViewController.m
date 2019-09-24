@@ -253,11 +253,11 @@
 }
 
 - (void)openCamera {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kOpenCamera object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kOpenCamera object:self userInfo:@{@"home" : self.home}];
 }
 
 - (void)openAlbums {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kOpenAlbums object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kOpenAlbums object:self userInfo:@{@"home" : self.home}];
 }
 
 

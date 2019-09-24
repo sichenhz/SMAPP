@@ -61,6 +61,8 @@
 @property (nonatomic, strong) UIViewController *currentVC;
 @property (nonatomic, assign, getter=isPoped) BOOL poped;
 
+@property (nonatomic, strong) HMHome *editHome;
+
 @end
 
 @implementation SMMainViewController
@@ -83,8 +85,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateAccessories:) name:kDidUpdateAccessory object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateAccessories:) name:kDidUpdateCharacteristicValue object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePrimaryHome:) name:kDidUpdatePrimaryHome object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cameraButtonPressed) name:kOpenCamera object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(albumsButtonPressed) name:kOpenAlbums object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cameraButtonPressed:) name:kOpenCamera object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(albumsButtonPressed:) name:kOpenAlbums object:nil];
 
     // gesture
     UIPanGestureRecognizer *gesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panMenu:)];
@@ -217,8 +219,8 @@
     if (!_guideView) {
         SMNoFloorPlanView *guideView = [[SMNoFloorPlanView alloc] init];
         [guideView.homeButton addTarget:self action:@selector(addHomeButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-        [guideView.albumsButton addTarget:self action:@selector(albumsButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-        [guideView.cameraButton addTarget:self action:@selector(cameraButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+        [guideView.albumsButton addTarget:self action:@selector(albumsButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+        [guideView.cameraButton addTarget:self action:@selector(cameraButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:guideView];
         [guideView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(guideView.superview);
@@ -329,13 +331,11 @@
     }];
 }
 
-- (void)saveFloorPlan:(UIImage *)image {
+- (void)saveFloorPlan:(UIImage *)image home:(HMHome *)home {
     NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
-    NSString *imageFilePath = [path stringByAppendingPathComponent:[HMHomeManager sharedManager].primaryHome.uniqueIdentifier.UUIDString];
+    NSString *imageFilePath = [path stringByAppendingPathComponent:home.uniqueIdentifier.UUIDString];
     // 1 means uncompression
     [UIImageJPEGRepresentation(image, 1) writeToFile:imageFilePath atomically:YES];
-    
-    [self.guideView removeFromSuperview];
 }
 
 - (void)loadServices {
@@ -467,7 +467,7 @@
             [SMToastView showInView:[UIApplication sharedApplication].keyWindow text:@"Please add a new home." duration:3 autoHide:YES];
             return;
         }
-        [self cameraButtonPressed];
+        [self cameraButtonPressed:nil];
     }]];
     
     [alertView addAction:[SMAlertAction actionWithTitle:@"Select Photo" style:SMAlertActionStyleDefault handler:^(SMAlertAction * _Nonnull action) {
@@ -476,7 +476,7 @@
             return;
         }
 
-        [self albumsButtonPressed];
+        [self albumsButtonPressed:nil];
     }]];
 
     [alertView addAction:[SMAlertAction actionWithTitle:@"Cancel" style:SMAlertActionStyleCancel handler:nil]];
@@ -501,12 +501,7 @@
             if (error) {
                 [self showError:error];
             } else {
-                for (UINavigationController *nav in self.childViewControllers) {
-                    SMHomeViewController *homeVC = nav.childViewControllers.firstObject;
-                    if ([homeVC isKindOfClass:SMHomeViewController.self]) {
-                        [homeVC updatePrimaryHome:home];
-                    }
-                }
+                [(SMHomeViewController *)self.homeVC.childViewControllers.firstObject updatePrimaryHome:home];
             }
         }];
     }]];
@@ -536,7 +531,13 @@
     [alertView show];
 }
 
-- (void)cameraButtonPressed {
+- (void)cameraButtonPressed:(id)sender {
+    
+    self.editHome = nil;
+    if ([sender isKindOfClass:NSNotification.self]) {
+        self.editHome = ((NSNotification *)sender).userInfo[@"home"];
+    }
+
     SMImagePickerController *picker = [[SMImagePickerController alloc] init];
     picker.delegate = self;
     
@@ -549,7 +550,13 @@
     [self presentViewController:picker animated:YES completion:nil];
 }
 
-- (void)albumsButtonPressed {
+- (void)albumsButtonPressed:(id)sender {
+    
+    self.editHome = nil;
+    if ([sender isKindOfClass:NSNotification.self]) {
+        self.editHome = ((NSNotification *)sender).userInfo[@"home"];
+    }
+
     SMImagePickerController *picker = [[SMImagePickerController alloc] init];
     picker.delegate = self;
     
@@ -811,8 +818,15 @@
 - (void)assetsPickerController:(SMImagePickerController *)picker didFinishPickingImage:(UIImage *)image {
     [picker dismissViewControllerAnimated:YES completion:nil];
 
-    self.imageView.image = image;
-    [self saveFloorPlan:image];
+    if ([self.editHome isEqual:[HMHomeManager sharedManager].primaryHome] ||
+        self.editHome == nil) {
+        self.imageView.image = image;
+        [self saveFloorPlan:image home:[HMHomeManager sharedManager].primaryHome];
+        [self.guideView removeFromSuperview];
+    } else {
+        [self saveFloorPlan:image home:self.editHome];
+        [(SMHomeViewController *)self.homeVC.childViewControllers.firstObject updatePrimaryHome:self.editHome];
+    }
 }
 
 // from album
@@ -830,8 +844,16 @@
 // from camera
 - (void)clipViewController:(SMImageClipViewController *)picker didFinishClipImage:(UIImage *)image {
     [self dismissViewControllerAnimated:YES completion:^{
-        self.imageView.image = image;
-        [self saveFloorPlan:image];
+        
+        if ([self.editHome isEqual:[HMHomeManager sharedManager].primaryHome] ||
+            self.editHome == nil) {
+            self.imageView.image = image;
+            [self saveFloorPlan:image home:[HMHomeManager sharedManager].primaryHome];
+            [self.guideView removeFromSuperview];
+        } else {
+            [self saveFloorPlan:image home:self.editHome];
+            [(SMHomeViewController *)self.homeVC.childViewControllers.firstObject updatePrimaryHome:self.editHome];
+        }
     }];
 }
 
