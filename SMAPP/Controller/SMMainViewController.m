@@ -191,7 +191,8 @@
         _scrollView.delegate = self;
         [self.view addSubview:_scrollView];
         [_scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(self.view);
+            make.left.bottom.right.equalTo(self.view);
+            make.top.equalTo(self.view).offset([self.class navigationHeight]);
         }];
     }
     return _scrollView;
@@ -204,7 +205,7 @@
         _imageView.contentMode = UIViewContentModeScaleToFill;
         [self.scrollView addSubview:_imageView];
         [_imageView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(self.view);
+            make.edges.equalTo(self.scrollView);
         }];
     }
     return _imageView;
@@ -218,7 +219,7 @@
         [guideView.cameraButton addTarget:self action:@selector(cameraButtonPressed) forControlEvents:UIControlEventTouchUpInside];
         [self.scrollView addSubview:guideView];
         [guideView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(self.view);
+            make.edges.equalTo(self.scrollView);
         }];
         _guideView = guideView;
     }
