@@ -56,11 +56,10 @@ HMAccessoryDelegate
     [super viewDidLoad];
 
     self.navigationItem.title = @"My Devices";
-    
+    [self initNavigationItems];
+
     HMHomeManager *namager = [HMHomeManager sharedManager];    
     namager.delegate = self;
-
-    [self initNavigationItems];
     
     self.tableView.backgroundColor = COLOR_BACKGROUND;
     self.tableView.tableFooterView = [[UIView alloc] init]; // remove the lines
@@ -72,6 +71,8 @@ HMAccessoryDelegate
 }
 
 - (void)initNavigationItems {
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD}];
+
     UIImage *image = [[UIImage imageNamed:@"add"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     UIBarButtonItem *rightbuttonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(rightButtonItemPressed:)];
     self.navigationItem.rightBarButtonItem = rightbuttonItem;

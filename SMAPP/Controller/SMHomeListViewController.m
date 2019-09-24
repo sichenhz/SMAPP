@@ -21,9 +21,8 @@
     [super viewDidLoad];
     
     self.navigationItem.title = @"Home Settings";
-    
-    [self initNavigationItems];
-    
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD}];
+
     CGRect frame = self.tableView.frame;
     self.tableView = [[UITableView alloc] initWithFrame:frame style:UITableViewStyleGrouped];
     self.tableView.backgroundColor = COLOR_BACKGROUND;
@@ -32,10 +31,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadHomes:) name:kDidUpdateHomeName object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadHomes:) name:kDidUpdateHome object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadHomes:) name:kDidUpdatePrimaryHome object:nil];
-}
-
-- (void)initNavigationItems {
-    [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD}];
 }
 
 #pragma mark - Notification

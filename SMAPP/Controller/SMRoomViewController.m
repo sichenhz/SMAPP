@@ -69,7 +69,7 @@
 - (void)initNavigationItems {
     
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD}];
-    
+
     UIButton *titleButton = [SMButton buttonWithType:UIButtonTypeCustom];
     titleButton.titleLabel.textAlignment = NSTextAlignmentLeft;
     titleButton.titleLabel.font = FONT_H2_BOLD;

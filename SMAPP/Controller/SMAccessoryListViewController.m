@@ -28,7 +28,8 @@
     [super viewDidLoad];
     
     self.navigationItem.title = @"My Favourites";
-    
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD}];
+
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
     CGFloat itemWidth = (WIDTH_NAV_L - 30) / 2;
     layout.itemSize = CGSizeMake(itemWidth, itemWidth * 1.33);

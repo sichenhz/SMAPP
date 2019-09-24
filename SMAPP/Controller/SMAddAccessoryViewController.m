@@ -22,10 +22,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    self.navigationController.delegate = self;
-    
+        
     self.navigationItem.title = @"Add";
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD}];
+
+    self.navigationController.delegate = self;
+
     self.dataList = [NSMutableArray array];
     
     self.accessoryBrowser = [[HMAccessoryBrowser alloc] init];

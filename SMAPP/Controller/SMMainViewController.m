@@ -25,30 +25,31 @@
 #import "SMAccessoryListViewController.h"
 #import "SMSettingsViewController.h"
 
-@interface SMMainService : NSObject
+@interface SMButtonService : NSObject
 
 @property (nonatomic, strong) UIButton *button;
 @property (nonatomic, strong) HMService *service;
 
 @end
 
-@implementation SMMainService
+@implementation SMButtonService
 
 + (instancetype)serviceWithButton:(UIButton *)button service:(HMService *)service {
-    SMMainService *mainService = [[SMMainService alloc] init];
-    mainService.button = button;
-    mainService.service = service;
-    return mainService;
+    SMButtonService *buttonService = [[SMButtonService alloc] init];
+    buttonService.button = button;
+    buttonService.service = service;
+    return buttonService;
 }
 
 @end
 
 @interface SMMainViewController () <SMImagePickerControllerDelegate, SMImageClipViewControllerDelegate, UIScrollViewDelegate, UIGestureRecognizerDelegate>
 
+@property (nonatomic, strong) NSMutableArray *buttonServices;
+
 @property (nonatomic, strong) SMButton *titleButton;
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) UIImageView *imageView;
-@property (nonatomic, strong) NSMutableArray *mainServices;
 @property (nonatomic, weak) SMNoFloorPlanView *guideView;
 
 @property (nonatomic, strong) NSMutableArray *childVCs;
@@ -67,6 +68,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
         
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD}];
+
     // ensure that imageView is added before subcontrollers
     [self imageView];
     self.currentVC = [self menuVC];
@@ -109,9 +112,9 @@
     [button4 addTarget:self action:@selector(button4Pressed:) forControlEvents:UIControlEventTouchUpInside];
 
     self.navigationItem.leftBarButtonItems = @[[[UIBarButtonItem alloc] initWithCustomView:button1],
-                                                   [[UIBarButtonItem alloc] initWithCustomView:button2],
-                                                   [[UIBarButtonItem alloc] initWithCustomView:button3],
-                                                   [[UIBarButtonItem alloc] initWithCustomView:button4]];
+                                               [[UIBarButtonItem alloc] initWithCustomView:button2],
+                                               [[UIBarButtonItem alloc] initWithCustomView:button3],
+                                               [[UIBarButtonItem alloc] initWithCustomView:button4]];
 }
 
 #pragma mark - Getters
@@ -222,11 +225,11 @@
     return _guideView;
 }
 
-- (NSMutableArray *)mainServices {
-    if (!_mainServices) {
-        _mainServices = [NSMutableArray array];
+- (NSMutableArray *)buttonServices {
+    if (!_buttonServices) {
+        _buttonServices = [NSMutableArray array];
     }
-    return _mainServices;
+    return _buttonServices;
 }
 
 #pragma mark - Public
@@ -323,7 +326,7 @@
     }];
 }
 
-- (void)saveImage:(UIImage *)image {
+- (void)saveFloorPlan:(UIImage *)image {
     NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
     NSString *imageFilePath = [path stringByAppendingPathComponent:[HMHomeManager sharedManager].primaryHome.uniqueIdentifier.UUIDString];
     // 1 means uncompression
@@ -366,18 +369,18 @@
     }
 }
 
-- (void)createButton:(BOOL)isSelect service:(HMService *)service {
-    [self createButton:isSelect service:service centerX:self.imageView.width / 2 centerY:self.imageView.height / 2];
+- (void)createButton:(BOOL)selected service:(HMService *)service {
+    [self createButton:selected service:service centerX:self.imageView.width / 2 centerY:self.imageView.height / 2];
     [self saveCoordinates];
 }
 
-- (void)createButton:(BOOL)isSelect service:(HMService *)service centerX:(CGFloat)centerX centerY:(CGFloat)centerY {
+- (void)createButton:(BOOL)selected service:(HMService *)service centerX:(CGFloat)centerX centerY:(CGFloat)centerY {
     SMDisableHighlightButton *button = [SMDisableHighlightButton buttonWithType:UIButtonTypeCustom];
     
     UIPanGestureRecognizer *gesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(move:)];
     [button addGestureRecognizer:gesture];
     
-    button.selected = isSelect;
+    button.selected = selected;
     
     SMServiceType type = [SMService typeWithTypeString:service.serviceType];
     
@@ -397,14 +400,14 @@
     button.centerX = centerX;
     button.centerY = centerY;
     
-    [self.mainServices addObject:[SMMainService serviceWithButton:button service:service]];
+    [self.buttonServices addObject:[SMButtonService serviceWithButton:button service:service]];
 }
 
 - (void)removeButton:(HMService *)service {
-    for (SMMainService *mainService in self.mainServices) {
-        if ([mainService.service isEqual:service]) {
-            [mainService.button removeFromSuperview];
-            [self.mainServices removeObject:mainService];
+    for (SMButtonService *buttonService in self.buttonServices) {
+        if ([buttonService.service isEqual:service]) {
+            [buttonService.button removeFromSuperview];
+            [self.buttonServices removeObject:buttonService];
             break;
         }
     }
@@ -413,14 +416,14 @@
 
 - (void)saveCoordinates {
     NSMutableDictionary *servicesMap = [NSMutableDictionary dictionary];
-    for (SMMainService *mainService in self.mainServices) {
-        NSLog(@"x:%.f  y:%.f  id:%@\n", mainService.button.frame.origin.x, mainService.button.frame.origin.y, mainService.service.uniqueIdentifier.UUIDString);
+    for (SMButtonService *buttonService in self.buttonServices) {
+        NSLog(@"x:%.f  y:%.f  id:%@\n", buttonService.button.frame.origin.x, buttonService.button.frame.origin.y, buttonService.service.uniqueIdentifier.UUIDString);
         
         NSMutableDictionary *coordinateMap = [NSMutableDictionary dictionary];
-        [coordinateMap setObject:@(mainService.button.centerX) forKey:@"centerX"];
-        [coordinateMap setObject:@(mainService.button.centerY) forKey:@"centerY"];
+        [coordinateMap setObject:@(buttonService.button.centerX) forKey:@"centerX"];
+        [coordinateMap setObject:@(buttonService.button.centerY) forKey:@"centerY"];
         
-        [servicesMap setObject:coordinateMap forKey:mainService.service.uniqueIdentifier.UUIDString];
+        [servicesMap setObject:coordinateMap forKey:buttonService.service.uniqueIdentifier.UUIDString];
     }
     
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
@@ -614,9 +617,9 @@
 }
 
 - (void)buttonPressed:(UIButton *)sender {
-    for (SMMainService *mainService in self.mainServices) {
-        if ([sender isEqual:mainService.button]) {
-            HMService *service = mainService.service;
+    for (SMButtonService *buttonService in self.buttonServices) {
+        if ([sender isEqual:buttonService.button]) {
+            HMService *service = buttonService.service;
             for (HMCharacteristic *characteristic in service.characteristics) {
                 if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetLockMechanismState]  ||
                     [characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState] ||
@@ -703,10 +706,10 @@
 #pragma mark - Notification
 
 - (void)updatePrimaryHome:(NSNotification *)notification {
-    for (SMMainService *mainService in self.mainServices) {
-        [mainService.button removeFromSuperview];
+    for (SMButtonService *buttonService in self.buttonServices) {
+        [buttonService.button removeFromSuperview];
     }
-    [self.mainServices removeAllObjects];
+    [self.buttonServices removeAllObjects];
     
     HMHome *home = notification.userInfo[@"home"];
     BOOL didRemoveTheLastHome = [notification.userInfo[@"didRemoveTheLastHome"] boolValue];
@@ -770,17 +773,17 @@
     if (!service) {
         HMAccessory *accessory = notification.userInfo[@"accessory"];
         for (HMService *serviceInAccessory in accessory.services) {
-            for (SMMainService *mainService in self.mainServices) {
-                if ([mainService.service isEqual:serviceInAccessory]) {
-                    service = mainService.service;
+            for (SMButtonService *buttonService in self.buttonServices) {
+                if ([buttonService.service isEqual:serviceInAccessory]) {
+                    service = buttonService.service;
                     break;
                 }
             }
         };
     }
     
-    for (SMMainService *mainService in self.mainServices) {
-        if ([service isEqual:mainService.service]) {
+    for (SMButtonService *buttonService in self.buttonServices) {
+        if ([service isEqual:buttonService.service]) {
             
             if ([notification.userInfo[@"remove"] isEqualToString:@"1"]) {
                 [self removeButton:service];
@@ -790,7 +793,7 @@
                         [characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState] ||
                         [characteristic.characteristicType isEqualToString:HMCharacteristicTypeObstructionDetected]) {
                         
-                        mainService.button.selected = [characteristic.value boolValue];
+                        buttonService.button.selected = [characteristic.value boolValue];
                         break;
                     }
                 }
@@ -806,7 +809,7 @@
     [picker dismissViewControllerAnimated:YES completion:nil];
 
     self.imageView.image = image;
-    [self saveImage:image];
+    [self saveFloorPlan:image];
 }
 
 // from album
@@ -825,7 +828,7 @@
 - (void)clipViewController:(SMImageClipViewController *)picker didFinishClipImage:(UIImage *)image {
     [self dismissViewControllerAnimated:YES completion:^{
         self.imageView.image = image;
-        [self saveImage:image];
+        [self saveFloorPlan:image];
     }];
 }
 

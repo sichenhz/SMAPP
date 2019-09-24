@@ -21,7 +21,8 @@
     
     self.view.backgroundColor = COLOR_BACKGROUND;
     self.title = @"Calendar";
-    
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD}];
+
     UILabel *label = [[UILabel alloc] init];
     label.font = FONT_H1_BOLD;
     label.textColor = COLOR_ORANGE;

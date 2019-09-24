@@ -23,7 +23,8 @@
     [super viewDidLoad];
     
     self.navigationItem.title = self.accessory.name;
-    
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD}];
+
     CGRect frame = self.tableView.frame;
     self.tableView = [[UITableView alloc] initWithFrame:frame style:UITableViewStyleGrouped];
     [self.tableView reloadData];

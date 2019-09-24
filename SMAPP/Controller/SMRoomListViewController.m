@@ -34,8 +34,7 @@
     [super viewDidLoad];
     
     self.navigationItem.title = [HMHomeManager sharedManager].primaryHome.name;
-    
-    [self initNavigationItems];
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD}];
     
     CGRect frame = self.tableView.frame;
     self.tableView = [[UITableView alloc] initWithFrame:frame style:UITableViewStyleGrouped];
@@ -46,10 +45,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCurrentRooms:) name:kDidUpdateRoom object:nil];
     
     [self updateCurrentRooms];
-}
-
-- (void)initNavigationItems {
-    [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD}];
 }
 
 - (void)updateCurrentRooms {

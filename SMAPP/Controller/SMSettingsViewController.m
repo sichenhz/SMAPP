@@ -23,6 +23,8 @@
     [super viewDidLoad];
     
     self.navigationItem.title = @"Menu";
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD}];
+
     self.tableView.backgroundColor = COLOR_BACKGROUND;
     self.tableView.tableFooterView = [[UIView alloc] init];
 }
