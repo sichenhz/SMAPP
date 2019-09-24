@@ -83,7 +83,9 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateAccessories:) name:kDidUpdateAccessory object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateAccessories:) name:kDidUpdateCharacteristicValue object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePrimaryHome:) name:kDidUpdatePrimaryHome object:nil];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cameraButtonPressed) name:kOpenCamera object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(albumsButtonPressed) name:kOpenAlbums object:nil];
+
     // gesture
     UIPanGestureRecognizer *gesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panMenu:)];
     gesture.delegate = self;
@@ -217,9 +219,9 @@
         [guideView.homeButton addTarget:self action:@selector(addHomeButtonPressed) forControlEvents:UIControlEventTouchUpInside];
         [guideView.albumsButton addTarget:self action:@selector(albumsButtonPressed) forControlEvents:UIControlEventTouchUpInside];
         [guideView.cameraButton addTarget:self action:@selector(cameraButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-        [self.scrollView addSubview:guideView];
+        [self.view addSubview:guideView];
         [guideView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(self.scrollView);
+            make.edges.equalTo(guideView.superview);
         }];
         _guideView = guideView;
     }

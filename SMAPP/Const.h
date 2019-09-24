@@ -24,6 +24,8 @@ static NSString *const kDidUpdateRoom = @"kDidUpdateRoom";
 static NSString *const kDidUpdateAccessory = @"kDidUpdateAccessory";
 static NSString *const kDidUpdateCharacteristicValue = @"kDidUpdateCharacteristicValue";
 static NSString *const kDidStartLayoutAccessory = @"kDidStartLayoutAccessory";
+static NSString *const kOpenCamera = @"kOpenCamera";
+static NSString *const kOpenAlbums = @"kOpenAlbums";
 
 // Reuse Identifier
 static NSString *const kUITableViewHeaderView = @"kUITableViewHeaderView";

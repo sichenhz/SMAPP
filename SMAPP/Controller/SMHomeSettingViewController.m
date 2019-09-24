@@ -14,6 +14,7 @@
 #import "UITextView+Placeholder.h"
 #import "SMAlertView.h"
 #import "UIViewController+Show.h"
+#import "SMMainViewController.h"
 
 @interface SMHomeSettingViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
 
@@ -222,7 +223,43 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
+    switch (indexPath.section) {
+        case 0:
+        {
+        }
+            break;
+        case 1:
+        {
+            switch (indexPath.row) {
+                case 0:
+                {
+                    [self openCamera];
+                }
+                    break;
+                case 1:
+                {
+                    
+                }
+                    break;
+                case 2:
+                {
+                    [self openAlbums];
+                }
+                    break;
+            }
+        }
+            break;
+    }
 }
+
+- (void)openCamera {
+    [[NSNotificationCenter defaultCenter] postNotificationName:kOpenCamera object:self];
+}
+
+- (void)openAlbums {
+    [[NSNotificationCenter defaultCenter] postNotificationName:kOpenAlbums object:self];
+}
+
 
 #pragma mark - UIScrollViewDelegate
 
