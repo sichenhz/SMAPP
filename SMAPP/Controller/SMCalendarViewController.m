@@ -19,7 +19,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = COLOR_BACKGROUND;
     self.title = @"Calendar";
     
     UILabel *label = [[UILabel alloc] init];

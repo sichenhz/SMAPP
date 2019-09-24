@@ -152,6 +152,14 @@
     navigationController.view.height = self.window.height - [AppDelegate navigationHeight];;
     navigationController.view.alpha = kAlpha;
 
+    UIView *line = [[UIView alloc] init];
+    line.backgroundColor = COLOR_BACKGROUND_DARK;
+    [navigationController.view addSubview:line];
+    [line mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.right.bottom.equalTo(line.superview);
+        make.width.equalTo(@1);
+    }];
+    
     return navigationController;
 }
 

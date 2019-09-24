@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9605C2DF2339A7F700EFEBA0 /* SMNoFloorPlanView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9605C2DE2339A7F700EFEBA0 /* SMNoFloorPlanView.m */; };
 		9619C433228AD20A0025754D /* SMRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9619C432228AD20A0025754D /* SMRoomViewController.m */; };
 		9619C436228AE2E60025754D /* SMHomeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9619C435228AE2E60025754D /* SMHomeTableViewCell.m */; };
 		9619C439228AE3100025754D /* SMRoomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9619C438228AE3100025754D /* SMRoomTableViewCell.m */; };
@@ -74,6 +75,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9605C2DD2339A7F700EFEBA0 /* SMNoFloorPlanView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMNoFloorPlanView.h; sourceTree = "<group>"; };
+		9605C2DE2339A7F700EFEBA0 /* SMNoFloorPlanView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMNoFloorPlanView.m; sourceTree = "<group>"; };
 		9619C431228AD20A0025754D /* SMRoomViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMRoomViewController.h; sourceTree = "<group>"; };
 		9619C432228AD20A0025754D /* SMRoomViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMRoomViewController.m; sourceTree = "<group>"; };
 		9619C434228AE2E60025754D /* SMHomeTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMHomeTableViewCell.h; sourceTree = "<group>"; };
@@ -347,6 +350,8 @@
 				965906C2228B524400035CD5 /* SMActivityIndicatorView.m */,
 				96E4472522F16D1F005E8B78 /* SMDisableHighlightButton.h */,
 				96E4472622F16D1F005E8B78 /* SMDisableHighlightButton.m */,
+				9605C2DD2339A7F700EFEBA0 /* SMNoFloorPlanView.h */,
+				9605C2DE2339A7F700EFEBA0 /* SMNoFloorPlanView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -375,6 +380,8 @@
 				96E04D35227F1468002DE8F2 /* SMHomeViewController.m */,
 				9619C43A228AFE4F0025754D /* SMAccessoryListViewController.h */,
 				9619C43B228AFE4F0025754D /* SMAccessoryListViewController.m */,
+				96C8E9452331ED9800B95DCA /* SMCalendarViewController.h */,
+				96C8E9462331ED9800B95DCA /* SMCalendarViewController.m */,
 				9619C431228AD20A0025754D /* SMRoomViewController.h */,
 				9619C432228AD20A0025754D /* SMRoomViewController.m */,
 				96E04D2A227F1468002DE8F2 /* SMAddAccessoryViewController.h */,
@@ -391,8 +398,6 @@
 				965906B9228B47B400035CD5 /* SMRoomSettingViewController.m */,
 				96E446CE22EDA389005E8B78 /* SMSettingsViewController.h */,
 				96E446CF22EDA389005E8B78 /* SMSettingsViewController.m */,
-				96C8E9452331ED9800B95DCA /* SMCalendarViewController.h */,
-				96C8E9462331ED9800B95DCA /* SMCalendarViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -521,6 +526,7 @@
 				96E4471722EDD29E005E8B78 /* SMCameraViewController.m in Sources */,
 				96E04D0D227F0AC0002DE8F2 /* MASConstraintMaker.m in Sources */,
 				96E4471322EDD29E005E8B78 /* SMImageClipViewController.m in Sources */,
+				9605C2DF2339A7F700EFEBA0 /* SMNoFloorPlanView.m in Sources */,
 				96E4471922EDD29E005E8B78 /* SMCameraController.m in Sources */,
 				96E04D29227F1431002DE8F2 /* HMHomeManager+Share.m in Sources */,
 				96E04D25227F1400002DE8F2 /* UIView+Extention.m in Sources */,

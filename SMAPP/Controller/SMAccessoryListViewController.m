@@ -44,7 +44,7 @@
     }];
     
     [collectionView registerClass:[SMCollectionViewCell class] forCellWithReuseIdentifier:kSMCollectionViewCell];
-    collectionView.backgroundColor = [UIColor whiteColor];
+    collectionView.backgroundColor = COLOR_BACKGROUND;
     collectionView.dataSource = self;
     collectionView.delegate = self;
     collectionView.alwaysBounceVertical = YES; // make collectionView bounce even datasource has only 1 item

@@ -35,46 +35,13 @@
 }
 
 - (void)initNavigationItems {
-    
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD}];
-    
-//    UIImage *image = [[UIImage imageNamed:@"add_selected"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-//    UIBarButtonItem *rightbuttonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(rightButtonItemPressed:)];
-//    [rightbuttonItem setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD, NSForegroundColorAttributeName : COLOR_ORANGE} forState:(UIControlStateNormal)];
-//    [rightbuttonItem setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD, NSForegroundColorAttributeName : COLOR_ORANGE} forState:(UIControlStateHighlighted)];
-//    self.navigationItem.rightBarButtonItems = @[rightbuttonItem];
 }
 
 #pragma mark - Notification
 
 - (void)reloadHomes:(NSNotification *)notification {
     [self.tableView reloadData];
-}
-
-#pragma mark - Action
-
-- (void)rightButtonItemPressed:(id)sender {
-    HMHomeManager *manager = [HMHomeManager sharedManager];
-    
-    SMAlertView *alertView = [SMAlertView alertViewWithTitle:@"Add Home..." message:@"Please make sure the name is unique." style:SMAlertViewStyleAlert];
-    
-    [alertView addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-        textField.placeholder = @"Ex. Vacation Home";
-    }];
-    
-    [alertView addAction:[SMAlertAction actionWithTitle:@"Cancel" style:SMAlertActionStyleCancel handler:nil]];
-    
-    [alertView addAction:[SMAlertAction actionWithTitle:@"Save" style:SMAlertActionStyleConfirm handler:^(SMAlertAction * _Nonnull action) {
-        NSString *newName = alertView.textFields.firstObject.text;
-        [manager addHomeWithName:newName completionHandler:^(HMHome * _Nullable home, NSError * _Nullable error) {
-            if (error) {
-                [self showError:error];
-            } else {
-                [self.tableView reloadData];
-            }
-        }];
-    }]];
-    [alertView show];
 }
 
 #pragma mark - UITableViewDataSource

@@ -19,6 +19,7 @@
 #import "UIView+Extention.h"
 #import "SMButton.h"
 #import "SMService.h"
+#import "SMNoFloorPlanView.h"
 
 @interface SMMainService : NSObject
 
@@ -43,8 +44,7 @@
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) NSMutableArray *mainServices;
-@property (nonatomic, weak) UILabel *alertLabel;
-@property (nonatomic, weak) UIImageView *bubbleView;
+@property (nonatomic, weak) SMNoFloorPlanView *guideView;
 
 @end
 
@@ -72,12 +72,15 @@
     titleButton.height = self.navigationController.navigationBar.height;
     _titleButton = titleButton;
     
-    UIImage *image = [[UIImage imageNamed:@"add_selected"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    UIImage *image = [[UIImage imageNamed:@"add"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     UIBarButtonItem *rightbuttonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(rightButtonItemPressed:)];
-    [rightbuttonItem setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD, NSForegroundColorAttributeName : COLOR_ORANGE} forState:(UIControlStateNormal)];
-    [rightbuttonItem setTitleTextAttributes:@{NSFontAttributeName : FONT_H2_BOLD, NSForegroundColorAttributeName : COLOR_ORANGE} forState:(UIControlStateHighlighted)];
     self.navigationItem.rightBarButtonItem = rightbuttonItem;
+
+     // must initialize them before initialization of its subcontrollers' views
+    [self imageView];
+    [self guideView];
     
+    // load image in case there is no primary home
     [self loadImage:NO];
 }
 
@@ -193,27 +196,28 @@
     // 1 means uncompression
     [UIImageJPEGRepresentation(image, 1) writeToFile:imageFilePath atomically:YES];
     
-    [self.bubbleView removeFromSuperview];
-    [self.alertLabel removeFromSuperview];
+    [self.guideView removeFromSuperview];
 }
 
 - (void)loadImage:(BOOL)didRemovePrimaryHome {
     NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
     NSString *imageFilePath = [path stringByAppendingPathComponent:[HMHomeManager sharedManager].primaryHome.uniqueIdentifier.UUIDString];
     UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfFile:imageFilePath]];
+    self.imageView.image = image;
     if (!image) {
-        self.imageView.image = [UIImage imageNamed:@"placeholder"];
-        self.bubbleView.image = [UIImage imageNamed:@"bubble"];
-        
         if ([HMHomeManager sharedManager].primaryHome && !didRemovePrimaryHome) {
-            self.alertLabel.text = @"My master, please import your floorplan through the button on the top-right.";
+            self.guideView.label.text = @"Please add your floor plan!";
+            self.guideView.homeButton.hidden = YES;
+            self.guideView.albumsButton.hidden = NO;
+            self.guideView.cameraButton.hidden = NO;
         } else {
-            self.alertLabel.text = @"My master, please add a home and import your floorplan through the button on the top-right.";
+            self.guideView.label.text = @"Plase Add your home!";
+            self.guideView.homeButton.hidden = NO;
+            self.guideView.albumsButton.hidden = YES;
+            self.guideView.cameraButton.hidden = YES;
         }
     } else {
-        self.imageView.image = image;
-        [self.bubbleView removeFromSuperview];
-        [self.alertLabel removeFromSuperview];
+        [self.guideView removeFromSuperview];
     }
 }
 
@@ -399,42 +403,23 @@
     return _imageView;
 }
 
-- (UILabel *)alertLabel {
-    if (!_alertLabel) {
-        UILabel *label = [[UILabel alloc] init];
-        label.numberOfLines = 0;
-        label.font = [UIFont fontWithName:@"CenturyGothic-Bold" size:28];
-        label.textColor = [UIColor blackColor];
-        [self.view addSubview:label];
-        [label mas_makeConstraints:^(MASConstraintMaker *make) {
-            CGFloat screenW = [UIScreen mainScreen].bounds.size.width;
-            CGFloat screenH = [UIScreen mainScreen].bounds.size.height;
-            make.left.equalTo(self.view).offset(screenW * 0.4);
-            make.top.equalTo(self.view).offset(screenH * 0.22);
-            make.width.equalTo(@500);
+- (SMNoFloorPlanView *)guideView {
+    if (!_guideView) {
+        SMNoFloorPlanView *guideView = [[SMNoFloorPlanView alloc] init];
+        [guideView.homeButton addTarget:self action:@selector(addHomeButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+        [guideView.albumsButton addTarget:self action:@selector(albumsButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+        [guideView.cameraButton addTarget:self action:@selector(cameraButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+        [self.scrollView addSubview:guideView];
+        [guideView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self.view);
         }];
-        _alertLabel = label;
+        _guideView = guideView;
     }
-    return _alertLabel;
-}
-
-- (UIImageView *)bubbleView {
-    if (!_bubbleView) {
-        UIImageView *bubbleView = [[UIImageView alloc] init];
-        bubbleView.alpha = 0.5;
-        [self.view addSubview:bubbleView];
-        [bubbleView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.alertLabel).offset(-5);
-            make.left.equalTo(self.alertLabel).offset(-20);
-            make.right.equalTo(self.alertLabel);
-            make.bottom.equalTo(self.alertLabel).offset(8);
-        }];
-        _bubbleView = bubbleView;
-    }
-    return _bubbleView;
+    return _guideView;
 }
 
 #pragma mark - Notification
+
 - (void)updatePrimaryHome:(NSNotification *)notification {
     for (SMMainService *mainService in self.mainServices) {
         [mainService.button removeFromSuperview];

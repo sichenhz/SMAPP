@@ -23,6 +23,7 @@
     [super viewDidLoad];
     
     self.navigationItem.title = @"Menu";
+    self.tableView.backgroundColor = COLOR_BACKGROUND;
     self.tableView.tableFooterView = [[UIView alloc] init];
 }
 
