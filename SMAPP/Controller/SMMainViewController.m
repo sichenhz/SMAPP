@@ -352,8 +352,8 @@
                 CGFloat centerY = [[coordinateMap objectForKey:@"centerY"] floatValue];
                 SMServiceType type = [SMService typeWithTypeString:service.serviceType];
                 
-                if (type == SMServiceTypeBulb ||
-                    type == SMServiceTypeSwitch) {
+                if (type != SMServiceTypeOther &&
+                    type != SMServiceTypeSensor) {
                     for (HMCharacteristic *characteristic in service.characteristics) {
                         if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetLockMechanismState]  ||
                             [characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState] ||
@@ -390,6 +390,9 @@
     if (type == SMServiceTypeBulb) {
         [button setImage:[UIImage imageNamed:@"bulb_off_l"] forState:UIControlStateNormal];
         [button setImage:[UIImage imageNamed:@"bulb_on_l"] forState:UIControlStateSelected];
+    } else if (type == SMServiceTypeGarageDoorOpener) {
+        [button setImage:[UIImage imageNamed:@"garage_off"] forState:UIControlStateNormal];
+        [button setImage:[UIImage imageNamed:@"garage_on"] forState:UIControlStateSelected];
     } else if (type == SMServiceTypeSwitch) {
         [button setImage:[UIImage imageNamed:@"placeholder_off"] forState:UIControlStateNormal];
         [button setImage:[UIImage imageNamed:@"placeholder_on"] forState:UIControlStateSelected];
@@ -758,8 +761,8 @@
     
     if (isSelect) {
         SMServiceType type = [SMService typeWithTypeString:service.serviceType];
-        if (type == SMServiceTypeBulb ||
-            type == SMServiceTypeSwitch) {
+        if (type != SMServiceTypeOther &&
+            type != SMServiceTypeSensor) {
             for (HMCharacteristic *characteristic in service.characteristics) {
                 if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetLockMechanismState]  ||
                     [characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState] ||

@@ -12,6 +12,7 @@ typedef enum : NSUInteger {
     SMCollectionViewCellTypeSensor,
     SMCollectionViewCellTypeSwitch,
     SMCollectionViewCellTypeBulb,
+    SMCollectionViewCellGarageDoorOpener,
 } SMCollectionViewCellType;
 
 NS_ASSUME_NONNULL_BEGIN

@@ -13,6 +13,7 @@ typedef enum : NSUInteger {
     SMServiceTypeSensor,
     SMServiceTypeSwitch,
     SMServiceTypeBulb,
+    SMServiceTypeGarageDoorOpener,
 } SMServiceType;
 
 NS_ASSUME_NONNULL_BEGIN

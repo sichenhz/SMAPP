@@ -14,9 +14,10 @@
 + (SMServiceType)typeWithTypeString:(NSString *)typeString {
     if ([typeString isEqualToString:HMServiceTypeLightbulb]) {
         return SMServiceTypeBulb;
+    } else if ([typeString isEqualToString:HMServiceTypeGarageDoorOpener]) {
+        return SMServiceTypeGarageDoorOpener;
     } else if ([typeString isEqualToString:HMServiceTypeSwitch] ||
                [typeString isEqualToString:HMServiceTypeThermostat] ||
-               [typeString isEqualToString:HMServiceTypeGarageDoorOpener] ||
                [typeString isEqualToString:HMServiceTypeAccessoryInformation] ||
                [typeString isEqualToString:HMServiceTypeFan] ||
                [typeString isEqualToString:HMServiceTypeOutlet] ||
