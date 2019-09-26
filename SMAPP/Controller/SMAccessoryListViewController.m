@@ -94,8 +94,7 @@
     
     for (HMCharacteristic *characteristic in service.characteristics) {
         if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetLockMechanismState]  ||
-            [characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState] ||
-            [characteristic.characteristicType isEqualToString:HMCharacteristicTypeObstructionDetected]) {
+            [characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState]) {
             
             BOOL changedLockState = ![characteristic.value boolValue];
             
@@ -134,7 +133,6 @@
     cell.iconButton.selected = NO;
     for (HMCharacteristic *characteristic in service.characteristics) {
         if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState] ||
-            [characteristic.characteristicType isEqualToString:HMCharacteristicTypeObstructionDetected] ||
             [characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetLockMechanismState]) {
             cell.iconButton.selected = [characteristic.value boolValue];
             break;

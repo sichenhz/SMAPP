@@ -54,8 +54,7 @@
     HMCharacteristic *characteristic = service.characteristics[path.row];
     
     if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetLockMechanismState]  ||
-        [characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState] ||
-        [characteristic.characteristicType isEqualToString:HMCharacteristicTypeObstructionDetected]) {
+        [characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState]) {
         
         BOOL changedLockState = ![characteristic.value boolValue];
         
@@ -176,7 +175,6 @@
         cell.accessoryType = UITableViewCellAccessoryNone;
 
         if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState] ||
-            [characteristic.characteristicType isEqualToString:HMCharacteristicTypeObstructionDetected] ||
             [characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetLockMechanismState]) {
             
             BOOL lockState = [characteristic.value boolValue];
@@ -236,7 +234,6 @@
         header.switchButton.hidden = YES;
         for (HMCharacteristic *characteristic in service.characteristics) {
             if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState] ||
-                [characteristic.characteristicType isEqualToString:HMCharacteristicTypeObstructionDetected] ||
                 [characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetLockMechanismState]) {
                 header.switchButton.hidden = NO;
                 

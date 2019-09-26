@@ -356,8 +356,7 @@
                     type != SMServiceTypeSensor) {
                     for (HMCharacteristic *characteristic in service.characteristics) {
                         if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetLockMechanismState]  ||
-                            [characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState] ||
-                            [characteristic.characteristicType isEqualToString:HMCharacteristicTypeObstructionDetected]) {
+                            [characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState]) {
                             
                             [self createButton:[characteristic.value boolValue] service:service centerX:centerX centerY:centerY];
                             break;
@@ -635,8 +634,7 @@
             HMService *service = buttonService.service;
             for (HMCharacteristic *characteristic in service.characteristics) {
                 if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetLockMechanismState]  ||
-                    [characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState] ||
-                    [characteristic.characteristicType isEqualToString:HMCharacteristicTypeObstructionDetected]) {
+                    [characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState]) {
                     
                     BOOL changedLockState = ![characteristic.value boolValue];
                     
@@ -765,8 +763,7 @@
             type != SMServiceTypeSensor) {
             for (HMCharacteristic *characteristic in service.characteristics) {
                 if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetLockMechanismState]  ||
-                    [characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState] ||
-                    [characteristic.characteristicType isEqualToString:HMCharacteristicTypeObstructionDetected]) {
+                    [characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState]) {
                     
                     [self createButton:[characteristic.value boolValue] service:service];
                     break;
@@ -803,8 +800,7 @@
             } else {
                 for (HMCharacteristic *characteristic in service.characteristics) {
                     if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetLockMechanismState]  ||
-                        [characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState] ||
-                        [characteristic.characteristicType isEqualToString:HMCharacteristicTypeObstructionDetected]) {
+                        [characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState]) {
                         
                         buttonService.button.selected = [characteristic.value boolValue];
                         break;

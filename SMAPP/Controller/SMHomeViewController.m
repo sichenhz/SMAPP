@@ -374,7 +374,6 @@ HMAccessoryDelegate
                     
                     for (HMCharacteristic *characteristic in service.characteristics) {
                         if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState] ||
-                            [characteristic.characteristicType isEqualToString:HMCharacteristicTypeObstructionDetected] ||
                             [characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetLockMechanismState]) {
                             cell.lockSwitch.on = [characteristic.value boolValue];
                         }
@@ -439,7 +438,6 @@ HMAccessoryDelegate
     
     for (HMCharacteristic *characteristic in service.characteristics) {
         if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState] ||
-            [characteristic.characteristicType isEqualToString:HMCharacteristicTypeObstructionDetected] ||
             [characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetLockMechanismState]) {
 
             cell.lockSwitch.hidden = NO;
@@ -460,8 +458,7 @@ HMAccessoryDelegate
 
     for (HMCharacteristic *characteristic in service.characteristics) {
         if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetLockMechanismState]  ||
-            [characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState] ||
-            [characteristic.characteristicType isEqualToString:HMCharacteristicTypeObstructionDetected]) {
+            [characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState]) {
             
             BOOL changedLockState = ![characteristic.value boolValue];
             

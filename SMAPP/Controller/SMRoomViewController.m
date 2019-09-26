@@ -205,8 +205,7 @@
     HMCharacteristic *characteristic = item.service.characteristics[indexPath.item];
     
     if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetLockMechanismState]  ||
-        [characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState] ||
-        [characteristic.characteristicType isEqualToString:HMCharacteristicTypeObstructionDetected]) {
+        [characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState]) {
         
         BOOL changedLockState = ![characteristic.value boolValue];
         
@@ -284,7 +283,6 @@
     cell.accessoryView = nil;
     
     if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState] ||
-        [characteristic.characteristicType isEqualToString:HMCharacteristicTypeObstructionDetected] ||
         [characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetLockMechanismState]) {
         
         UISwitch *lockSwitch = [[UISwitch alloc] init];
