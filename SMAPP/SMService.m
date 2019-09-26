@@ -16,16 +16,16 @@
         return SMServiceTypeBulb;
     } else if ([typeString isEqualToString:HMServiceTypeGarageDoorOpener]) {
         return SMServiceTypeGarageDoorOpener;
+    } else if ([typeString isEqualToString:HMServiceTypeFan]) {
+        return SMserviceTypeFan;
+    } else if ([typeString isEqualToString:HMServiceTypeHeaterCooler]) {
+        return SMserviceTypeHeaterCooler;
     } else if ([typeString isEqualToString:HMServiceTypeSwitch] ||
                [typeString isEqualToString:HMServiceTypeThermostat] ||
-               [typeString isEqualToString:HMServiceTypeAccessoryInformation] ||
-               [typeString isEqualToString:HMServiceTypeFan] ||
                [typeString isEqualToString:HMServiceTypeOutlet] ||
                [typeString isEqualToString:HMServiceTypeLockMechanism] ||
                [typeString isEqualToString:HMServiceTypeLockManagement] ||
                [typeString isEqualToString:HMServiceTypeBattery] ||
-               [typeString isEqualToString:HMServiceTypeDoor] ||
-               [typeString isEqualToString:HMServiceTypeDoor] ||
                [typeString isEqualToString:HMServiceTypeDoorbell] ||
                [typeString isEqualToString:HMServiceTypeSecuritySystem] ||
                [typeString isEqualToString:HMServiceTypeStatefulProgrammableSwitch] ||
@@ -39,16 +39,16 @@
                [typeString isEqualToString:HMServiceTypeAirPurifier] ||
                [typeString isEqualToString:HMServiceTypeVentilationFan] ||
                [typeString isEqualToString:HMServiceTypeFilterMaintenance] ||
-               [typeString isEqualToString:HMServiceTypeHeaterCooler] ||
                [typeString isEqualToString:HMServiceTypeHumidifierDehumidifier] ||
-               [typeString isEqualToString:HMServiceTypeSlats] ||
                [typeString isEqualToString:HMServiceTypeSlats] ||
                [typeString isEqualToString:HMServiceTypeLabel] ||
                [typeString isEqualToString:HMServiceTypeIrrigationSystem] ||
                [typeString isEqualToString:HMServiceTypeValve] ||
                [typeString isEqualToString:HMServiceTypeFaucet]) {
         return SMServiceTypeSwitch;
-    } else if ([typeString isEqualToString:HMServiceTypeCarbonDioxideSensor] ||
+    } else if ([typeString isEqualToString:HMServiceTypeDoor] ||
+               [typeString isEqualToString:HMServiceTypeAccessoryInformation] ||
+               [typeString isEqualToString:HMServiceTypeCarbonDioxideSensor] ||
                [typeString isEqualToString:HMServiceTypeCarbonMonoxideSensor] ||
                [typeString isEqualToString:HMServiceTypeAirQualitySensor] ||
                [typeString isEqualToString:HMServiceTypeContactSensor] ||

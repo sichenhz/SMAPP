@@ -69,16 +69,21 @@
     
     SMServiceType type = [SMService typeWithTypeString:serviceType];
     
+    self.cellType = SMCollectionViewCellTypeSwitch;
+
     if (type == SMServiceTypeBulb) {
-        self.cellType = SMCollectionViewCellTypeBulb;
         [self.iconButton setImage:[UIImage imageNamed:@"bulb_off_l"] forState:UIControlStateNormal];
         [self.iconButton setImage:[UIImage imageNamed:@"bulb_on_l"] forState:UIControlStateSelected];
     } if (type == SMServiceTypeGarageDoorOpener) {
-        self.cellType = SMCollectionViewCellGarageDoorOpener;
         [self.iconButton setImage:[UIImage imageNamed:@"garage_off"] forState:UIControlStateNormal];
         [self.iconButton setImage:[UIImage imageNamed:@"garage_on"] forState:UIControlStateSelected];
+    } else if (type == SMserviceTypeFan) {
+        [self.iconButton setImage:[UIImage imageNamed:@"fan_off"] forState:UIControlStateNormal];
+        [self.iconButton setImage:[UIImage imageNamed:@"fan_on"] forState:UIControlStateSelected];
+    } else if (type == SMserviceTypeHeaterCooler) {
+        [self.iconButton setImage:[UIImage imageNamed:@"airconditioner_off"] forState:UIControlStateNormal];
+        [self.iconButton setImage:[UIImage imageNamed:@"airconditioner_on"] forState:UIControlStateSelected];
     } else if (type == SMServiceTypeSwitch) {
-        self.cellType = SMCollectionViewCellTypeSwitch;
         [self.iconButton setImage:[UIImage imageNamed:@"placeholder_off"] forState:UIControlStateNormal];
         [self.iconButton setImage:[UIImage imageNamed:@"placeholder_on"] forState:UIControlStateSelected];
     } else if (type == SMServiceTypeSensor) {

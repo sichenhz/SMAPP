@@ -145,8 +145,7 @@
     __weak typeof(self) weakSelf = self;
     
     cell.iconButtonPressed = ^(UIButton *sender) {
-        if (cell.cellType == SMCollectionViewCellTypeBulb ||
-            cell.cellType == SMCollectionViewCellTypeSwitch) {
+        if (cell.cellType == SMCollectionViewCellTypeSwitch) {
             [weakSelf changeLockState:sender];
         } else {
             SMAccessoryDetailViewController *viewController = [[SMAccessoryDetailViewController alloc] init];

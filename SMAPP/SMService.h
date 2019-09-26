@@ -14,6 +14,8 @@ typedef enum : NSUInteger {
     SMServiceTypeSwitch,
     SMServiceTypeBulb,
     SMServiceTypeGarageDoorOpener,
+    SMserviceTypeFan,
+    SMserviceTypeHeaterCooler,
 } SMServiceType;
 
 NS_ASSUME_NONNULL_BEGIN

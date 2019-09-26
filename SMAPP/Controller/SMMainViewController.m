@@ -357,13 +357,11 @@
                     for (HMCharacteristic *characteristic in service.characteristics) {
                         if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetLockMechanismState]  ||
                             [characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState]) {
-                            
                             [self createButton:[characteristic.value boolValue] service:service centerX:centerX centerY:centerY];
                             break;
                         }
                     }
-                } else if (type == SMServiceTypeSensor) {
-#warning TODO
+                } else {
                     [self createButton:NO service:service centerX:centerX centerY:centerY];
                 }
             }
@@ -392,6 +390,12 @@
     } else if (type == SMServiceTypeGarageDoorOpener) {
         [button setImage:[UIImage imageNamed:@"garage_off"] forState:UIControlStateNormal];
         [button setImage:[UIImage imageNamed:@"garage_on"] forState:UIControlStateSelected];
+    } else if (type == SMserviceTypeFan) {
+        [button setImage:[UIImage imageNamed:@"fan_off"] forState:UIControlStateNormal];
+        [button setImage:[UIImage imageNamed:@"fan_on"] forState:UIControlStateSelected];
+    } else if (type == SMserviceTypeHeaterCooler) {
+        [button setImage:[UIImage imageNamed:@"airconditioner_off"] forState:UIControlStateNormal];
+        [button setImage:[UIImage imageNamed:@"airconditioner_on"] forState:UIControlStateSelected];
     } else if (type == SMServiceTypeSwitch) {
         [button setImage:[UIImage imageNamed:@"placeholder_off"] forState:UIControlStateNormal];
         [button setImage:[UIImage imageNamed:@"placeholder_on"] forState:UIControlStateSelected];
