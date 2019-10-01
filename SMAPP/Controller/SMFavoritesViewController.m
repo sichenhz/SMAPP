@@ -1,12 +1,12 @@
 //
-//  SMAccessoryListViewController.m
+//  SMFavoritesViewController.m
 //  SMAPP
 //
 //  Created by Sichen on 14/5/19.
 //  Copyright © 2019 RXP. All rights reserved.
 //
 
-#import "SMAccessoryListViewController.h"
+#import "SMFavoritesViewController.h"
 #import "Masonry.h"
 #import "SMCollectionViewCell.h"
 #import "Const.h"
@@ -15,14 +15,14 @@
 #import "SMAlertView.h"
 #import "UIViewController+Show.h"
 
-@interface SMAccessoryListViewController () <UICollectionViewDelegate, UICollectionViewDataSource>
+@interface SMFavoritesViewController () <UICollectionViewDelegate, UICollectionViewDataSource>
 
 @property (nonatomic, weak) UICollectionView *collectionView;
 @property (nonatomic, strong) NSMutableArray *dataList;
 
 @end
 
-@implementation SMAccessoryListViewController
+@implementation SMFavoritesViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];

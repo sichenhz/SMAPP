@@ -1,5 +1,5 @@
 //
-//  SMAccessoryListViewController.h
+//  SMFavoritesViewController.h
 //  SMAPP
 //
 //  Created by Sichen on 14/5/19.
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface SMAccessoryListViewController : UIViewController
+@interface SMFavoritesViewController : UIViewController
 
 @end
 

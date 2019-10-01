@@ -22,7 +22,7 @@
 #import "SMNoFloorPlanView.h"
 #import "SMHomeViewController.h"
 #import "SMCalendarViewController.h"
-#import "SMAccessoryListViewController.h"
+#import "SMFavoritesViewController.h"
 #import "SMSettingsViewController.h"
 
 @interface SMButtonService : NSObject
@@ -150,7 +150,7 @@
 
 - (UINavigationController *)favioritesVC {
     if (!_favioritesVC) {
-        _favioritesVC = [self createNavigationControllerWithClassName:NSStringFromClass(SMAccessoryListViewController.self)];
+        _favioritesVC = [self createNavigationControllerWithClassName:NSStringFromClass(SMFavoritesViewController.self)];
         
         [self.childVCs addObject:_favioritesVC];
     }

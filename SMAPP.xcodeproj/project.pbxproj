@@ -11,7 +11,7 @@
 		9619C433228AD20A0025754D /* SMRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9619C432228AD20A0025754D /* SMRoomViewController.m */; };
 		9619C436228AE2E60025754D /* SMHomeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9619C435228AE2E60025754D /* SMHomeTableViewCell.m */; };
 		9619C439228AE3100025754D /* SMRoomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9619C438228AE3100025754D /* SMRoomTableViewCell.m */; };
-		9619C43C228AFE4F0025754D /* SMAccessoryListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9619C43B228AFE4F0025754D /* SMAccessoryListViewController.m */; };
+		9619C43C228AFE4F0025754D /* SMFavoritesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9619C43B228AFE4F0025754D /* SMFavoritesViewController.m */; };
 		9619C43F228AFF090025754D /* SMHomeListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9619C43E228AFF080025754D /* SMHomeListViewController.m */; };
 		9619C442228B027C0025754D /* SMHomeListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9619C441228B027C0025754D /* SMHomeListTableViewCell.m */; };
 		9619C445228B10800025754D /* SMTextFieldTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9619C444228B10800025754D /* SMTextFieldTableViewCell.m */; };
@@ -83,8 +83,8 @@
 		9619C435228AE2E60025754D /* SMHomeTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMHomeTableViewCell.m; sourceTree = "<group>"; };
 		9619C437228AE3100025754D /* SMRoomTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMRoomTableViewCell.h; sourceTree = "<group>"; };
 		9619C438228AE3100025754D /* SMRoomTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMRoomTableViewCell.m; sourceTree = "<group>"; };
-		9619C43A228AFE4F0025754D /* SMAccessoryListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMAccessoryListViewController.h; sourceTree = "<group>"; };
-		9619C43B228AFE4F0025754D /* SMAccessoryListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMAccessoryListViewController.m; sourceTree = "<group>"; };
+		9619C43A228AFE4F0025754D /* SMFavoritesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMFavoritesViewController.h; sourceTree = "<group>"; };
+		9619C43B228AFE4F0025754D /* SMFavoritesViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMFavoritesViewController.m; sourceTree = "<group>"; };
 		9619C43D228AFF080025754D /* SMHomeListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMHomeListViewController.h; sourceTree = "<group>"; };
 		9619C43E228AFF080025754D /* SMHomeListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMHomeListViewController.m; sourceTree = "<group>"; };
 		9619C440228B027C0025754D /* SMHomeListTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMHomeListTableViewCell.h; sourceTree = "<group>"; };
@@ -376,10 +376,12 @@
 			children = (
 				96E446D122EDACE0005E8B78 /* SMMainViewController.h */,
 				96E446D222EDACE0005E8B78 /* SMMainViewController.m */,
+				96E446CE22EDA389005E8B78 /* SMSettingsViewController.h */,
+				96E446CF22EDA389005E8B78 /* SMSettingsViewController.m */,
 				96E04D33227F1468002DE8F2 /* SMHomeViewController.h */,
 				96E04D35227F1468002DE8F2 /* SMHomeViewController.m */,
-				9619C43A228AFE4F0025754D /* SMAccessoryListViewController.h */,
-				9619C43B228AFE4F0025754D /* SMAccessoryListViewController.m */,
+				9619C43A228AFE4F0025754D /* SMFavoritesViewController.h */,
+				9619C43B228AFE4F0025754D /* SMFavoritesViewController.m */,
 				96C8E9452331ED9800B95DCA /* SMCalendarViewController.h */,
 				96C8E9462331ED9800B95DCA /* SMCalendarViewController.m */,
 				9619C431228AD20A0025754D /* SMRoomViewController.h */,
@@ -396,8 +398,6 @@
 				965906B6228B476000035CD5 /* SMRoomListViewController.m */,
 				965906B8228B47B400035CD5 /* SMRoomSettingViewController.h */,
 				965906B9228B47B400035CD5 /* SMRoomSettingViewController.m */,
-				96E446CE22EDA389005E8B78 /* SMSettingsViewController.h */,
-				96E446CF22EDA389005E8B78 /* SMSettingsViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -558,7 +558,7 @@
 				9619C445228B10800025754D /* SMTextFieldTableViewCell.m in Sources */,
 				96E4471A22EDD29E005E8B78 /* SMAlbumsViewCell.m in Sources */,
 				96E446D322EDACE0005E8B78 /* SMMainViewController.m in Sources */,
-				9619C43C228AFE4F0025754D /* SMAccessoryListViewController.m in Sources */,
+				9619C43C228AFE4F0025754D /* SMFavoritesViewController.m in Sources */,
 				965906BA228B47B400035CD5 /* SMRoomSettingViewController.m in Sources */,
 				9619C43F228AFF090025754D /* SMHomeListViewController.m in Sources */,
 				9619C44E228B15280025754D /* SMButtonTableViewCell.m in Sources */,
