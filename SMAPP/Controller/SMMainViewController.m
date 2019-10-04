@@ -350,18 +350,18 @@
                 
                 CGFloat centerX = [[coordinateMap objectForKey:@"centerX"] floatValue];
                 CGFloat centerY = [[coordinateMap objectForKey:@"centerY"] floatValue];
-                SMServiceType type = [SMService typeWithTypeString:service.serviceType];
                 
-                if (type != SMServiceTypeOther &&
-                    type != SMServiceTypeSensor) {
-                    for (HMCharacteristic *characteristic in service.characteristics) {
-                        if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetLockMechanismState]  ||
-                            [characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState]) {
-                            [self createButton:[characteristic.value boolValue] service:service centerX:centerX centerY:centerY];
-                            break;
-                        }
+                BOOL switchable = NO;
+                for (HMCharacteristic *characteristic in service.characteristics) {
+                    if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetLockMechanismState]  ||
+                        [characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState]) {
+                        
+                        [self createButton:[characteristic.value boolValue] service:service centerX:centerX centerY:centerY];
+                        switchable = YES;
+                        break;
                     }
-                } else {
+                }
+                if (switchable == NO) {
                     [self createButton:NO service:service centerX:centerX centerY:centerY];
                 }
             }
@@ -399,7 +399,18 @@
     } else if (type == SMServiceTypeSwitch) {
         [button setImage:[UIImage imageNamed:@"placeholder_off"] forState:UIControlStateNormal];
         [button setImage:[UIImage imageNamed:@"placeholder_on"] forState:UIControlStateSelected];
-    } else if (type == SMServiceTypeSensor) {
+    } else if (type == SMserviceTypeTV) {
+        [button setImage:[UIImage imageNamed:@"tv_off"] forState:UIControlStateNormal];
+        [button setImage:[UIImage imageNamed:@"tv_on"] forState:UIControlStateSelected];
+    } else if (type == SMserviceTypeAirconditioner) {
+        [button setImage:[UIImage imageNamed:@"airconditioner_off"] forState:UIControlStateNormal];
+        [button setImage:[UIImage imageNamed:@"airconditioner_on"] forState:UIControlStateSelected];
+    } else if (type == SMserviceTypeGate) {
+        [button setImage:[UIImage imageNamed:@"door_off"] forState:UIControlStateNormal];
+        [button setImage:[UIImage imageNamed:@"door_on"] forState:UIControlStateSelected];
+    }
+
+    else if (type == SMServiceTypeSensor) {
         [button setImage:[UIImage imageNamed:@"sensor"] forState:UIControlStateNormal];
     }
     [button addTarget:self action:@selector(buttonPressed:) forControlEvents:(UIControlEventTouchUpInside)];
@@ -745,19 +756,17 @@
     HMService *service = notification.userInfo[@"service"];
     
     if (isSelect) {
-        SMServiceType type = [SMService typeWithTypeString:service.serviceType];
-        if (type != SMServiceTypeOther &&
-            type != SMServiceTypeSensor) {
-            for (HMCharacteristic *characteristic in service.characteristics) {
-                if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetLockMechanismState]  ||
-                    [characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState]) {
-                    
-                    [self createButton:[characteristic.value boolValue] service:service];
-                    break;
-                }
+        BOOL switchable = NO;
+        for (HMCharacteristic *characteristic in service.characteristics) {
+            if ([characteristic.characteristicType isEqualToString:HMCharacteristicTypeTargetLockMechanismState]  ||
+                [characteristic.characteristicType isEqualToString:HMCharacteristicTypePowerState]) {
+                
+                [self createButton:[characteristic.value boolValue] service:service];
+                switchable = YES;
+                break;
             }
-        } else if (type == SMServiceTypeSensor) {
-#warning TODO
+        }
+        if (switchable == NO) {
             [self createButton:NO service:service];
         }
     } else {

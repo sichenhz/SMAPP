@@ -20,10 +20,12 @@
         return SMserviceTypeFan;
     } else if ([typeString isEqualToString:HMServiceTypeHeaterCooler]) {
         return SMserviceTypeHeaterCooler;
+    } else if ([typeString isEqualToString:HMServiceTypeDoor]) {
+        return SMserviceTypeGate;
     } else if ([typeString isEqualToString:HMServiceTypeSwitch] ||
                [typeString isEqualToString:HMServiceTypeThermostat] ||
-               [typeString isEqualToString:HMServiceTypeOutlet] ||
-               [typeString isEqualToString:HMServiceTypeLockMechanism] ||
+//               [typeString isEqualToString:HMServiceTypeOutlet] ||
+//               [typeString isEqualToString:HMServiceTypeLockMechanism] ||
                [typeString isEqualToString:HMServiceTypeLockManagement] ||
                [typeString isEqualToString:HMServiceTypeBattery] ||
                [typeString isEqualToString:HMServiceTypeDoorbell] ||
@@ -46,8 +48,7 @@
                [typeString isEqualToString:HMServiceTypeValve] ||
                [typeString isEqualToString:HMServiceTypeFaucet]) {
         return SMServiceTypeSwitch;
-    } else if ([typeString isEqualToString:HMServiceTypeDoor] ||
-               [typeString isEqualToString:HMServiceTypeAccessoryInformation] ||
+    } else if ([typeString isEqualToString:HMServiceTypeAccessoryInformation] ||
                [typeString isEqualToString:HMServiceTypeCarbonDioxideSensor] ||
                [typeString isEqualToString:HMServiceTypeCarbonMonoxideSensor] ||
                [typeString isEqualToString:HMServiceTypeAirQualitySensor] ||
@@ -61,6 +62,13 @@
                [typeString isEqualToString:HMServiceTypeTemperatureSensor]) {
         return SMServiceTypeSensor;
     }
+    else if ([typeString isEqualToString:HMServiceTypeOutlet]) {
+        return SMserviceTypeTV;
+    }
+    else if ([typeString isEqualToString:HMServiceTypeLockMechanism]) {
+        return SMserviceTypeAirconditioner;
+    }
+
     return SMServiceTypeOther;
 }
 
