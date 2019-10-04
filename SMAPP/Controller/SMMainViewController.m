@@ -468,23 +468,6 @@
         [self addRoomButtonPressed];
     }]];
     
-    [alertView addAction:[SMAlertAction actionWithTitle:@"Take Photo" style:SMAlertActionStyleDefault handler:^(SMAlertAction * _Nonnull action) {
-        if (![HMHomeManager sharedManager].primaryHome) {
-            [SMToastView showInView:[UIApplication sharedApplication].keyWindow text:@"Please add a new home." duration:3 autoHide:YES];
-            return;
-        }
-        [self cameraButtonPressed:nil];
-    }]];
-    
-    [alertView addAction:[SMAlertAction actionWithTitle:@"Select Photo" style:SMAlertActionStyleDefault handler:^(SMAlertAction * _Nonnull action) {
-        if (![HMHomeManager sharedManager].primaryHome) {
-            [SMToastView showInView:[UIApplication sharedApplication].keyWindow text:@"Please add a new home." duration:3 autoHide:YES];
-            return;
-        }
-
-        [self albumsButtonPressed:nil];
-    }]];
-
     [alertView addAction:[SMAlertAction actionWithTitle:@"Cancel" style:SMAlertActionStyleCancel handler:nil]];
     
     [alertView show];

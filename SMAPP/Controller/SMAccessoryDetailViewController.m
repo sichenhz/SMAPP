@@ -12,6 +12,7 @@
 #import "HMHomeManager+Share.h"
 #import "UIViewController+Show.h"
 #import "SMTableViewHeaderView.h"
+#import "SMButtonTableViewCell.h"
 
 @interface SMAccessoryDetailViewController ()
 
@@ -136,10 +137,32 @@
         }
     }
 }
+
+- (void)removeAccessory {
+    NSString *message = [NSString stringWithFormat:@"Are you sure you want to remove %@ from your home?", self.accessory.name];
+    SMAlertView *alertView = [SMAlertView alertViewWithTitle:nil message:message style:SMAlertViewStyleActionSheet];
+    
+    [alertView addAction:[SMAlertAction actionWithTitle:@"Remove" style:SMAlertActionStyleConfirm
+                                                handler:^(SMAlertAction * _Nonnull action) {
+                                                    HMHomeManager *namager = [HMHomeManager sharedManager];
+                                                    [namager.primaryHome removeAccessory:self.accessory completionHandler:^(NSError * _Nullable error) {
+                                                        if (error) {
+                                                            [self showError:error];
+                                                        } else {
+                                                            [self.navigationController popViewControllerAnimated:YES];
+                                                            [[NSNotificationCenter defaultCenter] postNotificationName:kDidUpdateAccessory object:self userInfo:@{@"accessory" : self.accessory, @"remove" : @"1"}];
+                                                        }
+                                                    }];
+                                                }]];
+    [alertView addAction:[SMAlertAction actionWithTitle:@"Cancel" style:SMAlertActionStyleCancel
+                                                handler:nil]];
+    [alertView show];
+}
+
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return self.accessory.services.count + 1;
+    return self.accessory.services.count + 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -154,15 +177,15 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kUITableViewCell];
-    if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:kUITableViewCell];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.textLabel.font = FONT_BODY;
-        cell.textLabel.textColor = COLOR_TITLE;
-    }
-
     if (indexPath.section < self.accessory.services.count) {
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kUITableViewCell];
+        if (!cell) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:kUITableViewCell];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.textLabel.font = FONT_BODY;
+            cell.textLabel.textColor = COLOR_TITLE;
+        }
+
         HMService *service = self.accessory.services[indexPath.section];
         HMCharacteristic *characteristic = service.characteristics[indexPath.row];
         if (characteristic.value != nil) {
@@ -202,18 +225,38 @@
             
             cell.accessoryView = slider;
         } else {
-            
             cell.accessoryView = nil;
         }
-    } else {
+        
+        return cell;
+    } else if (indexPath.section == self.accessory.services.count) {
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kUITableViewCell];
+        if (!cell) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:kUITableViewCell];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.textLabel.font = FONT_BODY;
+            cell.textLabel.textColor = COLOR_TITLE;
+        }
+
         cell.textLabel.text = @"Room";
         cell.detailTextLabel.text = self.accessory.room.name;
         cell.detailTextLabel.textColor = COLOR_ORANGE;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.accessoryView = nil;
+        
+        return cell;
+    } else {
+        SMButtonTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kSMButtonTableViewCell];
+        if (!cell) {
+            cell = [[SMButtonTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kSMButtonTableViewCell];
+            [cell.button setTitle:@"Remove" forState:UIControlStateNormal];
+            __weak typeof(self) weakSelf = self;
+            cell.cellPressed = ^{
+                [weakSelf removeAccessory];
+            };
+        }
+        return cell;
     }
- 
-    return cell;
 }
 
 #pragma mark - UITableViewDelegate
