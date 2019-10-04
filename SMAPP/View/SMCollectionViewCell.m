@@ -41,7 +41,7 @@
         make.left.bottom.equalTo(editButton.superview);
         make.width.height.equalTo(@35);
     }];
-    [editButton setImage:[UIImage imageNamed:@"set"] forState:UIControlStateNormal];
+    [editButton setImage:[UIImage imageNamed:@"settings"] forState:UIControlStateNormal];
     [editButton addTarget:self action:@selector(editButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     
     UIButton *removeButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -50,7 +50,7 @@
         make.right.bottom.equalTo(removeButton.superview);
         make.width.height.equalTo(@35);
     }];
-    [removeButton setImage:[UIImage imageNamed:@"delete"] forState:UIControlStateNormal];
+    [removeButton setImage:[UIImage imageNamed:@"trash"] forState:UIControlStateNormal];
     [removeButton addTarget:self action:@selector(removeButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
 
     UIButton *iconButton = [UIButton buttonWithType:UIButtonTypeCustom];

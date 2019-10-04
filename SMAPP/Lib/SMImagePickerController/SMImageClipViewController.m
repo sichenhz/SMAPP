@@ -102,12 +102,14 @@
     [cancelButton addTarget:self action:@selector(cancelButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     cancelButton.frame = CGRectMake(0, screenSize.height - 120, screenSize.width / 2, 120);
     [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
+    [cancelButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
     [self.view addSubview:cancelButton];
     
     UIButton *selectButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [selectButton addTarget:self action:@selector(selectButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     selectButton.frame = CGRectMake(screenSize.width / 2, screenSize.height - 120, screenSize.width / 2, 120);
     [selectButton setTitle:@"Select" forState:UIControlStateNormal];
+    [selectButton setTitleColor:[UIColor greenColor] forState:UIControlStateNormal];
     [self.view addSubview:selectButton];
 }
 
